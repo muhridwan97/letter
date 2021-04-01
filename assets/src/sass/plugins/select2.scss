@@ -1,0 +1,50 @@
+.select2-container--bootstrap4 .select2-results__option {
+  padding: 0.8rem 1rem;
+}
+
+.select2-container .select2-selection--single {
+  height: 38px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  padding: 3px 10px;
+  font-size: 13px;
+}
+
+.select2-search--dropdown .select2-search__field {
+  font-size: 14px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+  font-size: 14px;
+  padding: 0 10px;
+}
+
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--multiple {
+  border-color: $border-color;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--single,
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+  border-color: #80bdff;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__choice,
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+  background: #fff;
+  border: 1px solid #ccc;
+}
+
+.select2-container--default .select2-search--inline .select2-search__field {
+  width: auto !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  top: 6px;
+  right: 5px;
+}
+
+.select2.form-control {
+  color: inherit;
+}
