@@ -1,5 +1,7 @@
 .DS_Store
 
+.env
+
 application/cache/*
 !application/cache/index.html
 
@@ -16,18 +18,6 @@ user_guide_src/cilexer/dist/*
 user_guide_src/cilexer/pycilexer.egg-info/*
 /vendor/
 
-user_guide
-node_modules
-
-.env
-
-uploads/*
-!uploads/.gitkeep
-!uploads/temp/.gitkeep
-
-assets/dist/**/*
-!assets/dist/.gitkeep
-
 # IDE Files
 #-------------------------
 /nbproject/
@@ -41,4 +31,14 @@ assets/dist/**/*
 *.sublime-project
 /tests/tests/
 /tests/results/
-.vscode/*
+
+node_modules
+assets/files/banners/**/*
+assets/files/img/**/*
+uploads/**/*
+!uploads/.gitkeep
+!uploads/temp/.gitkeep
+!uploads/avatars/.gitkeep
+
+assets/dist/**/*
+!assets/dist/.gitkeep

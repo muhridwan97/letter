@@ -78,7 +78,7 @@ class Role extends App_Controller
     {
         AuthorizationModel::mustAuthorized(PERMISSION_ROLE_CREATE);
 
-        if ($this->validate($this->_validation_rules())) {
+        if ($this->validate()) {
             $role = $this->input->post('role');
             $description = $this->input->post('description');
             $permissions = $this->input->post('permissions');
@@ -144,7 +144,7 @@ class Role extends App_Controller
             $description = $this->input->post('description');
             $permissions = $this->input->post('permissions');
 
-            if ($role == RoleModel::ROLE_ADMINISTRATOR) {
+            if (in_array($role, RoleModel::RESERVED_ROLES)) {
                 flash('danger', "{$role} is reserved role.", 'master/role');
             }
 

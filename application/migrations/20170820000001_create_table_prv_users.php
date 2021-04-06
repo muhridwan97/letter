@@ -16,6 +16,7 @@ class Migration_Create_table_prv_users extends CI_Migration
             'email' => ['type' => 'VARCHAR', 'constraint' => '50', 'unique' => TRUE],
             'password' => ['type' => 'VARCHAR', 'constraint' => '200'],
             'avatar' => ['type' => 'VARCHAR', 'constraint' => '300', 'null' => TRUE],
+            'user_type' => ['type' => 'VARCHAR', 'constraint' => '50', 'null' => TRUE],
             'status' => ['type' => 'ENUM("ACTIVATED", "PENDING", "SUSPENDED")', 'default' => 'PENDING'],
             'is_deleted' => ['type' => 'INT', 'constraint' => 1, 'default' => 0],
             'created_at' => ['type' => 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP'],

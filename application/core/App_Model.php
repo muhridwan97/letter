@@ -6,6 +6,10 @@ class App_Model extends CI_Model
     protected $table = '';
     protected $id = 'id';
     protected $filteredFields = ['*'];
+    protected $filteredMaps = [];
+
+    protected $morphColumnType = 'type';
+    protected $morphColumnRef = 'id_reference';
 
     /**
      * Set field to filtered list.
@@ -28,6 +32,17 @@ class App_Model extends CI_Model
     }
 
     /**
+     * Set field to map as filter list.
+     *
+     * @param $key
+     * @param $field
+     */
+    protected function addFilteredMap($key, $field)
+    {
+        $this->filteredMaps[$key] = $field;
+    }
+
+    /**
      * Get base query of table.
      *
      * @return CI_DB_query_builder
@@ -36,6 +51,20 @@ class App_Model extends CI_Model
     {
         return $this->db->select([$this->table . '.*'])->from($this->table);
     }
+
+	/**
+	 * Get all data with pagination params.
+	 *
+	 * @param array $filters
+	 * @param false $withTrashed
+	 * @return array|CI_DB_query_builder|mixed
+	 */
+    public function getAllWithPagination($filters = [], $withTrashed = false)
+	{
+		$filters['page'] = get_if_exist($filters, 'page', get_url_param('page', 1));
+
+		return $this->getAll($filters);
+	}
 
     /**
      * Get all data model.
@@ -60,23 +89,21 @@ class App_Model extends CI_Model
             }
 
             if (key_exists('search', $filters) && !empty($filters['search'])) {
-                $baseQuery->group_start();
                 foreach ($this->filteredFields as $filteredField) {
                     if ($filteredField == '*') {
                         $fields = $this->db->list_fields($this->table);
                         foreach ($fields as $field) {
-                            $baseQuery->or_like($this->table . '.' . $field, trim($filters['search']));
+                            $baseQuery->or_having($this->table . '.' . $field . ' LIKE', '%' . trim($filters['search']) . '%');
                         }
                     } else {
-                        $baseQuery->or_like($filteredField, trim($filters['search']));
+                        $baseQuery->or_having($filteredField . ' LIKE', '%' . trim($filters['search']) . '%');
                     }
                 }
-                $baseQuery->group_end();
             }
 
             if (key_exists('status', $filters) && !empty($filters['status'])) {
                 if ($this->db->field_exists('status', $this->table)) {
-                    $baseQuery->where($this->table . '.status', $filters['status']);
+                    $baseQuery->where_in($this->table . '.status', explode(',', $filters['status']));
                 }
             }
 
@@ -103,6 +130,20 @@ class App_Model extends CI_Model
                     $baseQuery->where($this->table . '.created_at<=', format_date($filters['date_to']));
                 }
             }
+
+			if (!empty($this->filteredMaps)) {
+				foreach ($this->filteredMaps as $filterKey => $filterField) {
+					if (is_callable($filterField)) {
+						$filterField($baseQuery, $filters);
+					} elseif (key_exists($filterKey, $filters) && !empty($filters[$filterKey])) {
+						if (is_array($filters[$filterKey])) {
+							$baseQuery->where_in($filterField, $filters[$filterKey]);
+						} else {
+							$baseQuery->where($filterField, $filters[$filterKey]);
+						}
+					}
+				}
+			}
         }
         $this->db->stop_cache();
 
@@ -115,7 +156,16 @@ class App_Model extends CI_Model
         if (key_exists('page', $filters) && !empty($filters['page'])) {
             $currentPage = $filters['page'];
 
-            $totalData = $this->db->count_all_results();
+            //$totalData = $this->db->count_all_results();
+
+            $queryTax = $this->db->get_compiled_select();
+            $totalQuery = $this->db->query("SELECT COUNT(*) AS total_record FROM ({$queryTax}) AS report");
+            $totalRows = $totalQuery->row_array();
+            if (!empty($totalRows)) {
+                $totalData = $totalRows['total_record'];
+            } else {
+                $totalData = 0;
+            }
 
             if (key_exists('sort_by', $filters) && !empty($filters['sort_by'])) {
                 if (key_exists('order_method', $filters) && !empty($filters['order_method'])) {
@@ -190,7 +240,15 @@ class App_Model extends CI_Model
     {
         $baseQuery = $this->getBaseQuery()->order_by($this->table . '.id', 'asc');
 
-        $baseQuery->where($conditions);
+        foreach ($conditions as $key => $condition) {
+            if(is_array($condition)) {
+                if(!empty($condition)) {
+                    $baseQuery->where_in($key, $condition);
+                }
+            } else {
+                $baseQuery->where($key, $condition);
+            }
+        }
 
         if (!$withTrashed && $this->db->field_exists('is_deleted', $this->table)) {
             $baseQuery->where($this->table . '.is_deleted', false);
@@ -205,31 +263,60 @@ class App_Model extends CI_Model
         return $baseQuery->get()->result_array();
     }
 
+	/**
+	 * Get by morph owner.
+	 *
+	 * @param $type
+	 * @param $referenceId
+	 * @param bool $resultRow
+	 * @param bool $withTrashed
+	 * @return array|int
+	 */
+    public function getByMorph($type, $referenceId, $resultRow = false, $withTrashed = false)
+	{
+		return $this->getBy([
+			$this->table . '.' . $this->morphColumnType => $type,
+			$this->table . '.' . $this->morphColumnRef => $referenceId
+		], $resultRow, $withTrashed);
+	}
+
     /**
-     * Ser
-     * @param $keyword
+     * Search data from entity.
+	 *
+     * @param $key
      * @param int $limit
      * @param bool $withTrashed
      * @return array
      */
-    public function search($keyword, $limit = 10, $withTrashed = false)
+    public function search($key, $limit = 10, $withTrashed = false)
     {
         $baseQuery = $this->getBaseQuery();
 
-        $baseQuery->group_start();
+		$singleSpaceKeywords = trim(preg_replace('/\s+/', ' ', $key));
+		$isEnclosedWithQuotes = preg_match("/^\".*\"$/", $singleSpaceKeywords) || preg_match("/^'.*'$/", $singleSpaceKeywords);
+		if ($isEnclosedWithQuotes) {
+			$keywords = [trim($key, '"\'')];
+		} else {
+			$keywords = power_set(explode(' ', $singleSpaceKeywords));
+			foreach ($keywords as &$keyword) {
+				$keyword = implode(' ', $keyword);
+			}
+		}
 
-        foreach ($this->filteredFields as $filteredField) {
-            if ($filteredField == '*') {
-                $fields = $this->db->list_fields($this->table);
-                foreach ($fields as $field) {
-                    $baseQuery->or_like($this->table . '.' . $field, trim($keyword));
-                }
-            } else {
-                $baseQuery->or_like($filteredField, trim($keyword));
-            }
-        }
-
-        $baseQuery->group_end();
+		$baseQuery->group_start();
+		foreach ($keywords as $keywordQuery) {
+			foreach ($this->filteredFields as $filteredField) {
+				if ($filteredField == '*') {
+					$fields = $this->db->list_fields($this->table);
+					foreach ($fields as $field) {
+						$baseQuery->or_like($this->table . '.' . $field, $keywordQuery);
+					}
+				} else {
+					$baseQuery->or_like($filteredField, $keywordQuery);
+				}
+			}
+		}
+		$baseQuery->group_end();
 
         if (!$withTrashed && $this->db->field_exists('is_deleted', $this->table)) {
             $baseQuery->where($this->table . '.is_deleted', false);
@@ -271,14 +358,6 @@ class App_Model extends CI_Model
             $hasCreatedBy = $this->db->field_exists('created_by', $this->table);
             $hasCreatedAt = $this->db->field_exists('created_at', $this->table);
             foreach ($data as &$datum) {
-                if ($this->table != 'notifications' && $this->table != 'ref_settings') {
-                    foreach ($datum as $attribute => &$value) {
-                        if ($attribute != 'username' && $attribute != 'password' && $attribute != 'document' && $attribute != 'tax_file' && $attribute != 'attachment' && $attribute != 'photo' && $attribute != 'data' && !is_null($value)) {
-                            $value = strtoupper($value);
-                        }
-                    }
-                }
-
                 if ($hasCreatedBy) {
                     $datum['created_by'] = UserModel::loginData('id', 0);
                 }
@@ -289,18 +368,10 @@ class App_Model extends CI_Model
             return $this->db->insert_batch($this->table, $data);
         }
 
-        if ($this->table != 'notifications' && $this->table != 'ref_settings') {
-            foreach ($data as $attribute => &$value) {
-                if ($attribute != 'username' && $attribute != 'password' && $attribute != 'document' && $attribute != 'tax_file' && $attribute != 'attachment' && $attribute != 'photo' && $attribute != 'data') {
-                    $value = strtoupper($value);
-                }
-            }
-        }
-
-        if ($this->db->field_exists('created_by', $this->table)) {
+        if ($this->db->field_exists('created_by', $this->table) && !key_exists('created_by', $data)) {
             $data['created_by'] = UserModel::loginData('id', 0);
         }
-        if ($this->db->field_exists('created_at', $this->table)) {
+        if ($this->db->field_exists('created_at', $this->table) && !key_exists('created_at', $data)) {
             $data['created_at'] = date('Y-m-d H:i:s');
         }
         return $this->db->insert($this->table, $data);
@@ -319,19 +390,11 @@ class App_Model extends CI_Model
         if (is_array($id)) {
             $condition = $id;
         }
-        if ($this->db->field_exists('updated_at', $this->table)) {
+        if ($this->db->field_exists('updated_by', $this->table) && !key_exists('updated_by', $data)) {
             $data['updated_by'] = UserModel::loginData('id', 0);
         }
-        if ($this->db->field_exists('updated_at', $this->table)) {
+        if ($this->db->field_exists('updated_at', $this->table) && !key_exists('updated_at', $data)) {
             $data['updated_at'] = date('Y-m-d H:i:s');
-        }
-
-        if ($this->table != 'notifications' && $this->table != 'ref_settings') {
-            foreach ($data as $attribute => &$value) {
-                if ($attribute != 'username' && $attribute != 'password' && $attribute != 'document' && $attribute != 'tax_file' && $attribute != 'attachment' && $attribute != 'photo' && $attribute != 'data' && !is_null($value)) {
-                    $value = strtoupper($value);
-                }
-            }
         }
 
         return $this->db->update($this->table, $data, $condition);

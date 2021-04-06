@@ -1,29 +1,29 @@
 <form class="form-plaintext">
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body">
-            <h4 class="card-title">View Role</h4>
+            <h5 class="card-title">View Role</h5>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group row">
-                        <label class="col-sm-3 col-form-label" for="role">Role Name</label>
+                        <label class="col-sm-3 col-form-label">Role Name</label>
                         <div class="col-sm-9">
-                            <p class="form-control-plaintext" id="role">
+                            <p class="form-control-plaintext">
                                 <?= if_empty($role['role'], 'No role') ?>
                             </p>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 col-form-label" for="total_permission">Permission</label>
+                        <label class="col-sm-3 col-form-label">Permission</label>
                         <div class="col-sm-9">
-                            <p class="form-control-plaintext" id="total_permission">
+                            <p class="form-control-plaintext">
                                 <?= if_empty($role['total_permission'], 0) ?> permissions
                             </p>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 col-form-label" for="description">Description</label>
+                        <label class="col-sm-3 col-form-label">Description</label>
                         <div class="col-sm-9">
-                            <p class="form-control-plaintext" id="description">
+                            <p class="form-control-plaintext">
                                 <?= if_empty($role['description'], 'No description') ?>
                             </p>
                         </div>
@@ -31,17 +31,17 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group row">
-                        <label class="col-sm-3 col-form-label" for="created_at">Created At</label>
+                        <label class="col-sm-3 col-form-label">Created At</label>
                         <div class="col-sm-9">
-                            <p class="form-control-plaintext" id="created_at">
+                            <p class="form-control-plaintext">
                                 <?= format_date($role['created_at'], 'd F Y H:i') ?>
                             </p>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 col-form-label" for="updated_at">Updated At</label>
+                        <label class="col-sm-3 col-form-label">Updated At</label>
                         <div class="col-sm-9">
-                            <p class="form-control-plaintext" id="updated_at">
+                            <p class="form-control-plaintext">
                                 <?= if_empty(format_date($role['updated_at'], 'd F Y H:i'),  '-') ?>
                             </p>
                         </div>
@@ -50,9 +50,9 @@
             </div>
         </div>
     </div>
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body">
-            <h4 class="card-title">Permissions</h4>
+            <h5 class="card-title">Permissions</h5>
             <span class="text-muted">Role at least must has one permission</span>
 
             <div class="form-group">
@@ -72,9 +72,9 @@
                             ?>
                             <div class="col-12 mt-3">
                                 <hr>
-                                <h4 class="mt-2">
+                                <h5 class="mt-2">
                                     Module <?= ucwords($lastGroup) ?>
-                                </h4>
+                                </h5>
                                 <hr class="mb-0">
                             </div>
                         <?php endif; ?>
@@ -92,7 +92,8 @@
 
                         <div class="col-sm-4">
                             <p class="mb-0 text-muted">
-                                <?= ucwords(preg_replace('/(_|\-)/', ' ', $permission['permission'])) ?>
+                                <i class="mdi mdi-check-box-outline mr-2"></i>
+								<?= ucwords(preg_replace('/(_|\-)/', ' ', $permission['permission'])) ?>
                             </p>
                         </div>
                     <?php endforeach; ?>
@@ -101,7 +102,7 @@
             </div>
         </div>
     </div>
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body d-flex justify-content-between">
             <button onclick="history.back()" type="button" class="btn btn-light">Back</button>
             <?php if(AuthorizationModel::isAuthorized(PERMISSION_ROLE_EDIT)): ?>

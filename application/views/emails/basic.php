@@ -141,7 +141,7 @@ $style = [
                             <tr>
                                 <td style="<?php echo $fontFamily ?> <?php echo $style['email-footer_cell'] ?>">
                                     <p style="<?php echo $style['paragraph-sub'] ?>">
-                                        &copy; <?php echo date('Y') ?>
+                                        &copy; <?php echo date('Y') ?> Copyright
                                         <a style="<?php echo $style['anchor'] ?>" href="<?= site_url() ?>" target="_blank">
                                             <?= $this->config->item('app_name') ?>
                                         </a>.

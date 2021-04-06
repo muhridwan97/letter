@@ -14,7 +14,7 @@ class Uploader extends CI_Model
     const DRIVER_LOCAL = 'local';
     const DRIVER_S3 = 's3';
 
-    const WHITELISTED_TYPE = 'gif|jpg|jpeg|png|pdf|xls|xml|xlsx|doc|docx|ppt|pptx|txt|zip|rar';
+    const WHITELISTED_TYPE = 'gif|jpg|jpeg|png|pdf|xls|xml|xlsx|doc|docx|ppt|pptx|txt|zip|rar|mp3|mp4|webm|ogv|mkv|mpeg';
     const UPLOAD_PATH = FCPATH . 'uploads' . DIRECTORY_SEPARATOR;
     const TEMP_PATH = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'temp';
 
@@ -50,7 +50,7 @@ class Uploader extends CI_Model
 	 *
 	 * @return bool
 	 */
-    private function isS3Available()
+	private function isS3Available()
 	{
 		return !empty(env('S3_ENDPOINT')) && !empty(env('S3_ACCESS_KEY_ID')) && !empty(env('S3_SECRET_ACCESS_KEY'));
 	}
@@ -67,7 +67,7 @@ class Uploader extends CI_Model
 		if (!$this->isS3Available()) {
 			return $this->uploadTo($input, $options);
 		}
-        $fileName = get_if_exist($options, 'file_name', (!is_array($_FILES[$input]['name']) ? uniqid() . '.' . strtolower(pathinfo($_FILES[$input]['name'], PATHINFO_EXTENSION)) : ''));
+		$fileName = get_if_exist($options, 'file_name', (!is_array($_FILES[$input]['name']) ? uniqid() . '.' . strtolower(pathinfo($_FILES[$input]['name'], PATHINFO_EXTENSION)) : ''));
         $uploadDir = get_if_exist($options, 'destination', 'temp');
         $allowedFileType = get_if_exist($options, 'type', self::WHITELISTED_TYPE);
         $maxFileSize = get_if_exist($options, 'size', 3000);
@@ -163,7 +163,7 @@ class Uploader extends CI_Model
                 'file_name' => $fileName,
                 'file_type' => $fileType,
                 'file_path' => dirname($key),
-                'full_path' => $bucket . '/' . $key,
+                'full_path' => $key,
                 'raw_name' => pathinfo($fileName, PATHINFO_FILENAME),
                 'orig_name' => $fileName,
                 'client_name' => $_FILES[$input]['name'],
@@ -278,10 +278,10 @@ class Uploader extends CI_Model
      *
      * @param $key
      * @return string
-     */
+	 */
     public function getUrl($key)
     {
-        if($this->driver == 's3' && $this->isS3Available()) {
+        if($this->driver == 's3') {
             return $this->s3FileManager->getObjectUrl(env('S3_BUCKET'), $key);
         }
         return base_url('uploads/' . $key);
@@ -297,7 +297,7 @@ class Uploader extends CI_Model
      */
     public function move($from, $to, $base = self::UPLOAD_PATH)
     {
-        if($this->driver == 's3' && $this->isS3Available()) {
+		if ($this->driver == 's3' && $this->isS3Available()) {
             return $this->s3FileManager->moveObject(env('S3_BUCKET'), $from, $to);
         }
 
@@ -318,7 +318,7 @@ class Uploader extends CI_Model
      */
     public function copy($from, $to, $base = self::UPLOAD_PATH)
     {
-        if ($this->driver == 's3' && $this->isS3Available()) {
+		if ($this->driver == 's3' && $this->isS3Available()) {
             return $this->s3FileManager->copyObject(env('S3_BUCKET'), $from, $to);
         }
 
@@ -338,12 +338,12 @@ class Uploader extends CI_Model
      */
     public function delete($path, $base = self::UPLOAD_PATH)
     {
-        if ($this->driver == 's3' && $this->isS3Available()) {
+		if ($this->driver == 's3' && $this->isS3Available()) {
             return $this->s3FileManager->deleteObject(env('S3_BUCKET'), $path);
         }
 
-        if (file_exists($base . $path) && is_writable($base . $path) && !empty($path)) {
-            if (is_dir($base . $path) && !empty($path)) {
+        if (file_exists($base . $path) && is_writable($base . $path)) {
+            if (is_dir($base . $path)) {
                 $this->deleteRecursive($base . $path);
                 return true;
             } else {
@@ -361,7 +361,7 @@ class Uploader extends CI_Model
      */
     private function deleteRecursive($dir)
     {
-        if ($this->driver == 's3' && $this->isS3Available()) {
+		if ($this->driver == 's3' && $this->isS3Available()) {
             return $this->s3FileManager->deleteObjects(env('S3_BUCKET'), $dir);
         }
 
@@ -382,7 +382,7 @@ class Uploader extends CI_Model
      */
     public function makeFolder($directory, $base = self::UPLOAD_PATH)
     {
-        if ($this->driver == 's3' && $this->isS3Available()) {
+		if ($this->driver == 's3' && $this->isS3Available()) {
             return $this->s3FileManager->putObject(env('S3_BUCKET'), rtrim($directory, '/') . '/');
         }
 
@@ -442,4 +442,5 @@ class Uploader extends CI_Model
         }
         return '';
     }
+
 }

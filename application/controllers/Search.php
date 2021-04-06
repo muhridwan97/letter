@@ -3,9 +3,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Class Search
- * @property RequisitionModel $requisition
- * @property PurchaseOfferModel $purchaseOffer
- * @property PurchaseOrderModel $purchaseOrder
+ * @property CurriculumModel $curriculum
+ * @property CourseModel $course
+ * @property LessonModel $lesson
  */
 class Search extends App_Controller
 {
@@ -14,9 +14,9 @@ class Search extends App_Controller
     {
         parent::__construct();
 
-        $this->load->model('RequisitionModel', 'requisition');
-        $this->load->model('PurchaseOfferModel', 'purchaseOffer');
-        $this->load->model('PurchaseOrderModel', 'purchaseOrder');
+        $this->load->model('CurriculumModel', 'curriculum');
+        $this->load->model('CourseModel', 'course');
+        $this->load->model('LessonModel', 'lesson');
     }
 
     /**
@@ -25,10 +25,10 @@ class Search extends App_Controller
     public function index()
     {
         $q = get_url_param('q');
-        $requisitions = $this->requisition->search($q, 5);
-        $purchaseOffers = $this->purchaseOffer->search($q, 5);
-        $purchaseOrders = $this->purchaseOrder->search($q, 5);
+        $curriculums = empty($q) ? [] : $this->curriculum->search($q, 6);
+        $courses = empty($q) ? [] : $this->course->search($q, 4);
+        $lessons = empty($q) ? [] : $this->lesson->search($q, 10);
 
-        $this->render('search/index', compact('q', 'requisitions', 'purchaseOffers', 'purchaseOrders'));
+        $this->render('search/index', compact('curriculums', 'courses', 'lessons'));
     }
 }

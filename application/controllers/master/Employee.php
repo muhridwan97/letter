@@ -86,7 +86,7 @@ class Employee extends App_Controller
             $employeeNo = $this->input->post('no_employee');
             $department = $this->input->post('department');
             $name = $this->input->post('name');
-            $enterDate = $this->input->post('enter_date');
+            $hireDate = $this->input->post('enter_date');
             $quitDate = $this->input->post('quit_date');
             $gender = $this->input->post('gender');
             $status = $this->input->post('status');
@@ -129,7 +129,7 @@ class Employee extends App_Controller
                     'id_employee' => if_empty($parentEmployee, null),
                     'id_department' => $department,
                     'name' => $name,
-                    'enter_date' => if_empty(format_date($enterDate, 'Y-m-d'), null),
+                    'enter_date' => if_empty(format_date($hireDate, 'Y-m-d'), null),
                     'quit_date' => if_empty(format_date($quitDate, 'Y-m-d'), null),
                     'gender' => $gender,
                     'position_level' => $positionLevel,
@@ -190,7 +190,7 @@ class Employee extends App_Controller
             $employeeNo = $this->input->post('no_employee');
             $department = $this->input->post('department');
             $name = $this->input->post('name');
-            $enterDate = $this->input->post('enter_date');
+            $hireDate = $this->input->post('enter_date');
             $quitDate = $this->input->post('quit_date');
             $gender = $this->input->post('gender');
             $status = $this->input->post('status');
@@ -227,7 +227,7 @@ class Employee extends App_Controller
                 'id_department' => $department,
                 'name' => $name,
                 'no_employee' => $employeeNo,
-                'enter_date' => if_empty(format_date($enterDate, 'Y-m-d'), null),
+                'enter_date' => if_empty(format_date($hireDate, 'Y-m-d'), null),
                 'quit_date' => if_empty(format_date($quitDate, 'Y-m-d'), null),
                 'gender' => $gender,
                 'position_level' => $positionLevel,
@@ -295,7 +295,10 @@ class Employee extends App_Controller
             'no_employee' => [
                 'trim', 'required', 'max_length[20]', ['no_employee_exists', function ($no) use ($id) {
                     $this->form_validation->set_message('no_employee_exists', 'The %s has been registered before, try another');
-                    return $this->employee->isUniqueEmployeeNo($no, $id);
+                    return empty($this->employee->getBy([
+                    	'ref_employees.no_employee' => $no,
+						'ref_employees.id!=' => $id
+					]));
                 }]
             ],
             'name' => 'trim|required|max_length[50]',

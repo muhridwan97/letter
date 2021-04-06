@@ -6,19 +6,9 @@ class RoleModel extends App_Model
     protected $table = 'prv_roles';
 
     const ROLE_ADMINISTRATOR = 'Administrator';
-    const ROLE_APPLICANT = 'Applicant';
-    const ROLE_HR = 'HR';
-    const ROLE_EMPLOYEE = 'Employee';
-    const ROLE_MANAGER = 'Manager';
-    const ROLE_DIRECTOR = 'Director';
 
     const RESERVED_ROLES = [
         self::ROLE_ADMINISTRATOR,
-        self::ROLE_APPLICANT,
-        self::ROLE_EMPLOYEE,
-        self::ROLE_HR,
-        self::ROLE_MANAGER,
-        self::ROLE_DIRECTOR,
     ];
 
     /**

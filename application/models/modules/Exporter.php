@@ -19,9 +19,7 @@ class Exporter extends CI_Model
      */
     public function exportFromArray($title, $data, $download = true, $storeTo = null)
     {
-    	$no = 1;
         foreach ($data as &$datum) {
-            $datum = array_merge(['no' => $no++], $datum);
             foreach ($datum as $key => $field) {
                 if ($key == 'id' || $key == 'is_deleted' || $key == 'deleted_at' || $key == 'password' || $key == 'token' || preg_match('/^id_/', $key) || preg_match('/_by$/', $key)) {
                     unset($datum[$key]);
@@ -50,9 +48,9 @@ class Exporter extends CI_Model
 
             $header = [];
             if (!empty($data)) {
-                $header = array_keys(reset($data));
+                $header = array_keys($data[0]);
                 $header = array_map(function ($title) {
-                    return strtoupper(str_replace(['_'], ' ', $title));
+                    return strtoupper(str_replace(['_', '-'], ' ', $title));
                 }, $header);
             }
 

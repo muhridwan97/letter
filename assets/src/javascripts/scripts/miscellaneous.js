@@ -1,26 +1,38 @@
+import showAlert from "../components/alert";
+
 $(function () {
-    // mobile sidebar
-    $('[data-toggle="offcanvas"]').on("click", function () {
-        $('.sidebar-offcanvas').toggleClass('active')
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+        $("#classroom-wrapper").toggleClass("toggled");
+    });
+
+    const body = $('body');
+    // On click, capture state and save it in localStorage
+    if ($(window).width() > 992) {
+        if (localStorage.getItem('sidebar-closed') === '1') {
+            body.addClass("sidebar-icon-only");
+        }
+    }
+
+    // sidebar submenu
+    const sidebar = $('.sidebar');
+    sidebar.on('show.bs.collapse', '.collapse', function () {
+        sidebar.find('.collapse.show').collapse('hide');
+    });
+
+    // change sidebar
+    $('[data-toggle="minimize"]').on("click", function () {
+        body.toggleClass('sidebar-icon-only');
+        localStorage.setItem('finance-sidebar-closed', body.hasClass('sidebar-icon-only') ? 1 : 0);
     });
 
     // checkbox and radios
     $(".form-check label,.form-radio label").append('<i class="input-helper"></i>');
 
     // initialize date picker
-	/* $('.datepicker').daterangepicker({
-        singleDatePicker: true,
-        showDropdowns: false,
-        autoUpdateInput: false,
-        locale: {
-            format: 'DD/MM/YYYY'
-        }
-    }).on("apply.daterangepicker", function (e, picker) {
-        picker.element.val(picker.startDate.format(picker.locale.format));
-    }); */
-
-    function initDatepicker() {
-		const dateFormat = 'DD/MM/YYYY';
+	function initDatepicker() {
+		const dateFormat = 'DD MMMM YYYY';
 		const fullDateFormat = 'DD MMMM YYYY';
 		$('.datepicker:not([readonly])').each(function () {
 			const options = {
@@ -85,7 +97,23 @@ $(function () {
 		});
 	}
 	initDatepicker();
-    window.initDatepicker = initDatepicker;
+	window.initDatepicker = initDatepicker;
+
+    $('form .datepicker').keydown(function (e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+	$('form').on('focus', 'input[type=number]', function (e) {
+		$(this).on('wheel.disableScroll', function (e) {
+			e.preventDefault()
+		})
+	})
+	$('form').on('blur', 'input[type=number]', function (e) {
+		$(this).off('wheel.disableScroll')
+	})
 
     // Select2
     const selects = $('.select2');
@@ -108,4 +136,43 @@ $(function () {
     // Popover
     $('[data-toggle="popover"]').popover();
 
+    // Clickable
+    $('[data-clickable=true]').on('click', function () {
+        window.location.href = $(this).data('url');
+    });
+
+	$(document).on('click', '.btn-fullscreen', function () {
+		const container = $($(this).data('target'));
+		if(container.length) {
+			const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+			if (isFullscreen) {
+				if (document.exitFullscreen) {
+					document.exitFullscreen();
+				} else if (document.mozCancelFullScreen) {
+					document.mozCancelFullScreen();
+				} else if (document.webkitExitFullscreen) {
+					document.webkitExitFullscreen();
+				} else if (document.msExitFullscreen) {
+					document.msExitFullscreen();
+				}
+			} else {
+				const element = $(container).get(0);
+				if (element.requestFullscreen) {
+					element.requestFullscreen();
+				} else if (element.mozRequestFullScreen) {
+					element.mozRequestFullScreen();
+				} else if (element.webkitRequestFullscreen) {
+					element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+				} else if (element.msRequestFullscreen) {
+					element.msRequestFullscreen();
+				}
+			}
+		} else {
+			showAlert('Cannot Fullscreen', 'No media wrapper set as full screen');
+		}
+	});
+
+	window.showMessage = function(title, message) {
+		showAlert(title, message);
+	}
 });

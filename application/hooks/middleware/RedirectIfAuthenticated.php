@@ -11,7 +11,7 @@ class RedirectIfAuthenticated
     private $homePage = 'dashboard';
 
     private $mustRedirectIfAuthenticated = [
-        Login::class, Register::class, Password::class
+        Login::class, Password::class
     ];
 
     /**

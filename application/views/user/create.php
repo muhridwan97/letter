@@ -1,10 +1,10 @@
 <form action="<?= site_url('master/user/save') ?>" method="POST" id="form-user" enctype="multipart/form-data">
     <?= _csrf() ?>
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body">
-            <h4 class="card-title">Create New User</h4>
+            <h5 class="card-title">Create New User</h5>
             <div class="row">
-                <div class="col-md-7">
+                <div class="col-sm-6">
                     <div class="form-group">
                         <label for="name">Full Name</label>
                         <input type="text" class="form-control" id="name" name="name" required maxlength="50"
@@ -12,7 +12,7 @@
                         <?= form_error('name') ?>
                     </div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-sm-6">
                     <div class="form-group">
                         <label for="username">Username</label>
                         <input type="text" class="form-control" id="username" name="username" maxlength="20"
@@ -44,7 +44,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="status">Status</label>
-                        <select class="custom-select" name="status" id="status" required>
+                        <select class="form-control select2" name="status" id="status" style="width: 100%" required>
                             <option value="">-- Please select --</option>
                             <option value="<?= UserModel::STATUS_PENDING ?>"
                                 <?= set_select('status', UserModel::STATUS_PENDING) ?>>
@@ -65,12 +65,15 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="user_type">User Type</label>
-                        <select class="custom-select" name="user_type" id="user_type" required>
+                        <select class="form-control select2" name="user_type" id="user_type" style="width: 100%" required>
                             <option value="INTERNAL"<?= set_select('user_type', 'INTERNAL') ?>>
                                 INTERNAL (Employee or trusted member)
                             </option>
-                            <option value="EXTERNAL"<?= set_select('user_type', 'EXTERNAL') ?>>
-                                EXTERNAL (Outsider such as applicant)
+                            <option value="CUSTOMER"<?= set_select('user_type', 'CUSTOMER') ?>>
+                                CUSTOMER (User that need warehouse)
+                            </option>
+                            <option value="VENDOR"<?= set_select('user_type', 'VENDOR') ?>>
+                                VENDOR (User that provide warehouse)
                             </option>
                         </select>
                         <?= form_error('user_type'); ?>
@@ -80,19 +83,20 @@
         </div>
     </div>
 
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body">
-            <h4 class="card-title">Role</h4>
+            <h5 class="card-title">Role</h5>
             <p class="text-muted">User at least must has one role</p>
             <div class="form-group">
                 <div class="row">
                     <?php foreach ($roles as $role): ?>
                         <div class="col-sm-3">
-                            <div class="form-check form-check-flat mt-2">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input"
-                                           id="role_<?= $role['id'] ?>" name="roles[]" value="<?= $role['id'] ?>"
-                                        <?= set_checkbox('roles[]', $role['id']); ?>>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input"
+                                       id="role_<?= $role['id'] ?>"
+                                       name="roles[]" value="<?= $role['id'] ?>"
+                                    <?= set_checkbox('roles[]', $role['id']); ?>>
+                                <label class="custom-control-label" for="role_<?= $role['id'] ?>">
                                     <?= $role['role'] ?>
                                 </label>
                             </div>
@@ -104,9 +108,9 @@
         </div>
     </div>
 
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body">
-            <h4 class="card-title">Credential</h4>
+            <h5 class="card-title">Credential</h5>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -129,7 +133,7 @@
     </div>
 
     <?php if($this->config->item('sso_enable')): ?>
-        <div class="card grid-margin">
+        <div class="card mb-3">
             <div class="card-body">
                 <h4 class="card-title text-danger">Attention</h4>
                 <p>
@@ -140,7 +144,7 @@
         </div>
     <?php endif; ?>
 
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body d-flex justify-content-between">
             <button type="button" onclick="history.back()" class="btn btn-light">Back</button>
             <button type="submit" class="btn btn-success" data-toggle="one-touch" data-touch-message="Saving...">Save User</button>

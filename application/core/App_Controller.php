@@ -112,16 +112,56 @@ class App_Controller extends CI_Controller
         $this->load->view($this->layout, compact('page', 'data', 'title'));
     }
 
+	/**
+	 * Render plain view.
+	 *
+	 * @param $view
+	 * @param array $data
+	 * @param bool $return
+	 * @return object|string
+	 */
+	protected function renderView($view, $data = [], $return = false)
+	{
+		if ($return) {
+			return $this->load->view($view, $data, $return);
+		}
+		$this->load->view($view, $data);
+	}
+
     /**
      * Render data as json.
      *
      * @param $data
      */
-    protected function render_json($data)
+    protected function renderJson($data)
     {
         header('Content-Type: application/json');
         echo json_encode($data);
     }
+
+	/**
+	 * Check if request accept json.
+	 *
+	 * @return bool
+	 */
+	protected function acceptJson()
+	{
+		$accept = $this->input->get_request_header('accept');
+
+		return !empty($accept) && trim(strtolower($accept)) == 'application/json';
+	}
+
+	/**
+	 * Check authorization of user against model.
+	 *
+	 * @param $entity
+	 * @param null $permission
+	 * @return void
+	 */
+	protected function authorize($entity, $permission = null)
+	{
+		return AuthorizationModel::mustAuthorized($permission);
+	}
 
     /**
      * Return validation rules.
@@ -149,7 +189,9 @@ class App_Controller extends CI_Controller
         }
 
         if ($this->form_validation->run() == FALSE) {
-            flash('warning', 'Form inputs is invalid');
+            $this->session->set_flashdata([
+                'status' => 'warning', 'message' => 'Form inputs is invalid' . validation_errors(),
+            ]);
             return false;
         }
         return true;

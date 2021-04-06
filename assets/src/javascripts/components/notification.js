@@ -2,25 +2,28 @@ import variables from './variables';
 
 export default function () {
 
-    const SUBSCRIBE_REQUISITION = 'requisition';
-    const SUBSCRIBE_OFFER = 'offer';
-    const SUBSCRIBE_ORDER = 'order';
+	const SUBSCRIBE_SYLLABUS = 'syllabus';
+	const SUBSCRIBE_TRAINING = 'training';
 
-    const EVENT_REQUISITION_MUTATION = 'requisition-mutation';
-    const EVENT_REQUISITION_VALIDATION = 'requisition-validation';
-    const EVENT_REQUISITION_PROCEED = 'requisition-proceed';
-    const EVENT_OFFER_MUTATION = 'offer-mutation';
-    const EVENT_ORDER_MUTATION = 'order-mutation';
+	const EVENT_CURRICULUM_MUTATION = 'curriculum-mutation';
+	const EVENT_COURSE_MUTATION = 'course-mutation';
+	const EVENT_LESSON_MUTATION = 'lesson-mutation';
+	const EVENT_TRAINING_ASSIGNED = 'training-assigned';
+	const EVENT_EXAM_ASSIGNED = 'exam-assigned';
+	const EVENT_EXAM_FINISHED = 'exam-finished';
 
-    function displayNotification(title, message) {
+    function displayNotification(title, message, url = variables.baseUrl) {
         let options = {
             body: message,
-            icon: variables.baseUrl + 'assets/dist/img/layouts/icon.png',
+            icon: variables.baseUrl + 'assets/dist/img/icon.png',
         };
-        new Notification(title, options);
+        const notification = new Notification(title, options);
+        notification.onclick = function () {
+            window.open(url);
+        };
     }
 
-    if(variables.userId) {
+    if (variables.userId) {
         if ('Notification' in window) {
             if (Notification.permission !== "granted") {
                 Notification.requestPermission(function (result) {
@@ -39,25 +42,26 @@ export default function () {
                     encrypted: true
                 });
 
-                let channelRequisition = pusher.subscribe(`${SUBSCRIBE_REQUISITION}-${variables.userId}`);
-                channelRequisition.bind(EVENT_REQUISITION_MUTATION, function (data) {
-                    displayNotification('Requisition', data.message);
+                let channelSyllabus = pusher.subscribe(`${SUBSCRIBE_SYLLABUS}-${variables.userId}`);
+				channelSyllabus.bind(EVENT_CURRICULUM_MUTATION, function (data) {
+                    displayNotification('Curriculum', data.message, data.url);
                 });
-                channelRequisition.bind(EVENT_REQUISITION_VALIDATION, function (data) {
-                    displayNotification('Requisition Validation', data.message);
+				channelSyllabus.bind(EVENT_COURSE_MUTATION, function (data) {
+                    displayNotification('Course', data.message, data.url);
                 });
-                channelRequisition.bind(EVENT_REQUISITION_PROCEED, function (data) {
-                    displayNotification('Requisition Proceed', data.message);
-                });
-
-                let channelOffer = pusher.subscribe(`${SUBSCRIBE_OFFER}-${variables.userId}`);
-                channelOffer.bind(EVENT_OFFER_MUTATION, function (data) {
-                    displayNotification('Purchase Offer', data.message);
+				channelSyllabus.bind(EVENT_LESSON_MUTATION, function (data) {
+                    displayNotification('Lesson', data.message, data.url);
                 });
 
-                let channelOrder = pusher.subscribe(`${SUBSCRIBE_ORDER}-${variables.userId}`);
-                channelOrder.bind(EVENT_ORDER_MUTATION, function (data) {
-                    displayNotification('Purchase Order', data.message);
+                let channelTraining = pusher.subscribe(`${SUBSCRIBE_TRAINING}-${variables.userId}`);
+				channelTraining.bind(EVENT_TRAINING_ASSIGNED, function (data) {
+                    displayNotification('Training', data.message, data.url);
+                });
+				channelTraining.bind(EVENT_EXAM_ASSIGNED, function (data) {
+                    displayNotification('Exam', data.message, data.url);
+                });
+				channelTraining.bind(EVENT_EXAM_FINISHED, function (data) {
+                    displayNotification('Exam Finished', data.message, data.url);
                 });
             }
         } else {

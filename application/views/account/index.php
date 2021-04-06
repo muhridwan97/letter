@@ -1,9 +1,9 @@
 <form action="<?= site_url('account') ?>" method="POST" id="form-account" enctype="multipart/form-data">
     <?= _csrf() ?>
     <?= _method('put') ?>
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body">
-            <h4 class="card-title">Account Setting</h4>
+            <h5 class="card-title">Account Setting</h5>
             <div class="row">
                 <div class="col-md-7">
                     <div class="form-group">
@@ -28,22 +28,35 @@
                        value="<?= set_value('email', $user['email']) ?>" placeholder="Enter email address">
                 <?= form_error('email') ?>
             </div>
+        </div>
+    </div>
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">Avatar</h5>
             <div class="form-group">
-                <label>Avatar</label>
-                <input type="file" id="avatar" name="avatar" class="file-upload-default" data-max-size="3000000">
-                <div class="input-group col-xs-12">
-                    <input type="text" class="form-control file-upload-info" disabled placeholder="Upload photo">
-                    <span class="input-group-append">
-                        <button class="file-upload-browse btn btn-success btn-simple-upload" type="button">Upload</button>
-                    </span>
+                <div class="d-flex flex-column flex-sm-row align-items-center">
+                    <div class="rounded mb-3 mb-sm-0" style="height:140px; width: 140px; background: url('<?= base_url(if_empty($user['avatar'], 'assets/dist/img/no-avatar.png', '/uploads/')) ?>') center center / cover"></div>
+                    <div class="mr-lg-3 ml-sm-4 flex-fill" style="max-width: 500px">
+                        <label for="avatar" class="d-none d-md-block">Select a photo</label>
+                        <input type="file" id="avatar" name="avatar" accept="image/jpeg,image/png" class="file-upload-default" data-max-size="2000000">
+                        <div class="input-group">
+                            <input type="text" class="form-control file-upload-info" disabled placeholder="Upload photo">
+                            <span class="input-group-append">
+                                <button class="file-upload-browse btn btn-primary btn-simple-upload" type="button">
+                                    Select Photo
+                                </button>
+                            </span>
+                        </div>
+                        <span class="form-text">Leave it unselected if you don't change avatar.</span>
+                        <?= form_error('avatar') ?>
+                    </div>
                 </div>
-                <?= form_error('avatar') ?>
             </div>
         </div>
     </div>
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body">
-            <h4 class="card-title">Password</h4>
+            <h5 class="card-title">Password</h5>
             <div class="form-group">
                 <label for="password">Current Password</label>
                 <input type="password" class="form-control" id="password" name="password" required maxlength="50" placeholder="Enter your current password">
@@ -68,7 +81,7 @@
             </div>
         </div>
     </div>
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body d-flex justify-content-between">
             <button type="button" onclick="history.back()" class="btn btn-light">Back</button>
             <button type="submit" class="btn btn-primary" data-toggle="one-touch" data-touch-message="Updating...">Update Account</button>

@@ -1,7 +1,7 @@
-<div class="card">
+<div class="card mb-3">
     <div class="card-body">
-        <div class="d-sm-flex align-items-center justify-content-between">
-            <h4 class="card-title mb-sm-0">Data Employees</h4>
+        <div class="d-sm-flex justify-content-between">
+            <h5 class="card-title mb-sm-0">Data Employees</h5>
             <div>
                 <a href="#modal-filter" data-toggle="modal" class="btn btn-info btn-sm pr-2 pl-2">
                     <i class="mdi mdi-filter-variant"></i>
@@ -11,8 +11,8 @@
                 </a>
                 <?php if(!$this->config->item('sso_enable')): ?>
                     <?php if(AuthorizationModel::isAuthorized(PERMISSION_EMPLOYEE_CREATE)): ?>
-                        <a href="<?= site_url('master/employee/create') ?>" class="btn btn-sm btn-success">
-                            <i class="mdi mdi-plus-box-outline mr-2"></i>Create
+                        <a href="<?= site_url('master/employee/create') ?>" class="btn btn-sm btn-primary">
+                            <i class="mdi mdi-plus-box-outline mr-2"></i>CREATE
                         </a>
                     <?php endif; ?>
                 <?php endif; ?>

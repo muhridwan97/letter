@@ -17,12 +17,9 @@ $.validator.setDefaults({
         if (element.hasClass('select2') || element.hasClass("select2-hidden-accessible")) {
             error.insertAfter(element.next('span.select2'));
         }
-        else if (element.parent(".input-group").length || element.parent(".custom-control").length) {
+        else if (element.parent(".input-group").length) {
             error.insertAfter(element.parent());
         }
-		else if (element.parent(".input-group-prepend").length || element.parent(".input-group-append").length) {
-			error.insertAfter(element.parent().parent());
-		}
         else if (element.parent(".form-check-label").length) {
             element.closest('.form-group').append(error);
         }
@@ -57,11 +54,14 @@ $.validator.addMethod('file_size', function (value, element, param) {
     return this.optional(element) || ((element.files[0].size / 1000) <= param)
 }, "The file must below or equal {0} KB");
 
-$.validator.addMethod("greater_than", function (value, element, param) {
-	return parseInt(value) > parseInt(param);
-}, "The value must be greater than {0}");
-
 const forms = $('form');
 forms.each(function (index, form) {
     $(form).validate();
+});
+
+$('.content-wrapper form').keypress(function(e) {
+    // Prevent enter key trigger submission
+    if (e.which == 13 && (e.target.tagName || '') !== 'TEXTAREA') {
+        //return false;
+    }
 });

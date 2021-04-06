@@ -11,7 +11,7 @@ class Migration_Create_table_prv_roles extends CI_Migration
     {
         $this->dbforge->add_field([
             'id' => ['type' => 'INT', 'unsigned' => TRUE, 'constraint' => 11, 'auto_increment' => TRUE],
-            'role' => ['type' => 'VARCHAR', 'constraint' => '50', 'unique' => true],
+            'role' => ['type' => 'VARCHAR', 'constraint' => '50'],
             'description' => ['type' => 'TEXT', 'null' => true],
             'is_deleted' => ['type' => 'INT', 'constraint' => 1, 'default' => 0],
             'created_at' => ['type' => 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP'],

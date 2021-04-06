@@ -7,6 +7,7 @@ function checkOnTouchSubmit(form) {
             message = 'Submitted...';
         }
         buttonSubmit.attr('disabled', true).html(message);
+        $(form).find('input, select, textarea').prop('readonly', true);
     }
 }
 

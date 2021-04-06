@@ -84,7 +84,7 @@ class User extends App_Controller
     {
         AuthorizationModel::mustAuthorized(PERMISSION_USER_CREATE);
 
-        if ($this->validate($this->_validation_rules())) {
+        if ($this->validate()) {
             $name = $this->input->post('name');
             $username = $this->input->post('username');
             $email = $this->input->post('email');
@@ -252,6 +252,7 @@ class User extends App_Controller
             $this->db->trans_complete();
 
             if ($this->db->trans_status()) {
+                $roles = $this->role->getByUser($id);
                 $emailTitle = "Your account has been updated at " . format_date('now', 'd F Y H:i');
                 $emailTemplate = 'emails/basic';
                 $passwordInfo = empty($password) ? 'Not changed' : $password;
@@ -260,7 +261,9 @@ class User extends App_Controller
                         <b>Username:</b> {$username}<br>
                         <b>Email:</b> {$email}<br>
                         <b>Password:</b> {$passwordInfo}<br>
-                        <b>Status:</b> {$status}<br><br>
+                        <b>Status:</b> {$status}<br>
+                        <b>App:</b> " . $this->config->item('app_name') . "<br>
+                        <b>Role:</b> " . implode(', ', array_column($roles, 'role')) . "<br><br>
                         <b>Ask your administrator for further information.</b>
                     ";
                 $emailData = [
@@ -329,6 +332,7 @@ class User extends App_Controller
             ],
             'password' => 'min_length[6]' . ($id > 0 ? '' : '|required'),
             'confirm_password' => 'matches[password]',
+            'user_type' => 'trim|required|in_list[INTERNAL,EXTERNAL]',
         ];
 
         if ($user['username'] != 'admin') {

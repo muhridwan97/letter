@@ -26,7 +26,7 @@ class Login extends App_Controller
     public function index()
     {
         if (_is_method('post')) {
-            if($this->validate($this->_validation_rules())) {
+            if($this->validate()) {
                 $username = $this->input->post('username');
                 $password = $this->input->post('password');
                 $remember = $this->input->post('remember');

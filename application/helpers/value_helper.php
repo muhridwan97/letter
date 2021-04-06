@@ -62,7 +62,7 @@ if (!function_exists('if_empty')) {
             return $value;
         }
 
-        return is_null($default) ? $value : $prefix . $value . $suffix;
+        return is_null($value) ? $value : $prefix . $value . $suffix;
     }
 }
 
@@ -222,211 +222,334 @@ if (!function_exists('print_debug')) {
     }
 }
 
-if (!function_exists('time_elapsed_string')) {
-	/**
-	 * Get humanize format.
-	 *
-	 * @param $datetime
-	 * @param false $full
-	 * @return string
-	 * @throws Exception
-	 */
-	function time_elapsed_string($datetime, $full = false)
-	{
-		$now = new DateTime;
-		$ago = new DateTime($datetime);
-		$diff = $now->diff($ago);
-
-		$diff->w = floor($diff->d / 7);
-		$diff->d -= $diff->w * 7;
-
-		$string = array(
-			'y' => 'year',
-			'm' => 'month',
-			'w' => 'week',
-			'd' => 'day',
-			'h' => 'hour',
-			'i' => 'minute',
-			's' => 'second',
-		);
-		foreach ($string as $k => &$v) {
-			if ($diff->$k) {
-				$v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
-			} else {
-				unset($string[$k]);
-			}
-		}
-
-		if (!$full) $string = array_slice($string, 0, 1);
-		return $string ? implode(', ', $string) . ' ago' : 'just now';
-	}
-}
-
 if (!function_exists('extract_number')) {
     /**
      * Extract number from value.
      * @param $value
+     * @param string $default
      * @return null|string|string[]
      */
-    function extract_number($value)
+    function extract_number($value, $default = '')
     {
         $value = preg_replace("/[^0-9-,\/]/", "", $value);
         $value = preg_replace("/,/", ".", $value);
-        return $value;
+        return $value == '' ? $default : $value;
     }
 }
 
-if (!function_exists('roman_number')) {
+if (!function_exists('month_list')) {
+
     /**
-     * Generate number to roman value.
-     * @param $integer
-     * @param bool $upcase
-     * @return string
+     * Get list of month names.
+     *
+     * @return array
      */
-    function roman_number($integer, $upcase = true)
+    function month_list()
     {
-        $table = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
-        $return = '';
-        while ($integer > 0) {
-            foreach ($table as $rom => $arb) {
-                if ($integer >= $arb) {
-                    $integer -= $arb;
-                    $return .= $rom;
-                    break;
-                }
-            }
-        }
-        return $upcase ? $return : strtolower($return);
+        $months = [
+            1 => 'January',
+            2 => 'February',
+            3 => 'March',
+            4 => 'April',
+            5 => 'May',
+            6 => 'June',
+            7 => 'July ',
+            8 => 'August',
+            9 => 'September',
+            10 => 'October',
+            11 => 'November',
+            12 => 'December',
+        ];
+
+        return $months;
     }
 }
 
-if (!function_exists('get_week_date_range')) {
-	/**
-	 * Standard ISO-8601 week 1 start from sunday,
-	 * if first week contain 4 days then week 1 start from there, instead start from next week.
-	 *
-	 * @param $week
-	 * @param $year
-	 * @return mixed
-	 */
-	function get_week_date_range($week, $year) {
-		$dto = new DateTime();
-		$ret['week_start'] = $dto->setISODate($year, $week, 0)->format('Y-m-d');
-		$ret['week_end'] = $dto->modify('+6 days')->format('Y-m-d');
-		return $ret;
-	}
+if (!function_exists('date_sub_period')) {
+    /**
+     * Helper get sub date by two dates.
+     * @param $date
+     * @param $period
+     * @param string $format
+     * @return string
+     * @throws Exception
+     */
+    function date_sub_period($date, $period, $format = 'd F Y')
+    {
+        $dateObj = date_create($date);
+        $dateObj->sub(new DateInterval($period));
+        $formattedDate = $dateObj->format($format);
+
+        return $formattedDate;
+    }
 }
 
-if (!function_exists('get_week_date_range_sql_mode_2')) {
-	/**
-	 * Week 1 always continue the rest of last week from last year.
-	 *
-	 * @param $week
-	 * @param $year
-	 * @return mixed
-	 */
-	function get_week_date_range_sql_mode_2($week, $year) {
-		$firstDateYear = \Carbon\Carbon::createFromDate($year, 1, 1);
-		$adjuster = 0;
-		if ($firstDateYear->weekday() <= 3) {
-			$adjuster = 1;
-		}
+if (!function_exists('date_add_period')) {
+    /**
+     * Helper add date by two dates.
+     * @param $date
+     * @param $period
+     * @param string $format
+     * @return string
+     * @throws Exception
+     */
+    function date_add_period($date, $period, $format = 'd F Y')
+    {
+        $dateObj = date_create($date);
+        $dateObj->add(new DateInterval($period));
+        $formattedDate = $dateObj->format($format);
 
-		$dto = new DateTime();
-		$ret['week_start'] = $dto->setISODate($year, $week + $adjuster, 0)->format('Y-m-d');
-		$ret['week_end'] = $dto->modify('+6 days')->format('Y-m-d');
-		return $ret;
-	}
+        return $formattedDate;
+    }
 }
 
-if (!function_exists('get_week_date_range_sql_mode_0')) {
-	/**
-	 * Get week range with sql compatible mode 0
-	 *
-	 * @param $week
-	 * @param $year
-	 * @return array|string
-	 */
-	function get_week_date_range_sql_mode_0($week, $year)
+if (!function_exists('power_set')) {
+	function power_set($str_array)
 	{
-		$weeks = [];
-		$date = \Carbon\Carbon::now();
-
-		$adjuster = 0;
-		$firstDateYear = \Carbon\Carbon::createFromDate($year, 1, 1);
-		if ($firstDateYear->weekday() >= 5) {
-			$adjuster = 1;
-		}
-
-		for ($i = 1; $i <= 53; $i++) {
-			$date->setISODate($year, $i - $adjuster);
-			if ($i == 1) {
-				$weekStart = $year . '-01-01';
-			} else {
-				$weekStart = $date->startOfWeek(0)->toDateString();
+		$set_size = count($str_array);
+		$pow_set_size = pow(2, $set_size);
+		$return = array();
+		for ($counter = 0; $counter < $pow_set_size; $counter++) {
+			$tmp_str = [];
+			for ($j = 0; $j < $set_size; $j++) {
+				if ($counter & (1 << $j)) {
+					$tmp_str[] = $str_array[$j];
+				}
 			}
-			if ($i <= 52) {
-				$weekEnd = $date->endOfWeek(6)->toDateString();
-			} else {
-				$weekEnd = $year . '-12-31';
+			if (!empty($tmp_str)) {
+				$return[] = $tmp_str;
 			}
-			$weeks[$i] = [
-				'week_start' => $weekStart,
-				'week_end' => $weekEnd,
-			];
 		}
-
-		if (!is_null($week)) {
-			return get_if_exist($weeks, $week);
-		}
-
-		return $weeks;
+		return $return;
 	}
 }
 
-if (!function_exists('get_months')) {
-	function get_months($index = null)
-	{
-		$months = array(
-			'January',
-			'February',
-			'March',
-			'April',
-			'May',
-			'June',
-			'July ',
-			'August',
-			'September',
-			'October',
-			'November',
-			'December',
-		);
-		if (!empty($index)) {
-			return $months[$index];
-		}
-		return $months;
-	}
-}
+if (!function_exists('get_file_icon')) {
 
-if (!function_exists('detect_chat_id')) {
 	/**
-	 * Normalize chat id.
+	 * Get file extension icon.
 	 *
-	 * @param $chatId
+	 * @param $fileName
+	 * @param null $fileMimeType
+	 * @param string $type
 	 * @return string
 	 */
-	function detect_chat_id($chatId)
+	function get_file_icon($fileName, $fileMimeType = null, $type = 'icon')
 	{
-		$chatId = str_replace([' ', '+'], '', $chatId);
-		if (strpos($chatId, '-') !== false) {
-			if (!(strpos($chatId, '@g.us') !== false)) {
-				$chatId .= '@g.us';
+		$ext = pathinfo($fileName, PATHINFO_EXTENSION);
+
+		if (empty($ext) && !empty($fileMimeType)) {
+			$mimes = get_mimes();
+			foreach ($mimes as $mimeExt => $mime) {
+				if (is_array($mime)) {
+					if (in_array($fileMimeType, $mime)) {
+						$ext = $mimeExt;
+						break;
+					}
+				} else {
+					if ($mime == $fileMimeType) {
+						$ext = $mime;
+						break;
+					}
+				}
 			}
-		} else if (!(strpos($chatId, '@c.us') !== false)) {
-            $chatId = preg_replace('/^08/', '628', $chatId);
-			$chatId .= '@c.us';
 		}
 
-		return $chatId;
+		switch ($ext) {
+			case 'pdf':
+				$icon = 'mdi mdi-file-pdf-outline';
+				$color = '#FF3500';
+				break;
+			case 'doc':
+			case 'docx':
+			case 'word':
+			case 'odt':
+				$icon = 'mdi mdi-file-word-outline';
+				$color = '#01A6F0';
+				break;
+			case 'ppt':
+			case 'pptx':
+			case 'otp':
+			case 'odp':
+				$icon = 'mdi mdi-file-powerpoint-outline';
+				$color = '#F34F1C';
+				break;
+			case 'xl':
+			case 'xls':
+			case 'xlsx':
+			case 'ods':
+			case 'ots':
+				$icon = 'mdi mdi-file-excel-outline';
+				$color = '#679900';
+				break;
+			case 'bmp':
+			case 'gif':
+			case 'jpg':
+			case 'jpeg':
+			case 'jpe':
+			case 'png':
+			case 'tiff':
+			case 'tif':
+			case 'ico':
+				$icon = 'mdi mdi-file-image-outline';
+				$color = '#BE2210';
+				break;
+			case 'text':
+			case 'txt':
+			case 'log':
+				$icon = 'mdi mdi-file-document-outline';
+				$color = '#AF998E';
+				break;
+			case 'mp3':
+			case 'mp2':
+			case 'mid':
+			case 'midi':
+			case 'wav':
+			case 'flac':
+			case 'ogg':
+			case 'm4a':
+				$icon = 'mdi mdi-file-music-outline';
+				$color = '#165BBE';
+				break;
+			case 'mp4':
+			case '3gp':
+			case 'flv':
+			case 'webm':
+			case 'mkv':
+			case 'wmv':
+			case 'ogv':
+				$icon = 'mdi mdi-file-video-outline';
+				$color = '#165BBE';
+				break;
+			case 'rar':
+			case 'zip':
+			case '7z':
+			case 'gtar':
+			case 'gz':
+			case 'gzip':
+				$icon = 'mdi mdi-zip-box-outline';
+				$color = '#531ABE';
+				break;
+			case 'scss':
+			case 'sass':
+			case 'java':
+			case 'class':
+			case 'html':
+			case 'css':
+			case 'js':
+			case 'php':
+			case 'exe':
+			case 'bin':
+				$icon = 'mdi mdi-file-code-outline';
+				$color = '#1F0946';
+				break;
+			default:
+				$icon = 'mdi mdi mdi-file-outline';
+				$color = '#282828';
+				break;
+		}
+
+		return $type == 'icon' ? $icon : $color;
+	}
+}
+
+if (!function_exists('get_file_type')) {
+
+	/**
+	 * Get file type.
+	 *
+	 * @param $fileName
+	 * @param null $fileMimeType
+	 * @return string
+	 */
+	function get_file_type($fileName, $fileMimeType = null)
+	{
+		$ext = pathinfo($fileName, PATHINFO_EXTENSION);
+
+		if (empty($ext) && !empty($fileMimeType)) {
+			$mimes = get_mimes();
+			foreach ($mimes as $mimeExt => $mime) {
+				if (is_array($mime)) {
+					if (in_array($fileMimeType, $mime)) {
+						$ext = $mimeExt;
+						break;
+					}
+				} else {
+					if ($mime == $fileMimeType) {
+						$ext = $mime;
+						break;
+					}
+				}
+			}
+		}
+
+		switch ($ext) {
+			case 'pdf':
+				$type = 'pdf';
+				break;
+			case 'doc':
+			case 'docx':
+			case 'word':
+			case 'odt':
+				$type = 'document';
+				break;
+			case 'ppt':
+			case 'pptx':
+			case 'otp':
+			case 'odp':
+				$type = 'presentation';
+				break;
+			case 'xl':
+			case 'xls':
+			case 'xlsx':
+			case 'ods':
+			case 'ots':
+				$type = 'excel';
+				break;
+			case 'bmp':
+			case 'gif':
+			case 'jpg':
+			case 'jpeg':
+			case 'jpe':
+			case 'png':
+			case 'tiff':
+			case 'tif':
+			case 'ico':
+				$type = 'image';
+				break;
+			case 'text':
+			case 'txt':
+			case 'log':
+			case 'scss':
+			case 'sass':
+			case 'java':
+			case 'html':
+			case 'css':
+			case 'js':
+			case 'php':
+				$type = 'text';
+				break;
+			case 'rar':
+			case 'zip':
+			case '7z':
+			case 'gtar':
+			case 'gz':
+			case 'gzip':
+			case 'bin':
+			case 'exe':
+			case 'apk':
+				$type = 'archive';
+				break;
+			case 'mp4':
+			case 'webm':
+			case 'ogv':
+				$type = 'video';
+				break;
+			default:
+				$type = '';
+				break;
+		}
+
+		return $type;
 	}
 }

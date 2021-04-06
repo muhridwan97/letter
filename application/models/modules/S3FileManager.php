@@ -16,7 +16,7 @@ class S3FileManager
      */
     public function __construct(S3Client $client = null)
     {
-        if (is_null($client) && !empty(env('S3_ENDPOINT'))) {
+		if (is_null($client) && !empty(env('S3_ENDPOINT'))) {
             $this->s3 = new S3Client([
                 'version' => 'latest',
                 'region' => env('S3_DEFAULT_REGION'),

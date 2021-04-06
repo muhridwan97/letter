@@ -2,8 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Class Migration_Seed_master_base
+ * Class Migration_Seed_admin_user
  * @property CI_DB_query_builder $db
+ * @property CI_DB_forge $dbforge
  */
 class Migration_Seed_admin_user extends CI_Migration
 {
@@ -14,9 +15,10 @@ class Migration_Seed_admin_user extends CI_Migration
         $this->db->insert('prv_users', [
             'name' => 'Administrator',
             'username' => 'admin',
-            'email' => 'admin@purchasing.app',
+            'email' => 'admin@warehouse.app',
             'password' => password_hash('admin', PASSWORD_BCRYPT),
-            'status' => 'ACTIVATED'
+            'user_type' => 'INTERNAL',
+            'status' => 'ACTIVATED',
         ]);
         $userId = $this->db->insert_id();
 

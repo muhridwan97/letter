@@ -12,25 +12,26 @@
                     <div class="form-group">
                         <label for="search">Search</label>
                         <input type="text" class="form-control" name="search" id="search"
-                               value="<?= get_url_param('search') ?>" placeholder="Search a data">
-                        <?= form_error('search'); ?>
+                               value="<?= get_url_param('search') ?>" placeholder="Search data">
                     </div>
                     <div class="form-row">
                         <div class="col-8 col-sm-6">
                             <div class="form-group">
                                 <label for="sort_by">Sort By</label>
                                 <select class="custom-select" name="sort_by" id="sort_by" required>
-                                    <option value="created_at"<?= set_select('sort_by', 'created_at', get_url_param('sort_by') == 'created_at') ?>>
-                                        CREATED AT
-                                    </option>
-                                    <option value="category"<?= set_select('sort_by', 'category', get_url_param('sort_by') == 'category') ?>>
-                                        DEPARTMENT
-                                    </option>
-                                    <option value="description"<?= set_select('sort_by', 'description', get_url_param('sort_by') == 'description') ?>>
-                                        DESCRIPTION
-                                    </option>
+									<?php
+									$filterSort = [
+										'created_at' => 'Created At',
+										'department' => 'Department',
+										'description' => 'Description',
+									];
+									?>
+									<?php foreach ($filterSort as $key => $value): ?>
+										<option value="<?= $key ?>"<?= set_select('sort_by', $key, get_url_param('sort_by') == $key) ?>>
+											<?= $value ?>
+										</option>
+									<?php endforeach; ?>
                                 </select>
-                                <?= form_error('sort_by'); ?>
                             </div>
                         </div>
                         <div class="col-4 col-sm-6">
@@ -39,14 +40,13 @@
                                 <select class="custom-select" name="order_method" id="order_method" required>
                                     <option value="desc"
                                         <?= set_select('order_method', 'desc', get_url_param('order_method') == 'desc') ?>>
-                                        DESCENDING
+                                        Descending
                                     </option>
                                     <option value="asc"
                                         <?= set_select('order_method', 'asc', get_url_param('order_method') == 'asc') ?>>
-                                        ASCENDING
+                                        Ascending
                                     </option>
                                 </select>
-                                <?= form_error('order_method'); ?>
                             </div>
                         </div>
                     </div>
@@ -56,7 +56,6 @@
                                 <label for="date_from">Date From</label>
                                 <input type="text" class="form-control datepicker" name="date_from" id="date_from"
                                        value="<?= get_url_param('date_from') ?>" placeholder="Pick create date from">
-                                <?= form_error('date_from'); ?>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -64,16 +63,15 @@
                                 <label for="date_to">Date To</label>
                                 <input type="text" class="form-control datepicker" name="date_to" id="date_to"
                                        value="<?= get_url_param('date_to') ?>" placeholder="Pick create date to">
-                                <?= form_error('date_to'); ?>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a href="<?= site_url('master/department') ?>" class="btn btn-sm btn-secondary">
+                    <a href="<?= site_url(uri_string()) ?>" class="btn btn-sm btn-light">
                         RESET
                     </a>
-                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">
+                    <button type="button" class="btn btn-sm btn-light" data-dismiss="modal">
                         CLOSE
                     </button>
                     <button type="submit" class="btn btn-sm btn-primary">

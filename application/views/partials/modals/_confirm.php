@@ -2,7 +2,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalConfirm"></h5>
+                <h6 class="modal-title" id="modalConfirm"></h6>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -11,10 +11,10 @@
                 <p class="lead modal-message mb-0"></p>
             </div>
             <div class="modal-footer d-flex justify-content-between">
-                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" id="btn-cancel">CANCEL</button>
+                <button type="button" class="btn btn-sm btn-light" data-dismiss="modal" id="btn-cancel">CANCEL</button>
                 <div>
-                    <button type="button" class="btn btn-secondary" id="btn-no">NO</button>
-                    <button type="button" class="btn btn-success" id="btn-yes" data-toggle="one-touch">YES</button>
+                    <button type="button" class="btn btn-sm btn-light px-4" id="btn-no">NO</button>
+                    <button type="button" class="btn btn-sm btn-success px-4" id="btn-yes">YES</button>
                 </div>
             </div>
         </div>

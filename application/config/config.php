@@ -25,7 +25,13 @@ date_default_timezone_set('Asia/Jakarta');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = env('APP_URL');
+if (isset($_SERVER['HTTP_HOST']) && $_SERVER["SCRIPT_NAME"]) {
+    $root = (isset($_SERVER["HTTPS"]) ? "https://" : "http://") . $_SERVER['HTTP_HOST'];
+    $root = $root . str_replace(basename($_SERVER["SCRIPT_NAME"]), "", $_SERVER["SCRIPT_NAME"]);
+} else {
+    $root = env('APP_URL');
+}
+$config['base_url'] = $root;
 
 /*
 |--------------------------------------------------------------------------
@@ -490,7 +496,7 @@ $config['compress_output'] = FALSE;
 | helper' page of the user guide for information regarding date handling.
 |
 */
-$config['time_reference'] = 'Asia/Jakarta';
+$config['time_reference'] = 'local';
 
 /*
 |--------------------------------------------------------------------------

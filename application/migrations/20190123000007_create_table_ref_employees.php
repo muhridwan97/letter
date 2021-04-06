@@ -14,7 +14,6 @@ class Migration_Create_table_ref_employees extends CI_Migration
             'id_department' => ['type' => 'INT', 'unsigned' => TRUE, 'constraint' => 11, 'null' => TRUE],
             'id_employee' => ['type' => 'INT', 'unsigned' => TRUE, 'constraint' => 11, 'null' => TRUE],
             'id_user' => ['type' => 'INT', 'unsigned' => TRUE, 'constraint' => 11, 'null' => TRUE],
-            'id_applicant' => ['type' => 'INT', 'unsigned' => TRUE, 'constraint' => 11, 'null' => TRUE],
             'no_employee' => ['type' => 'VARCHAR', 'constraint' => '50', 'unique' => TRUE],
             'name' => ['type' => 'VARCHAR', 'constraint' => '50'],
             'enter_date' => ['type' => 'DATE', 'null' => TRUE],
@@ -44,7 +43,9 @@ class Migration_Create_table_ref_employees extends CI_Migration
             'updated_by' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE, 'null' => TRUE],
             'deleted_at' => ['type' => 'TIMESTAMP', 'null' => true],
             'deleted_by' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE, 'null' => TRUE]
-        ]);
+        ])
+			->add_field('CONSTRAINT fk_employee_department FOREIGN KEY (id_department) REFERENCES ref_departments(id) ON DELETE CASCADE ON UPDATE CASCADE')
+			->add_field('CONSTRAINT fk_employee_user FOREIGN KEY (id_user) REFERENCES prv_users(id) ON DELETE CASCADE ON UPDATE CASCADE');
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->create_table('ref_employees');
         echo 'Migrate Migration_Create_table_ref_employees' . PHP_EOL;

@@ -53,15 +53,21 @@ $route['default_controller'] = 'dashboard';
 $route['404_override'] = 'error404';
 $route['translate_uri_dashes'] = TRUE;
 
-
-$route['master/vendor-active'] = 'master/vendor/active';
-$route['master/vendor-inactive'] = 'master/vendor/inactive';
-
 $route['migrate'] = 'console/migrate';
 $route['migrate/(.+)'] = 'console/migrate/$1';
 
 $route['automate'] = 'console/automate';
 $route['automate/(.+)'] = 'console/automate/$1';
 
-$route['requisition'] = 'purchasing/requisition';
-$route['requisition/(.+)'] = 'purchasing/requisition/$1';
+$route['training/class'] = 'training/training';
+$route['training/class/(.+)'] = 'training/training/$1';
+
+$route['training/classroom/(.+)/exercise/(.+)'] = 'training/classroom/exercise/$1/$2';
+$route['training/classroom/(.+)/exercise-result/(.+)'] = 'training/classroom/exercise_result/$1/$2';
+$route['training/classroom/(.+)/course/(.+)'] = 'training/classroom/course/$1/$2';
+$route['training/classroom/(.+)'] = 'training/classroom/course/$1';
+
+$route['privacy'] = 'legal/privacy';
+$route['agreement'] = 'legal/agreement';
+$route['cookie'] = 'legal/cookie';
+$route['sla'] = 'legal/sla';

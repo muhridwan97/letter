@@ -22,8 +22,8 @@ class Mailer extends CI_Model
     {
         $this->email->from($this->config->item('from_address'), $this->config->item('from_name'));
         $this->email->to($to);
-        $this->email->reply_to($this->config->item('admin_email'));
-        $this->email->subject($this->config->item('app_name') . ' - ' . $title);
+        $this->email->reply_to(get_if_exist($options, 'reply_to', get_setting('email_support', $this->config->item('admin_email'))));
+        $this->email->subject(get_setting('app_name', $this->config->item('app_name')) . ' - ' . $title);
         $this->email->message($this->load->view($template, $data, true));
 
         if (!empty($options)) {
@@ -35,13 +35,15 @@ class Mailer extends CI_Model
                 $this->email->bcc($options['bcc']);
             }
 
-            if (key_exists('reply_to', $options) && !empty($options['reply_to'])) {
-                $this->email->reply_to($options['reply_to']);
-            }
-
             if (key_exists('attachment', $options) && !empty($options['attachment'])) {
                 if (!is_array($options['attachment'])) {
-                    $options['attachment'] = ['source' => $options['attachment']];
+                    $options['attachment'] = [
+                        ['source' => $options['attachment']]
+                    ];
+                } else {
+                    if (!key_exists(0, $options['attachment'])) {
+                        $options['attachment'] = [$options['attachment']];
+                    }
                 }
                 foreach ($options['attachment'] as $attachment) {
                     $source = get_if_exist($attachment, 'source', $attachment);

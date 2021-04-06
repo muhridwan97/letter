@@ -1,9 +1,9 @@
 <form action="<?= site_url('setting') ?>" method="POST" id="form-setting">
     <?= _csrf() ?>
     <?= _method('put') ?>
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body">
-            <h4 class="card-title">Setting Basic</h4>
+            <h5 class="card-title">Setting Basic</h5>
 
             <div class="row">
                 <div class="col-md-6">
@@ -47,16 +47,16 @@
             </div>
             <div class="form-group">
                 <label for="meta_description">Description</label>
-                <textarea class="form-control" id="meta_description" name="meta_description"
+                <textarea class="form-control" id="meta_description" name="meta_description" rows="3"
                           placeholder="Application description" maxlength="300"><?= set_value('meta_description', get_if_exist($setting, 'meta_description')) ?></textarea>
                 <?= form_error('meta_description') ?>
             </div>
         </div>
     </div>
 
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body">
-            <h4 class="card-title">Emails</h4>
+            <h5 class="card-title">Emails</h5>
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
@@ -70,8 +70,8 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="email_support">Support</label>
-                        <input type="email" class="form-control" id="email_support" name="email_support"
-                               placeholder="Enter email bug reports" maxlength="50"
+                        <input type="text" multiple class="form-control" id="email_support" name="email_support"
+                               placeholder="Enter email finance supports" maxlength="100"
                                value="<?= set_value('email_support', get_if_exist($setting, 'email_support', 'support@purchasing.app')) ?>">
                         <?= form_error('email_support') ?>
                     </div>
@@ -80,29 +80,9 @@
         </div>
     </div>
 
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body">
-            <h4 class="card-title">Purchasing</h4>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label for="purchasing_admin">Purchasing Admin</label>
-                        <input type="text" class="form-control" id="purchasing_admin" name="purchasing_admin"
-                               placeholder="Enter purchasing admin name" maxlength="50"
-                               value="<?= set_value('purchasing_admin', get_if_exist($setting, 'purchasing_admin')) ?>">
-                        <?= form_error('purchasing_admin') ?>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label for="purchasing_supervisor">Purchasing SPV</label>
-                        <input type="text" class="form-control" id="purchasing_supervisor" name="purchasing_supervisor"
-                               placeholder="Enter purchasing SPV name" maxlength="100"
-                               value="<?= set_value('purchasing_supervisor', get_if_exist($setting, 'purchasing_supervisor')) ?>">
-                        <?= form_error('purchasing_supervisor') ?>
-                    </div>
-                </div>
-            </div>
+            <h5 class="card-title">Contact & Info</h5>
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
@@ -129,39 +109,10 @@
                           placeholder="Application description" maxlength="300"><?= set_value('company_address', get_if_exist($setting, 'company_address')) ?></textarea>
                 <?= form_error('company_address') ?>
             </div>
-			<div class="form-group">
-				<label for="top_manager">Top Manager</label>
-				<select class="form-control select2" name="top_manager" id="top_manager" data-placeholder="Select user manager" style="width: 100%" required>
-					<option value="">-- Select Manager --</option>
-					<?php foreach ($quotationManageUsers as $user): ?>
-						<option value="<?= $user['id'] ?>"<?= set_select('top_manager', $user['id'], get_if_exist($setting, 'top_manager') == $user['id']) ?>>
-							<?= $user['name'] ?> - <?= $user['email'] ?>
-						</option>
-					<?php endforeach; ?>
-				</select>
-				<?= form_error('top_manager') ?>
-			</div>
         </div>
     </div>
 
-    <div class="card grid-margin">
-        <div class="card-body">
-            <h4 class="card-title">WA Group</h4>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label for="wa_purchasing">WA Purchasing</label>
-                        <input type="text" class="form-control" id="wa_purchasing" name="wa_purchasing"
-                               placeholder="Enter wa number" maxlength="50"
-                               value="<?= set_value('wa_purchasing', get_if_exist($setting, 'wa_purchasing')) ?>">
-                        <?= form_error('wa_purchasing') ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body d-flex justify-content-between">
             <button onclick="history.back()" type="button" class="btn btn-light">Back</button>
             <button type="submit" class="btn btn-success" data-toggle="one-touch" data-touch-message="Updating...">

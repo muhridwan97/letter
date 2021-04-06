@@ -1,13 +1,13 @@
 <div class="form-plaintext">
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body">
-            <h4 class="card-title">View Employee</h4>
+            <h5 class="card-title">View Employee</h5>
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="name">Name</label>
+                        <label class="col-sm-4 col-form-label">Name</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="name">
+                            <p class="form-control-plaintext">
                                 <?= if_empty($employee['name'], 'No name') ?>
                             </p>
                         </div>
@@ -15,9 +15,9 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="no_employee">Employee ID</label>
+                        <label class="col-sm-4 col-form-label">Employee ID</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="no_employee">
+                            <p class="form-control-plaintext">
                                 <?= if_empty($employee['no_employee'], '-') ?>
                             </p>
                         </div>
@@ -27,9 +27,9 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="supervisor">Supervisor</label>
+                        <label class="col-sm-4 col-form-label">Supervisor</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="supervisor">
+                            <p class="form-control-plaintext">
                                 <?= if_empty($employee['supervisor_name'], 'No supervisor') ?>
                             </p>
                         </div>
@@ -37,9 +37,9 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="photo">Photo</label>
+                        <label class="col-sm-4 col-form-label">Photo</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="photo">
+                            <p class="form-control-plaintext">
                                 <a href="<?= base_url(if_empty($employee['photo'], 'assets/dist/img/no-image.png', 'uploads/')) ?>">
                                     Download
                                 </a>
@@ -51,9 +51,9 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="position">Position</label>
+                        <label class="col-sm-4 col-form-label">Position</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="position">
+                            <p class="form-control-plaintext">
                                 <?= if_empty($employee['position'], 'position') ?>
                             </p>
                         </div>
@@ -61,9 +61,9 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="position_level">Position Level</label>
+                        <label class="col-sm-4 col-form-label">Position Level</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="position_level">
+                            <p class="form-control-plaintext">
                                 <?= if_empty($employee['position_level'], 'No position level') ?>
                             </p>
                         </div>
@@ -73,9 +73,9 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="enter_date">Enter Date</label>
+                        <label class="col-sm-4 col-form-label">Hire Date</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="enter_date">
+                            <p class="form-control-plaintext">
                                 <?= if_empty(format_date($employee['enter_date'], 'd F Y'), '-') ?>
                             </p>
                         </div>
@@ -83,9 +83,9 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="quit_date">Quit Enter</label>
+                        <label class="col-sm-4 col-form-label">Quit Enter</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="quit_date">
+                            <p class="form-control-plaintext">
                                 <?= if_empty(format_date($employee['quit_date'], 'd F Y'), '-') ?>
                             </p>
                         </div>
@@ -95,9 +95,9 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="department">Department</label>
+                        <label class="col-sm-4 col-form-label">Department</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="department">
+                            <p class="form-control-plaintext">
                                 <?= if_empty($employee['department'], 'No department') ?>
                             </p>
                         </div>
@@ -105,9 +105,9 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="gender">Gender</label>
+                        <label class="col-sm-4 col-form-label">Gender</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="gender">
+                            <p class="form-control-plaintext">
                                 <?= ucfirst($employee['gender']) ?>
                             </p>
                         </div>
@@ -117,9 +117,9 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="company">Company</label>
+                        <label class="col-sm-4 col-form-label">Company</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="company">
+                            <p class="form-control-plaintext">
                                 <?= if_empty($employee['company'], 'No company') ?>
                             </p>
                         </div>
@@ -127,9 +127,9 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="work_location">Work Location</label>
+                        <label class="col-sm-4 col-form-label">Work Location</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="work_location">
+                            <p class="form-control-plaintext">
                                 <?= if_empty($employee['work_location'], 'No work location') ?>
                             </p>
                         </div>
@@ -139,9 +139,9 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="tax_no">Tax No</label>
+                        <label class="col-sm-4 col-form-label">Tax No</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="tax_no">
+                            <p class="form-control-plaintext">
                                 <?= if_empty($employee['tax_no'], 'No tax') ?>
                             </p>
                         </div>
@@ -149,9 +149,9 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="tax_address">Tax Address</label>
+                        <label class="col-sm-4 col-form-label">Tax Address</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="tax_address">
+                            <p class="form-control-plaintext">
                                 <?= if_empty($employee['tax_address'], 'No address') ?>
                             </p>
                         </div>
@@ -161,9 +161,9 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="id_card_no">ID Card No</label>
+                        <label class="col-sm-4 col-form-label">ID Card No</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="id_card_no">
+                            <p class="form-control-plaintext">
                                 <?= if_empty($employee['id_card_no'], 'No ID card') ?>
                             </p>
                         </div>
@@ -171,9 +171,9 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="id_card_address">ID Card Address</label>
+                        <label class="col-sm-4 col-form-label">ID Card Address</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="id_card_address">
+                            <p class="form-control-plaintext">
                                 <?= if_empty($employee['id_card_address'], 'No address') ?>
                             </p>
                         </div>
@@ -183,9 +183,9 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="place_of_birth">Place of Birth</label>
+                        <label class="col-sm-4 col-form-label">Place of Birth</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="place_of_birth">
+                            <p class="form-control-plaintext">
                                 <?= if_empty($employee['place_of_birth'], 'No place of birth') ?>
                             </p>
                         </div>
@@ -193,9 +193,9 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="date_of_birth">Date of Birth</label>
+                        <label class="col-sm-4 col-form-label">Date of Birth</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="date_of_birth">
+                            <p class="form-control-plaintext">
                                 <?= if_empty(format_date($employee['date_of_birth'], 'd F Y'), 'No birthday') ?>
                             </p>
                         </div>
@@ -205,9 +205,9 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="contact_phone">Contact Phone</label>
+                        <label class="col-sm-4 col-form-label">Contact Phone</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="contact_phone">
+                            <p class="form-control-plaintext">
                                 <?= if_empty($employee['contact_phone'], 'No contact phone') ?>
                             </p>
                         </div>
@@ -215,9 +215,9 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="contact_mobile">Contact Mobile</label>
+                        <label class="col-sm-4 col-form-label">Contact Mobile</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="contact_mobile">
+                            <p class="form-control-plaintext">
                                 <?= if_empty($employee['contact_mobile'], 'No contact mobile') ?>
                             </p>
                         </div>
@@ -227,9 +227,9 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="related_account">Related Account</label>
+                        <label class="col-sm-4 col-form-label">Related Account</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="related_account">
+                            <p class="form-control-plaintext">
                                 <?php if(empty($employee['username'])): ?>
                                     No account
                                 <?php else: ?>
@@ -243,9 +243,9 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="related_email">Related Email</label>
+                        <label class="col-sm-4 col-form-label">Related Email</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="related_email">
+                            <p class="form-control-plaintext">
                                 <?= if_empty($employee['email'], 'No email') ?>
                             </p>
                         </div>
@@ -255,9 +255,9 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="created_at">Created At</label>
+                        <label class="col-sm-4 col-form-label">Created At</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="created_at">
+                            <p class="form-control-plaintext">
                                 <?= format_date($employee['created_at'], 'd F Y H:i') ?>
                             </p>
                         </div>
@@ -265,9 +265,9 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="updated_at">Updated At</label>
+                        <label class="col-sm-4 col-form-label">Updated At</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="updated_at">
+                            <p class="form-control-plaintext">
                                 <?= if_empty(format_date($employee['updated_at'], 'd F Y H:i'), '-') ?>
                             </p>
                         </div>
@@ -277,9 +277,9 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="description">Description</label>
+                        <label class="col-sm-4 col-form-label">Description</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="description">
+                            <p class="form-control-plaintext">
                                 <?= if_empty($employee['description'], '-') ?>
                             </p>
                         </div>
@@ -287,9 +287,9 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" for="status">Status</label>
+                        <label class="col-sm-4 col-form-label">Status</label>
                         <div class="col-sm-8">
-                            <p class="form-control-plaintext" id="status">
+                            <p class="form-control-plaintext">
                                 <?php
                                 $statuses = [
                                     EmployeeModel::STATUS_ACTIVE => 'success',
@@ -307,10 +307,10 @@
         </div>
     </div>
 
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body">
-            <h4 class="card-title">Subordinates</h4>
-            <table class="table responsive">
+            <h5 class="card-title">Subordinates</h5>
+            <table class="table table-md responsive">
                 <thead>
                 <tr>
                     <th>No</th>
@@ -323,10 +323,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php $no = 1; ?>
-                <?php foreach ($subordinates as $subordinate): ?>
+                <?php foreach ($subordinates as $index => $subordinate): ?>
                     <tr>
-                        <td><?php echo $no++; ?></td>
+                        <td><?php echo $index + 1; ?></td>
                         <td>
                             <a href="<?= site_url('master/employee/view/'. $subordinate['id']) ?>">
                                 <?= $subordinate['name'] ?>

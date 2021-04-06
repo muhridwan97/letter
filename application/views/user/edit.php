@@ -1,9 +1,9 @@
 <form action="<?= site_url('master/user/update/' . $user['id']) ?>" method="POST" id="form-user" enctype="multipart/form-data">
     <?= _csrf() ?>
     <?= _method('put') ?>
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body">
-            <h4 class="card-title">Edit User</h4>
+            <h5 class="card-title">Edit User</h5>
             <div class="row">
                 <div class="col-md-7">
                     <div class="form-group">
@@ -88,20 +88,21 @@
     </div>
 
     <?php if($user['username'] != 'admin'): ?>
-        <div class="card grid-margin">
+        <div class="card mb-3">
             <div class="card-body">
-                <h4 class="card-title">Role</h4>
+                <h5 class="card-title">Role</h5>
                 <p class="text-muted">User at least must has one role</p>
                 <div class="form-group">
                     <div class="row">
                         <?php foreach ($roles as $role): ?>
                             <?php $isChecked = in_array($role['id'], array_column($userRoles, 'id_role')); ?>
                             <div class="col-sm-3">
-                                <div class="form-check form-check-flat mt-2">
-                                    <label class="form-check-label">
-                                        <input type="checkbox" class="form-check-input"
-                                               id="role_<?= $role['id'] ?>" name="roles[]" value="<?= $role['id'] ?>"
-                                            <?= set_checkbox('roles[]', $role['id'], $isChecked); ?>>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input"
+                                           id="role_<?= $role['id'] ?>"
+                                           name="roles[]" value="<?= $role['id'] ?>"
+                                        <?= set_checkbox('roles[]', $role['id'], $isChecked); ?>>
+                                    <label class="custom-control-label" for="role_<?= $role['id'] ?>">
                                         <?= $role['role'] ?>
                                     </label>
                                 </div>
@@ -114,9 +115,9 @@
         </div>
     <?php endif; ?>
 
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body">
-            <h4 class="card-title">Credential</h4>
+            <h5 class="card-title">Credential</h5>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -140,9 +141,9 @@
     </div>
 
     <?php if($this->config->item('sso_enable')): ?>
-        <div class="card grid-margin">
+        <div class="card mb-3">
             <div class="card-body">
-                <h4 class="card-title text-danger">Attention</h4>
+                <h5 class="card-title text-danger">Attention</h5>
                 <p>
                     <i class="mdi mdi-information-outline"></i>
                     If Single Sign On is enabled, the user will registered into central User Database!
@@ -151,7 +152,7 @@
         </div>
     <?php endif; ?>
 
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body d-flex justify-content-between">
             <button type="button" onclick="history.back()" class="btn btn-light">Back</button>
             <button type="submit" class="btn btn-primary" data-toggle="one-touch" data-touch-message="Updating...">Update User</button>

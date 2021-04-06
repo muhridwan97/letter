@@ -1,7 +1,7 @@
-<div class="card">
+<div class="card mb-3">
     <div class="card-body">
         <div class="d-sm-flex align-items-center justify-content-between">
-            <h4 class="card-title mb-sm-0">Data Log</h4>
+            <h5 class="card-title mb-sm-0">Data Log</h5>
             <div>
                 <a href="#modal-filter" data-toggle="modal" class="btn btn-info btn-sm pr-2 pl-2">
                     <i class="mdi mdi-filter-variant mr-0"></i>

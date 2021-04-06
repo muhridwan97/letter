@@ -13,10 +13,9 @@
     <link rel="icon" href="<?= base_url('assets/dist/img/layouts/icon.png') ?>" type="image/x-icon">
 </head>
 <body>
-<div class="container-scroller">
-
-    <div class="container-fluid page-body-wrapper full-page-wrapper">
-        <div class="content-wrapper d-flex align-items-center auth">
+<div>
+    <div class="container-fluid">
+        <div class="content-wrapper d-flex align-items-center">
             <div class="row w-100">
                 <div class="col-lg-4 mx-auto">
                     <?php $this->load->view($page, $data) ?>
@@ -25,10 +24,9 @@
         </div>
     </div>
 
-    <p class="footer-text text-center pt-3">
+    <p class="text-center pt-3">
         Copyright &copy <?= date('Y') ?> <?= $this->config->item('app_author') ?>. All rights reserved.
     </p>
-
 </div>
 
 <script src="<?= base_url(get_asset('runtime.js')) ?>"></script>

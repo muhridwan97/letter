@@ -22,17 +22,13 @@ class DepartmentModel extends App_Model
      */
     protected function getBaseQuery()
     {
-        $this->load->model('EmployeeModel');
         return parent::getBaseQuery()
             ->select([
                 'COUNT(DISTINCT ref_employees.id) AS total_employee',
-                'COUNT(DISTINCT ref_categories.id) AS total_category',
-                'COUNT(DISTINCT requisitions.id) AS total_requisition',
+                'COUNT(DISTINCT curriculums.id) AS total_curriculums',
             ])
-            ->join(EmployeeModel::$tableEmployee, 'ref_employees.id_department = ref_departments.id', 'left')
-            ->join('ref_department_categories', 'ref_department_categories.id_department = ref_departments.id', 'left')
-            ->join('ref_categories', 'ref_categories.id = ref_department_categories.id_category', 'left')
-            ->join('requisitions', 'requisitions.id_employee = ref_employees.id', 'left')
+            ->join('(SELECT * FROM ' . EmployeeModel::$tableEmployee . ' WHERE is_deleted = FALSE) AS ref_employees', 'ref_employees.id_department = ref_departments.id', 'left')
+            ->join('(SELECT * FROM curriculums WHERE is_deleted = FALSE) AS curriculums', 'curriculums.id_department = ref_departments.id', 'left')
             ->group_by('ref_departments.id');
     }
 }

@@ -1,8 +1,8 @@
 export default function() {
-    var modalDelete = $('#modal-delete');
-    var buttonDelete = modalDelete.find('[data-submit]');
-    var buttonDismiss = modalDelete.find('[data-dismiss]');
-    var form = modalDelete.find('form');
+    const modalDelete = $('#modal-delete');
+    const buttonDelete = modalDelete.find('[data-submit]');
+    const buttonDismiss = modalDelete.find('[data-dismiss]');
+    const form = modalDelete.find('form');
 
     buttonDelete.on('click', function () {
         form.submit();

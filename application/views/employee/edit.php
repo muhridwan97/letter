@@ -1,8 +1,8 @@
 <form action="<?= site_url('master/employee/update/' . $employee['id']) ?>" method="POST" enctype="multipart/form-data" id="form-employee">
     <?= _csrf() ?>
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body">
-            <h4 class="card-title">Edit Employee</h4>
+            <h5 class="card-title">Edit Employee</h5>
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
@@ -77,7 +77,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label for="enter_date">Enter Date</label>
+                        <label for="enter_date">Hire Date</label>
                         <input type="text" class="form-control datepicker" id="enter_date" name="enter_date" required maxlength="50" autocomplete="off"
                                value="<?= set_value('enter_date', format_date($employee['enter_date'], 'd F Y')) ?>" placeholder="Date employee is hired">
                         <?= form_error('enter_date') ?>
@@ -96,26 +96,18 @@
                 <div class="col-sm-6 col-md-3">
                     <div class="form-group">
                         <label for="gender_any">Gender</label>
-                        <div class="row">
-                            <div class="col-5">
-                                <div class="form-check mt-2">
-                                    <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="gender" id="gender_male" value="male"
-                                            <?= set_radio('gender', 'male', $employee['gender'] == 'male') ?>> Male
-                                        <i class="input-helper"></i>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-check mt-2">
-                                    <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="gender" id="gender_female" value="female"
-                                            <?= set_radio('gender', 'male', $employee['gender'] == 'female') ?>> Female
-                                        <i class="input-helper"></i>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+						<div>
+							<div class="custom-control custom-radio custom-control-inline mt-1">
+								<input type="radio" name="gender" id="gender_male" value="male" class="custom-control-input"
+										<?= set_radio('gender', 'male', $employee['gender'] == 'male') ?>>
+								<label class="custom-control-label" for="gender_male">Male</label>
+							</div>
+							<div class="custom-control custom-radio custom-control-inline mt-1">
+								<input type="radio" name="gender" id="gender_female" value="female" class="custom-control-input"
+										<?= set_radio('gender', 'male', $employee['gender'] == 'female') ?>>
+								<label class="custom-control-label" for="gender_female">Female</label>
+							</div>
+						</div>
                         <?= form_error('gender') ?>
                     </div>
                 </div>

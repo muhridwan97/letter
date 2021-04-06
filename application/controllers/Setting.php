@@ -3,7 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Class Setting
- * @property UserModel $user
  * @property SettingModel $setting
  */
 class Setting extends App_Controller
@@ -14,7 +13,6 @@ class Setting extends App_Controller
         parent::__construct();
 
         $this->load->model('SettingModel', 'setting');
-        $this->load->model('UserModel', 'user');
     }
 
     /**
@@ -49,9 +47,8 @@ class Setting extends App_Controller
         }
 
         $setting = $this->setting->getAllSettings();
-        $quotationManageUsers = $this->user->getByPermission(PERMISSION_QUOTATION_MANAGE);
 
-        $this->render('setting/index', compact('setting', 'quotationManageUsers'));
+        $this->render('setting/index', compact('setting'));
     }
 
     /**
@@ -68,13 +65,10 @@ class Setting extends App_Controller
             'meta_description' => 'trim|required|max_length[300]',
             'meta_author' => 'trim|required|max_length[50]',
             'email_bug_report' => 'trim|required|valid_email|max_length[50]',
-            'email_support' => 'trim|required|valid_email|max_length[50]',
+            'email_support' => 'trim|required|max_length[100]',
             'company_name' => 'trim|required|max_length[50]',
             'company_address' => 'trim|required|max_length[200]',
             'company_contact' => 'trim|required|max_length[100]',
-            'purchasing_admin' => 'trim|required|max_length[50]',
-            'purchasing_supervisor' => 'trim|required|max_length[50]',
-            'top_manager' => 'trim|required',
         ];
     }
 }

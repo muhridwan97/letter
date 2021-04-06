@@ -1,7 +1,7 @@
 <form class="form-plaintext">
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body">
-            <h4 class="card-title">View Log</h4>
+            <h5 class="card-title">View Log</h5>
             <div class="form-group row">
                 <label class="col-sm-3 col-form-label" for="event_access">Event Access</label>
                 <div class="col-sm-9">
@@ -37,11 +37,11 @@
         </div>
     </div>
 
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body">
-            <h4 class="card-title">
+            <h5 class="card-title">
                 Log Detail
-            </h4>
+            </h5>
             <?php foreach ($log['data'] as $key => $value): ?>
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label">
@@ -61,7 +61,7 @@
         </div>
     </div>
 
-    <div class="card grid-margin">
+    <div class="card mb-3">
         <div class="card-body">
             <button onclick="history.back()" type="button" class="btn btn-light">Back</button>
         </div>

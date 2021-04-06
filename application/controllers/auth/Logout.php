@@ -16,6 +16,10 @@ class Logout extends App_Controller
         parent::__construct();
         $this->load->model('UserModel', 'user');
         $this->load->model('UserTokenModel', 'userToken');
+
+        $this->setFilterMethods([
+            'index' => 'POST|PUT'
+        ]);
     }
 
     /**
@@ -29,9 +33,8 @@ class Logout extends App_Controller
                 delete_cookie('remember_token');
                 $this->userToken->delete($rememberToken);
             }
-            redirect('auth/login');
         }
-        redirect('dashboard');
+        redirect('auth/login');
     }
 
 }

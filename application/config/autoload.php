@@ -89,7 +89,7 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('url', 'cookie', 'value', 'alert', 'request', 'setting');
+$autoload['helper'] = array('url', 'cookie', 'text', 'value', 'alert', 'request', 'setting');
 
 /*
 | -------------------------------------------------------------------
@@ -135,6 +135,8 @@ $autoload['language'] = array();
 $autoload['model'] = [
     'AuthorizationModel' => 'AuthorizationModel',
     'UserModel' => 'UserModel',
+	'modules/Notify' => 'Notify',
+    'NotificationModel' => 'NotificationModel',
+    'DepartmentModel' => 'DepartmentModel',
     'EmployeeModel' => 'EmployeeModel',
-    'NotificationModel' => 'NotificationModel'
 ];

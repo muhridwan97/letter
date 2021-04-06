@@ -84,12 +84,9 @@ defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
-
-
 // Super admin permission
 defined('PERMISSION_ALL_ACCESS') OR define('PERMISSION_ALL_ACCESS', 'all-access');
 
-// Account setting permission
 defined('PERMISSION_ACCOUNT_EDIT') OR define('PERMISSION_ACCOUNT_EDIT', 'account-edit');
 defined('PERMISSION_SETTING_EDIT') OR define('PERMISSION_SETTING_EDIT', 'setting-edit');
 
@@ -105,36 +102,6 @@ defined('PERMISSION_USER_CREATE') OR define('PERMISSION_USER_CREATE', 'user-crea
 defined('PERMISSION_USER_EDIT') OR define('PERMISSION_USER_EDIT', 'user-edit');
 defined('PERMISSION_USER_DELETE') OR define('PERMISSION_USER_DELETE', 'user-delete');
 
-// Master category permission
-defined('PERMISSION_CATEGORY_VIEW') OR define('PERMISSION_CATEGORY_VIEW', 'category-view');
-defined('PERMISSION_CATEGORY_CREATE') OR define('PERMISSION_CATEGORY_CREATE', 'category-create');
-defined('PERMISSION_CATEGORY_EDIT') OR define('PERMISSION_CATEGORY_EDIT', 'category-edit');
-defined('PERMISSION_CATEGORY_DELETE') OR define('PERMISSION_CATEGORY_DELETE', 'category-delete');
-
-// Master bill category permission
-defined('PERMISSION_BILL_CATEGORY_VIEW') OR define('PERMISSION_BILL_CATEGORY_VIEW', 'bill-category-view');
-defined('PERMISSION_BILL_CATEGORY_CREATE') OR define('PERMISSION_BILL_CATEGORY_CREATE', 'bill-category-create');
-defined('PERMISSION_BILL_CATEGORY_EDIT') OR define('PERMISSION_BILL_CATEGORY_EDIT', 'bill-category-edit');
-defined('PERMISSION_BILL_CATEGORY_DELETE') OR define('PERMISSION_BILL_CATEGORY_DELETE', 'bill-category-delete');
-
-// Master item category permission
-defined('PERMISSION_ITEM_CATEGORY_VIEW') OR define('PERMISSION_ITEM_CATEGORY_VIEW', 'item-category-view');
-defined('PERMISSION_ITEM_CATEGORY_CREATE') OR define('PERMISSION_ITEM_CATEGORY_CREATE', 'item-category-create');
-defined('PERMISSION_ITEM_CATEGORY_EDIT') OR define('PERMISSION_ITEM_CATEGORY_EDIT', 'item-category-edit');
-defined('PERMISSION_ITEM_CATEGORY_DELETE') OR define('PERMISSION_ITEM_CATEGORY_DELETE', 'item-category-delete');
-
-// Master item permission
-defined('PERMISSION_ITEM_VIEW') OR define('PERMISSION_ITEM_VIEW', 'item-view');
-defined('PERMISSION_ITEM_CREATE') OR define('PERMISSION_ITEM_CREATE', 'item-create');
-defined('PERMISSION_ITEM_EDIT') OR define('PERMISSION_ITEM_EDIT', 'item-edit');
-defined('PERMISSION_ITEM_DELETE') OR define('PERMISSION_ITEM_DELETE', 'item-delete');
-
-// Master vendor permission
-defined('PERMISSION_VENDOR_VIEW') OR define('PERMISSION_VENDOR_VIEW', 'vendor-view');
-defined('PERMISSION_VENDOR_CREATE') OR define('PERMISSION_VENDOR_CREATE', 'vendor-create');
-defined('PERMISSION_VENDOR_EDIT') OR define('PERMISSION_VENDOR_EDIT', 'vendor-edit');
-defined('PERMISSION_VENDOR_DELETE') OR define('PERMISSION_VENDOR_DELETE', 'vendor-delete');
-
 // Master department permission
 defined('PERMISSION_DEPARTMENT_VIEW') OR define('PERMISSION_DEPARTMENT_VIEW', 'department-view');
 defined('PERMISSION_DEPARTMENT_CREATE') OR define('PERMISSION_DEPARTMENT_CREATE', 'department-create');
@@ -147,43 +114,41 @@ defined('PERMISSION_EMPLOYEE_CREATE') OR define('PERMISSION_EMPLOYEE_CREATE', 'e
 defined('PERMISSION_EMPLOYEE_EDIT') OR define('PERMISSION_EMPLOYEE_EDIT', 'employee-edit');
 defined('PERMISSION_EMPLOYEE_DELETE') OR define('PERMISSION_EMPLOYEE_DELETE', 'employee-delete');
 
-// Master city permission
-defined('PERMISSION_CITY_VIEW') OR define('PERMISSION_CITY_VIEW', 'city-view');
-defined('PERMISSION_CITY_CREATE') OR define('PERMISSION_CITY_CREATE', 'city-create');
-defined('PERMISSION_CITY_EDIT') OR define('PERMISSION_CITY_EDIT', 'city-edit');
-defined('PERMISSION_CITY_DELETE') OR define('PERMISSION_CITY_DELETE', 'city-delete');
+// Curriculum permission
+defined('PERMISSION_CURRICULUM_VIEW') OR define('PERMISSION_CURRICULUM_VIEW', 'curriculum-view');
+defined('PERMISSION_CURRICULUM_CREATE') OR define('PERMISSION_CURRICULUM_CREATE', 'curriculum-create');
+defined('PERMISSION_CURRICULUM_EDIT') OR define('PERMISSION_CURRICULUM_EDIT', 'curriculum-edit');
+defined('PERMISSION_CURRICULUM_DELETE') OR define('PERMISSION_CURRICULUM_DELETE', 'curriculum-delete');
 
-// Requisition permission
-defined('PERMISSION_REQUISITION_VIEW') OR define('PERMISSION_REQUISITION_VIEW', 'requisition-view');
-defined('PERMISSION_REQUISITION_CREATE') OR define('PERMISSION_REQUISITION_CREATE', 'requisition-create');
-defined('PERMISSION_REQUISITION_EDIT') OR define('PERMISSION_REQUISITION_EDIT', 'requisition-edit');
-defined('PERMISSION_REQUISITION_DELETE') OR define('PERMISSION_REQUISITION_DELETE', 'requisition-delete');
-defined('PERMISSION_REQUISITION_VALIDATE') OR define('PERMISSION_REQUISITION_VALIDATE', 'requisition-validate');
-defined('PERMISSION_REQUISITION_MANAGE') OR define('PERMISSION_REQUISITION_MANAGE', 'requisition-manage');
-defined('PERMISSION_REQUISITION_REVERT') OR define('PERMISSION_REQUISITION_REVERT', 'requisition-revert');
-defined('PERMISSION_REQUISITION_ADMIN_VIEW') OR define('PERMISSION_REQUISITION_ADMIN_VIEW', 'requisition-admin-view');
-defined('PERMISSION_REQUISITION_SET_CHECK') OR define('PERMISSION_REQUISITION_SET_CHECK', 'requisition-set-check');
+// Course permission
+defined('PERMISSION_COURSE_VIEW') OR define('PERMISSION_COURSE_VIEW', 'course-view');
+defined('PERMISSION_COURSE_CREATE') OR define('PERMISSION_COURSE_CREATE', 'course-create');
+defined('PERMISSION_COURSE_EDIT') OR define('PERMISSION_COURSE_EDIT', 'course-edit');
+defined('PERMISSION_COURSE_DELETE') OR define('PERMISSION_COURSE_DELETE', 'course-delete');
 
-// Quotation permission
-defined('PERMISSION_QUOTATION_VIEW') OR define('PERMISSION_QUOTATION_VIEW', 'quotation-view');
-defined('PERMISSION_QUOTATION_CREATE') OR define('PERMISSION_QUOTATION_CREATE', 'quotation-create');
-defined('PERMISSION_QUOTATION_EDIT') OR define('PERMISSION_QUOTATION_EDIT', 'quotation-edit');
-defined('PERMISSION_QUOTATION_DELETE') OR define('PERMISSION_QUOTATION_DELETE', 'quotation-delete');
-defined('PERMISSION_QUOTATION_SELECT') OR define('PERMISSION_QUOTATION_SELECT', 'quotation-select');
-defined('PERMISSION_QUOTATION_MANAGE') OR define('PERMISSION_QUOTATION_MANAGE', 'quotation-manage');
+// Lesson permission
+defined('PERMISSION_LESSON_VIEW') OR define('PERMISSION_LESSON_VIEW', 'lesson-view');
+defined('PERMISSION_LESSON_CREATE') OR define('PERMISSION_LESSON_CREATE', 'lesson-create');
+defined('PERMISSION_LESSON_EDIT') OR define('PERMISSION_LESSON_EDIT', 'lesson-edit');
+defined('PERMISSION_LESSON_DELETE') OR define('PERMISSION_LESSON_DELETE', 'lesson-delete');
 
-// Order permission
-defined('PERMISSION_ORDER_VIEW') OR define('PERMISSION_ORDER_VIEW', 'order-view');
-defined('PERMISSION_ORDER_CREATE') OR define('PERMISSION_ORDER_CREATE', 'order-create');
-defined('PERMISSION_ORDER_EDIT') OR define('PERMISSION_ORDER_EDIT', 'order-edit');
-defined('PERMISSION_ORDER_DELETE') OR define('PERMISSION_ORDER_DELETE', 'order-delete');
-defined('PERMISSION_ORDER_MANAGE') OR define('PERMISSION_ORDER_MANAGE', 'order-manage');
+// Exercise permission
+defined('PERMISSION_EXERCISE_VIEW') OR define('PERMISSION_EXERCISE_VIEW', 'exercise-view');
+defined('PERMISSION_EXERCISE_CREATE') OR define('PERMISSION_EXERCISE_CREATE', 'exercise-create');
+defined('PERMISSION_EXERCISE_EDIT') OR define('PERMISSION_EXERCISE_EDIT', 'exercise-edit');
+defined('PERMISSION_EXERCISE_DELETE') OR define('PERMISSION_EXERCISE_DELETE', 'exercise-delete');
 
-// Report permission
-defined('PERMISSION_REPORT_GENERAL_VIEW') OR define('PERMISSION_REPORT_GENERAL_VIEW', 'report-general-view');
+// Training permission
+defined('PERMISSION_TRAINING_MANAGE') OR define('PERMISSION_TRAINING_MANAGE', 'training-manage');
+defined('PERMISSION_TRAINING_VIEW') OR define('PERMISSION_TRAINING_VIEW', 'training-view');
+defined('PERMISSION_TRAINING_CREATE') OR define('PERMISSION_TRAINING_CREATE', 'training-create');
+defined('PERMISSION_TRAINING_EDIT') OR define('PERMISSION_TRAINING_EDIT', 'training-edit');
+defined('PERMISSION_TRAINING_DELETE') OR define('PERMISSION_TRAINING_DELETE', 'training-delete');
 
-// Payment Handover
-defined('PERMISSION_PAYMENT_HANDOVER_VIEW') OR define('PERMISSION_PAYMENT_HANDOVER_VIEW', 'payment-handover-view');
-defined('PERMISSION_PAYMENT_HANDOVER_CREATE') OR define('PERMISSION_PAYMENT_HANDOVER_CREATE', 'payment-handover-create');
-defined('PERMISSION_PAYMENT_HANDOVER_EDIT') OR define('PERMISSION_PAYMENT_HANDOVER_EDIT', 'payment-handover-edit');
-defined('PERMISSION_PAYMENT_HANDOVER_DELETE') OR define('PERMISSION_PAYMENT_HANDOVER_DELETE', 'payment-handover-delete');
+// Exam permission
+defined('PERMISSION_EXAM_MANAGE') OR define('PERMISSION_EXAM_MANAGE', 'exam-manage');
+defined('PERMISSION_EXAM_ASSESS') OR define('PERMISSION_EXAM_ASSESS', 'exam-assess');
+defined('PERMISSION_EXAM_VIEW') OR define('PERMISSION_EXAM_VIEW', 'exam-view');
+defined('PERMISSION_EXAM_CREATE') OR define('PERMISSION_EXAM_CREATE', 'exam-create');
+defined('PERMISSION_EXAM_EDIT') OR define('PERMISSION_EXAM_EDIT', 'exam-edit');
+defined('PERMISSION_EXAM_DELETE') OR define('PERMISSION_EXAM_DELETE', 'exam-delete');

@@ -5,7 +5,9 @@
                 <?= _csrf() ?>
                 <?= _method('put') ?>
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalValidate"></h5>
+                    <h6 class="modal-title" id="modalValidate">
+                        Validate <span class="validate-title"></span>
+                    </h6>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -15,11 +17,11 @@
                     <div class="form-group">
                         <label for="message">Message</label>
                         <textarea class="form-control" name="message" id="message" rows="3" placeholder="Validation message"></textarea>
-                        <span class="form-text">This message may be included to the email <a href="#" class="validate-email"></a></span>
+                        <span class="form-text text-fade">This message may be included to the email <a href="#" class="validate-email"></a></span>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">CLOSE</button>
+                    <button type="button" class="btn btn-sm btn-light" data-dismiss="modal">CLOSE</button>
                     <button type="submit" class="btn btn-sm btn-danger" data-toggle="one-touch">
                         VALIDATE
                     </button>

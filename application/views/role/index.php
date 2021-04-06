@@ -1,7 +1,7 @@
-<div class="card">
+<div class="card mb-3">
     <div class="card-body">
         <div class="d-sm-flex align-items-center justify-content-between">
-            <h4 class="card-title mb-sm-0">Data Roles</h4>
+            <h5 class="card-title mb-sm-0">Data Roles</h5>
             <div>
                 <a href="#modal-filter" data-toggle="modal" class="btn btn-info btn-sm pr-2 pl-2">
                     <i class="mdi mdi-filter-variant mr-0"></i>
@@ -10,8 +10,8 @@
                     <i class="mdi mdi-file-download-outline mr-0"></i>
                 </a>
                 <?php if(AuthorizationModel::isAuthorized(PERMISSION_ROLE_CREATE)): ?>
-                    <a href="<?= site_url('master/role/create') ?>" class="btn btn-sm btn-success">
-                        <i class="mdi mdi-plus-box-outline mr-2"></i>Create
+                    <a href="<?= site_url('master/role/create') ?>" class="btn btn-sm btn-primary">
+                        <i class="mdi mdi-plus-box-outline mr-2"></i>CREATE
                     </a>
                 <?php endif; ?>
             </div>
@@ -38,7 +38,7 @@
                     <td><?= format_date($role['created_at'], 'd F Y H:i') ?></td>
                     <td class="text-md-right">
                         <div class="dropdown">
-                            <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                            <button class="btn btn-primary btn-sm dropdown-toggle btn-action" type="button" data-toggle="dropdown">
                                 Action
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">

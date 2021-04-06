@@ -4,8 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Class Department
  * @property DepartmentModel $department
- * @property DepartmentCategoryModel $departmentCategory
- * @property CategoryModel $category
+ * @property CurriculumModel $curriculum
  * @property Exporter $exporter
  */
 class Department extends App_Controller
@@ -17,13 +16,8 @@ class Department extends App_Controller
     {
         parent::__construct();
         $this->load->model('DepartmentModel', 'department');
-        $this->load->model('DepartmentCategoryModel', 'departmentCategory');
-        $this->load->model('CategoryModel', 'category');
+        $this->load->model('CurriculumModel', 'curriculum');
         $this->load->model('modules/Exporter', 'exporter');
-        $this->setFilterMethods([
-            'edit_category' => 'GET',
-            'update_category' => 'PUT|PATCH'
-        ]);
     }
 
     /**
@@ -42,9 +36,15 @@ class Department extends App_Controller
 
         if ($export) {
             $this->exporter->exportFromArray('Departments', $departments);
-        }
-
-        $this->render('department/index', compact('departments'));
+        } else {
+        	foreach ($departments['data'] as &$department) {
+        		$department['curriculums'] = $this->curriculum->getAll([
+					'sort_by' => 'curriculum_order',
+        			'department' => $department['id']
+				]);
+			}
+			$this->render('department/index', compact('departments'));
+		}
     }
 
     /**
@@ -57,9 +57,12 @@ class Department extends App_Controller
         AuthorizationModel::mustAuthorized(PERMISSION_DEPARTMENT_VIEW);
 
         $department = $this->department->getById($id);
-        $departmentCategories = $this->departmentCategory->getBy(['ref_department_categories.id_department' => $id]);
+		$curriculums = $this->curriculum->getAll([
+			'sort_by' => 'curriculum_order',
+			'department' => $department['id']
+		]);
 
-        $this->render('department/view', compact('department', 'departmentCategories'));
+        $this->render('department/view', compact('department', 'curriculums'));
     }
 
     /**
@@ -112,33 +115,6 @@ class Department extends App_Controller
     }
 
     /**
-     * Show edit department category form.
-     *
-     * @param $id
-     */
-    public function edit_category($id)
-    {
-        AuthorizationModel::mustAuthorized(PERMISSION_DEPARTMENT_EDIT);
-
-        $department = $this->department->getById($id);
-        $categories = $this->category->getAll();
-        $departmentCategories = $this->departmentCategory->getBy([
-            'ref_department_categories.id_department' => $id
-        ]);
-
-        $listCategory = array_column(if_empty($departmentCategories, []), 'id_category');
-        foreach ($categories as &$category) {
-            if (in_array($category['id'], $listCategory)) {
-                $category['selected'] = true;
-            } else {
-                $category['selected'] = false;
-            }
-        }
-
-        $this->render('department/edit-category', compact('department', 'categories'));
-    }
-
-    /**
      * Update data department by id.
      *
      * @param $id
@@ -163,43 +139,6 @@ class Department extends App_Controller
             }
         }
         $this->edit($id);
-    }
-
-    /**
-     * Update data department category by id.
-     *
-     * @param $id
-     */
-    public function update_category($id)
-    {
-        AuthorizationModel::mustAuthorized(PERMISSION_DEPARTMENT_EDIT);
-
-        if ($this->validate(['categories[]' => 'trim'])) {
-            $categories = $this->input->post('categories');
-
-            $department = $this->department->getById($id);
-
-            $this->db->trans_start();
-
-            if (!empty($categories)) {
-                $this->departmentCategory->delete(['id_department' => $id]);
-                foreach ($categories as $categoryId) {
-                    $this->departmentCategory->create([
-                        'id_department' => $id,
-                        'id_category' => $categoryId
-                    ]);
-                }
-            }
-
-            $this->db->trans_complete();
-
-            if ($this->db->trans_status()) {
-                flash('success', "List category department {$department['department']} successfully updated", 'master/department');
-            } else {
-                flash('danger', "Update list category department failed, try again or contact administrator");
-            }
-        }
-        $this->edit_category($id);
     }
 
     /**

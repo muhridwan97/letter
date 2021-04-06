@@ -2,62 +2,50 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
+ * @property CurriculumModel $curriculum
+ * @property CourseModel $course
+ * @property LessonModel $lesson
+ * @property TrainingModel $training
+ * @property ExamExerciseModel $examExercise
  * Class Dashboard
- * @property ReportModel $report
- * @property RequisitionModel $requisition
  */
 class Dashboard extends App_Controller
 {
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->load->model('ReportModel', 'report');
-        $this->load->model('RequisitionModel', 'requisition');
-    }
+	/**
+	 * Dashboard constructor.
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+		$this->load->model('CurriculumModel', 'curriculum');
+		$this->load->model('CourseModel', 'course');
+		$this->load->model('LessonModel', 'lesson');
+		$this->load->model('TrainingModel', 'training');
+		$this->load->model('ExamExerciseModel', 'examExercise');
+	}
 
     /**
      * Show dashboard page.
      */
     public function index()
     {
-        $allStats = $this->report->getPurchaseTotalStats();
-        $currentMonthlyStats = $this->report->getMonthlyTotalStats(date('Y'), date('m'));
+		$data = [
+			'totalCurriculum' => $this->curriculum->getBy([], 'COUNT'),
+			'totalCourse' => $this->course->getBy([], 'COUNT'),
+			'totalLesson' => $this->lesson->getBy([], 'COUNT'),
+			'totalTraining' => $this->training->getBy([], 'COUNT'),
+		];
 
-        $lastMonth = date("Y-m-d", strtotime("-1 month"));
-        $extractedMonth = format_date($lastMonth, 'm');
-        $extractedYear = format_date($lastMonth, 'Y');
-        $lastMonthStats = $this->report->getMonthlyTotalStats($extractedYear, $extractedMonth);
-        if ($lastMonthStats['total_price'] == 0) {
-            $diffPercent = 100;
-        } else {
-            $diffPercent = $currentMonthlyStats['total_price'] / $lastMonthStats['total_price'] * 100;
-        }
-        $currentMonthlyStats['last_total_price'] = $lastMonthStats['total_price'];
-        $currentMonthlyStats['diff_percent'] = $diffPercent;
+		$data['latestExams'] = $this->examExercise->getAll([
+			'employee' => AuthorizationModel::hasPermission(PERMISSION_EXAM_MANAGE)
+				? 0 : UserModel::loginData('id_employee', -1),
+			'limit' => 10,
+		]);
+		$data['activeTrainings'] = $this->training->getAll([
+			'employee' => UserModel::loginData('id_employee', -1),
+			'status' => TrainingModel::STATUS_ACTIVE,
+		]);
 
-        $requisitionStats = [
-            'total' => $totalRequisition = $this->requisition->getTotal(),
-            'proceed' => $this->requisition->getBy(['requisitions.status' => RequisitionModel::STATUS_DONE], 'COUNT'),
-            'outstanding' => $this->db->from('requisitions')
-                ->where('status!=', 'DONE')
-                ->where('status!=', 'REJECTED')
-                ->where('status!=', 'CANCELLED')
-                ->where('status!=', 'PENDING')
-                ->where('is_deleted', false)
-                ->count_all_results(),
-        ];
-
-        $manageRequisition = AuthorizationModel::hasPermission([PERMISSION_REQUISITION_MANAGE, PERMISSION_REQUISITION_ADMIN_VIEW]);
-        $requisitions = $this->requisition->getAll([
-            'page' => 1,
-            'per_page' => 5,
-            'sort_by' => 'created_at',
-            'order_method' => 'desc',
-            'employees' => $manageRequisition ? '' : UserModel::loginData('id_employee')
-        ]);
-
-        $this->render('dashboard/index', compact('allStats', 'currentMonthlyStats', 'requisitionStats', 'requisitions'));
+        $this->render('dashboard/index', $data);
     }
 }

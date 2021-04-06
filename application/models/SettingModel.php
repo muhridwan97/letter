@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class SettingModel extends App_Model
 {
-    protected $table = 'ref_settings';
+    protected $table = 'settings';
     protected $id = 'key';
 
     /**

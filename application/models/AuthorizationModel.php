@@ -31,37 +31,38 @@ class AuthorizationModel extends App_Model
      */
     public static function mustAuthorized($permission, $module = null)
     {
-		if ((is_callable($permission) && !$permission()) || self::isUnauthorized($permission)) {
+        if (self::isUnauthorized($permission)) {
             self::redirectUnauthorized($module);
         }
     }
 
-    /**
-     * Redirecting unauthorized route.
-     *
-     * @param null $redirectModule
-     * @return string
-     */
-    public static function redirectUnauthorized($redirectModule = null)
-    {
-        $CI = get_instance();
-        $message = 'You are <strong>UNAUTHORIZED</strong> to perform this action.';
+	/**
+	 * Redirecting unauthorized route.
+	 *
+	 * @param null $message
+	 * @param null $redirectModule
+	 * @return string
+	 */
+	public static function redirectUnauthorized($message = null, $redirectModule = null)
+	{
+		$CI = get_instance();
+		$message = empty($message) ? 'You are <strong>UNAUTHORIZED</strong> to perform this action.' : $message;
 
-        if ($CI->input->is_ajax_request()) {
-            return $message;
-        } else {
-            $CI->session->set_flashdata([
-                'status' => 'danger',
-                'message' => $message,
-            ]);
-        }
+		if ($CI->input->is_ajax_request()) {
+			return $message;
+		} else {
+			$CI->session->set_flashdata([
+				'status' => 'danger',
+				'message' => $message,
+			]);
+		}
 
-        $redirectModule = if_empty($redirectModule, 'dashboard');
+		$redirectModule = if_empty($redirectModule, 'dashboard');
 
-        redirect($redirectModule);
+		redirect(if_empty(get_instance()->agent->referrer(), $redirectModule));
 
-        return true;
-    }
+		return true;
+	}
 
     /**
      * Check if given or logged user has a permission.
@@ -119,13 +120,13 @@ class AuthorizationModel extends App_Model
             if ($grantedCheck) {
                 return true;
             } else {
-                log_message('info', 'User ID ' . $userId . ' has no permission : ' . is_array($permission) ? json_encode($permission) : $permission);
+                log_message('info', 'User ID ' . $userId . ' has no permission : ' . json_encode($permission));
                 return false;
             }
         }
 
         if ($grantedCheck) {
-            log_message('info', 'User ID ' . $userId . ' has no permission : ' . is_array($permission) ? json_encode($permission) : $permission);
+            log_message('info', 'User ID ' . $userId . ' has no permission : ' . json_encode($permission));
             return false;
         } else {
             return true;

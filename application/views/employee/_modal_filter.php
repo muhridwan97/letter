@@ -66,7 +66,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="date_from">Date From</label>
-                                <input type="date" class="form-control" name="date_from" id="date_from"
+                                <input type="text" class="form-control datepicker" name="date_from" id="date_from"
                                        value="<?= get_url_param('date_from') ?>" placeholder="Pick create date from">
                                 <?= form_error('date_from'); ?>
                             </div>
@@ -74,7 +74,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="date_to">Date To</label>
-                                <input type="date" class="form-control" name="date_to" id="date_to"
+                                <input type="text" class="form-control datepicker" name="date_to" id="date_to"
                                        value="<?= get_url_param('date_to') ?>" placeholder="Pick create date to">
                                 <?= form_error('date_to'); ?>
                             </div>
@@ -82,10 +82,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a href="<?= site_url('master/employee') ?>" class="btn btn-sm btn-secondary">
+                    <a href="<?= site_url(uri_string()) ?>" class="btn btn-sm btn-light">
                         RESET
                     </a>
-                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">
+                    <button type="button" class="btn btn-sm btn-light" data-dismiss="modal">
                         CLOSE
                     </button>
                     <button type="submit" class="btn btn-sm btn-primary">

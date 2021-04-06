@@ -49,7 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |				'ssl_ca'     - Path to the certificate authority file
 |				'ssl_capath' - Path to a directory containing trusted CA certificates in PEM format
 |				'ssl_cipher' - List of *allowed* ciphers to be used for the encryption, separated by colons (':')
-|				'ssl_verify' - TRUE/FALSE; Whether verify the server certificate or not ('mysqli' only)
+|				'ssl_verify' - TRUE/FALSE; Whether verify the server certificate or not
 |
 |	['compress'] Whether or not to use client compression (MySQL only)
 |	['stricton'] TRUE/FALSE - forces 'Strict Mode' connections
@@ -75,12 +75,12 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => env('DB_HOST'),
-	'username' => env('DB_USERNAME'),
-	'password' => env('DB_PASSWORD'),
-	'database' => env('DB_DATABASE'),
-	'dbdriver' => env('DB_DRIVER'),
-	'port' => env('DB_PORT'),
+    'hostname' => env('DB_HOST'),
+    'username' => env('DB_USERNAME'),
+    'password' => env('DB_PASSWORD'),
+    'database' => env('DB_DATABASE'),
+    'dbdriver' => env('DB_DRIVER'),
+    'port' => env('DB_PORT'),
 	'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
@@ -97,47 +97,24 @@ $db['default'] = array(
 );
 
 $db['sso'] = array(
-    'dsn'	=> '',
-    'hostname' => env('DB_SSO_HOST'),
-    'username' => env('DB_SSO_USERNAME'),
-    'password' => env('DB_SSO_PASSWORD'),
-    'database' => env('DB_SSO_DATABASE'),
-    'dbdriver' => env('DB_SSO_DRIVER'),
-    'port' => env('DB_SSO_PORT'),
-    'dbprefix' => '',
-    'pconnect' => FALSE,
-    'db_debug' => (ENVIRONMENT !== 'production'),
-    'cache_on' => FALSE,
-    'cachedir' => '',
-    'char_set' => 'utf8',
-    'dbcollat' => 'utf8_general_ci',
-    'swap_pre' => '',
-    'encrypt' => FALSE,
-    'compress' => FALSE,
-    'stricton' => FALSE,
-    'failover' => array(),
-    'save_queries' => TRUE
-);
-
-$db['hr'] = array(
-    'dsn'	=> '',
-    'hostname' => env('DB_HR_HOST'),
-    'username' => env('DB_HR_USERNAME'),
-    'password' => env('DB_HR_PASSWORD'),
-    'database' => env('DB_HR_DATABASE'),
-    'dbdriver' => env('DB_HR_DRIVER'),
-    'port' => env('DB_HR_PORT'),
-    'dbprefix' => '',
-    'pconnect' => FALSE,
-    'db_debug' => (ENVIRONMENT !== 'production'),
-    'cache_on' => FALSE,
-    'cachedir' => '',
-    'char_set' => 'utf8',
-    'dbcollat' => 'utf8_general_ci',
-    'swap_pre' => '',
-    'encrypt' => FALSE,
-    'compress' => FALSE,
-    'stricton' => FALSE,
-    'failover' => array(),
-    'save_queries' => TRUE
+	'dsn'	=> '',
+	'hostname' => env('DB_SSO_HOST'),
+	'username' => env('DB_SSO_USERNAME'),
+	'password' => env('DB_SSO_PASSWORD'),
+	'database' => env('DB_SSO_DATABASE'),
+	'dbdriver' => env('DB_SSO_DRIVER'),
+	'port' => env('DB_SSO_PORT'),
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
 );

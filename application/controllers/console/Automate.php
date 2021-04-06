@@ -1,20 +1,26 @@
 <?php
+
+use GuzzleHttp\Exception\GuzzleException;
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Class Automate
  * @property ReportModel $report
- * @property PurchaseOrderModel $purchaseOrder
- * @property PurchaseOfferModel $purchaseOffer
- * @property RequisitionModel $requisition
- * @property RequisitionStatusModel $requisitionStatus
- * @property PurchaseOfferItemModel $purchaseOfferItem
- * @property HandoverModel $handover
- * @property EmployeeModel $employee
- * @property NotificationModel $notification
+ * @property CustomerModel $customer
+ * @property CustomerContactModel $customerContact
+ * @property SppcPaymentModel $sppcPayment
+ * @property SppcDetailModel $sppcDetail
+ * @property AccountReceivableModel $accountReceivable
+ * @property AccountPayablePaymentModel $accountPayablePayment
+ * @property CashBondModel $cashBond
+ * @property CashBondDetailModel $cashBondDetail
+ * @property StatusHistoryModel $statusHistory
  * @property UserModel $user
+ * @property EmployeeModel $employee
  * @property Mailer $mailer
  * @property Exporter $exporter
+ * @property WarehouseAPI $apiClient
  */
 class Automate extends CI_Controller
 {
@@ -22,7 +28,7 @@ class Automate extends CI_Controller
     {
         parent::__construct();
 
-        if (is_cli() || env('APP_ENVIRONMENT') == 'development') {
+        if (is_cli() || ENVIRONMENT == 'development') {
             echo 'Automate module is initiating...' . PHP_EOL;
         } else {
             echo "This module is CLI only!" . PHP_EOL;
@@ -75,322 +81,486 @@ class Automate extends CI_Controller
     }
 
     /**
-     * Send email weekly to.
-     * @throws Exception
+     * Send email invoice summary to customer.
      */
-    public function report_weekly()
+    public function customer_report()
     {
         $this->load->model('ReportModel', 'report');
-        $this->load->model('RequisitionModel', 'requisition');
+        $this->load->model('CustomerModel', 'customer');
+        $this->load->model('CustomerContactModel', 'customerContact');
+        $this->load->model('modules/Mailer', 'mailer');
+        $this->load->model('modules/Exporter', 'exporter');
+
+        $timestamp = strtotime('now');
+        $day = date('w', $timestamp);
+        $date = format_date('now', 'd F Y');
+
+        try {
+            $today = new DateTime();
+            $today->sub(new DateInterval("P1D"));
+            $yesterday = $today->format('d F Y');
+        } catch (Exception $e) {
+            $yesterday = 'Yesterday';
+        }
+
+        $customers = $this->customer->getBy(['email_reminder_day' => $day]);
+
+        foreach ($customers as $customer) {
+            $invoiceData = $this->report->getCustomerInvoice([
+                'customer' => $customer['id'],
+                'overdue_status' => ['OVERDUE', 'NOT YET']
+            ]);
+
+            if (!empty($invoiceData)) {
+                $emailTitle = "{$customer['customer_name']} outstanding report on {$date}";
+                $emailTemplate = 'emails/customer_invoice';
+                $emailData = [
+                    'email' => $customer['email'],
+                    'date' => $date,
+                    'yesterday' => $yesterday,
+                    'customer' => $customer,
+                    'invoices' => $invoiceData
+                ];
+                $externalContacts = $this->customerContact->getBy([
+                    'id_customer' => $customer['id'],
+                    'type' => 'EXTERNAL'
+                ]);
+                $internalContacts = $this->customerContact->getBy([
+                    'id_customer' => $customer['id'],
+                    'type' => 'INTERNAL'
+                ]);
+                $emailTo = array_column(if_empty($externalContacts, ['email' => get_setting('email_support')]), 'email');
+                $contactCC = array_column(if_empty($internalContacts, []), 'email');
+                $emailOptions = [
+                    'cc' => $contactCC
+                ];
+                $this->mailer->send($emailTo, $emailTitle, $emailTemplate, $emailData, $emailOptions);
+            }
+        }
+    }
+
+    /**
+     * Send email invoice summary to internal.
+     */
+    public function outstanding_control_report()
+    {
+        $this->load->model('ReportModel', 'report');
+        $this->load->model('modules/Mailer', 'mailer');
+
+        $date = format_date('now', 'd F Y');
+
+        $reports = $this->report->getInvoiceControl();
+
+        $emailTo = 'direktur@transcon-indonesia.com';
+        $emailTitle = "Daily report invoice outstanding on {$date}";
+        $emailTemplate = 'emails/invoice_control';
+        $emailData = [
+            'email' => $emailTo,
+            'date' => $date,
+            'reports' => $reports
+        ];
+        $emailOptions = [
+            'cc' => ['fin2@transcon-indonesia.com', 'acc_mgr@transcon-indonesia.com', 'md@transcon-indonesia.com']
+        ];
+        $this->mailer->send($emailTo, $emailTitle, $emailTemplate, $emailData, $emailOptions);
+    }
+
+    /**
+     * Fetch data from api to merge cash bond 30 days back, to make sure we are not leave behind.
+     */
+    public function auto_import_cash_bond()
+    {
+        $this->load->model('EmployeeModel', 'employee');
+        $this->load->model('CashBondModel', 'cashBond');
+        $this->load->model('CashBondDetailModel', 'cashBondDetail');
+        $this->load->model('StatusHistoryModel', 'statusHistory');
+        $this->load->model('modules/WarehouseAPI', 'apiClient');
+
+        $fromDate = date('Y-m-d', strtotime('-3 days'));
+
+        try {
+            $payments = $this->apiClient->get('cash-bond/payment', [
+                'is_realized' => 1,
+                'from_date' => format_date($fromDate),
+            ]);
+            $cashBonds = $this->cashBond->getBy([
+                'cash_bond_type' => CashBondModel::TYPE_OTHER,
+                'no_cash_bond' => array_column(if_empty($payments, []), 'no_payment')
+            ]);
+
+            foreach ($payments as &$payment) {
+                $payment = (array)$payment;
+                $isEdit = false;
+                foreach ($cashBonds as $index => $cashBond) {
+                    if ($payment['no_payment'] == $cashBond['no_cash_bond']) {
+                        $isEdit = true;
+                        $employeePayment = $this->employee->getBy(['ref_employees.id_user' => $payment['created_by']], true);
+                        $this->cashBond->update([
+                            'id_employee' => if_empty((!empty($employeePayment) ? $employeePayment['id'] : ''), null),
+                            'id_bank_account' => get_if_exist($payment, 'id_bank_account', null),
+                            'no_cash_bond' => $payment['no_payment'],
+                            'cash_bond_type' => CashBondModel::TYPE_OTHER,
+                            'cash_bond_date' => $payment['created_at'],
+                            'settlement_date' => $payment['realized_at'],
+                            'requisite_description' => if_empty($payment['description'], 'Payment ' . $payment['no_reference']),
+                            'amount_request' => $payment['amount_request'],
+                            'description' => $payment['customer_name'] . ' - ' . $payment['no_reference'],
+                            'created_by' => $payment['created_by'],
+                        ], $cashBond['id']);
+
+                        $this->cashBondDetail->delete(['id_cash_bond' => $cashBond['id']]);
+                        $this->cashBondDetail->create([
+                            'id_cash_bond' => $cashBond['id'],
+                            'invoice_date' => if_empty(format_date($payment['payment_date']), null),
+                            'payment_date' => if_empty(format_date($payment['payment_date']), null),
+                            'no_invoice' => $payment['no_invoice'],
+                            'amount' => $payment['amount'],
+                            'description' => $payment['no_reference'],
+                            'created_by' => $payment['created_by'],
+                        ]);
+
+                        $cashBond = $this->cashBond->getById($cashBond['id']);
+                        $this->statusHistory->create([
+                            'type' => StatusHistoryModel::TYPE_CASH_BOND,
+                            'id_reference' => $cashBond['id'],
+                            'status' => CashBondModel::STATUS_VALIDATED,
+                            'description' => 'Auto merge data ' . $cashBond['no_cash_bond'],
+                            'data' => json_encode([
+                                'cash_bond' => $cashBond,
+                                'cash_bond_detail' => $this->cashBondDetail->getBy(['id_cash_bond' => $cashBond['id']]),
+                                'payment' => $payment,
+                                'creator' => UserModel::loginData('name')
+                            ])
+                        ]);
+
+                        unset($cashBonds[$index]);
+                        break;
+                    }
+                }
+
+                if (!$isEdit) {
+                    $employeePayment = $this->employee->getBy(['ref_employees.id_user' => $payment['created_by']], true);
+                    $this->cashBond->create([
+                        'id_employee' => if_empty((!empty($employeePayment) ? $employeePayment['id'] : ''), null),
+                        'id_bank_account' => get_if_exist($payment, 'id_bank_account', null),
+                        'no_cash_bond' => $payment['no_payment'],
+                        'cash_bond_type' => CashBondModel::TYPE_OTHER,
+                        'cash_bond_date' => $payment['created_at'],
+                        'settlement_date' => $payment['realized_at'],
+                        'source' => CashBondModel::SOURCE_IMPORT,
+                        'requisite_description' => if_empty($payment['description'], 'Payment ' . $payment['no_reference']),
+                        'amount_request' => $payment['amount_request'],
+                        'description' => $payment['customer_name'] . ' - ' . $payment['no_reference'],
+                        'created_by' => $payment['created_by'],
+                        'status' => CashBondModel::STATUS_VALIDATED
+                    ]);
+                    $cashBondId = $this->db->insert_id();
+
+                    $this->cashBondDetail->create([
+                        'id_cash_bond' => $cashBondId,
+                        'invoice_date' => if_empty(format_date($payment['payment_date']), null),
+                        'payment_date' => if_empty(format_date($payment['payment_date']), null),
+                        'no_invoice' => $payment['no_invoice'],
+                        'amount' => $payment['amount'],
+                        'description' => $payment['no_reference'],
+                        'created_by' => $payment['created_by'],
+                    ]);
+
+                    $cashBond = $this->cashBond->getById($cashBondId);
+                    $this->statusHistory->create([
+                        'type' => StatusHistoryModel::TYPE_CASH_BOND,
+                        'id_reference' => $cashBondId,
+                        'status' => CashBondModel::STATUS_VALIDATED,
+                        'description' => 'Auto import data ' . $payment['no_payment'],
+                        'data' => json_encode([
+                            'cash_bond' => $cashBond,
+                            'payment' => $payment,
+                            'creator' => UserModel::loginData('name')
+                        ])
+                    ]);
+                }
+            }
+        } catch (GuzzleException $e) {
+            log_message('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Send reminder payment plan - 2 days
+     */
+    public function reminder_payment_plan()
+    {
+        $this->load->model('ReportModel', 'report');
+        $this->load->model('AccountPayablePaymentModel', 'accountPayablePayment');
+        $this->load->model('StatusHistoryModel', 'statusHistory');
         $this->load->model('UserModel', 'user');
         $this->load->model('modules/Mailer', 'mailer');
         $this->load->model('modules/Exporter', 'exporter');
 
         $filters = [
-            'status' => [
-                RequisitionModel::STATUS_PENDING,
-                RequisitionModel::STATUS_REJECTED,
-                RequisitionModel::STATUS_APPROVED,
-                RequisitionModel::STATUS_LISTED,
-                RequisitionModel::STATUS_ASK_SELECTION,
-                RequisitionModel::STATUS_READY,
-                RequisitionModel::STATUS_SELECTED,
-                RequisitionModel::STATUS_IN_PROCESS,
-            ]
+            'payment_statuses' => AccountPayablePaymentModel::STATUS_PENDING,
+            'payment_date_from' => date('Y-m-d', strtotime('+2 day')),
+            'payment_date_to' => date('Y-m-d', strtotime('+2 days'))
         ];
-        $controlData = $this->report->getControlData($filters);
-        $excelData = $this->exporter->exportFromArray('Control Data', $controlData, false);
+        $payments = $this->report->getPaymentControl($filters);
+        $dataExport = $payments;
 
-        $date = new DateTime();
-        $date->sub(new DateInterval('P7D')); // weekly
-        $lastWeek = $date->format('Y-m-d');
-        $today = date('Y-m-d');
-        $formattedDateLastWeek = (new DateTime($lastWeek))->format('d F Y');
-        $formattedDateToday = (new DateTime($today))->format('d F Y');
-
-		$purchasing = $this->user->getByPermission(PERMISSION_QUOTATION_MANAGE);
-        $emailTo = get_setting('email_support');
-        $emailTitle = "Weekly activity report purchasing  period {$formattedDateLastWeek} to {$formattedDateToday}";
-        $emailTemplate = 'emails/basic';
-        $emailData = [
-            'name' => 'Purchasing Admin',
-            'email' => $emailTo,
-            'content' => "
-                We would like to inform you about latest activities in E-purchasing PT. Transcon Indonesia period 
-                <b>{$formattedDateLastWeek}</b> to <b>{$formattedDateToday}</b>. <br><b>This Email Contains Attachment</b>
-            "
-        ];
-        $emailOptions = [
-            'cc' => array_column(if_empty($purchasing, []), 'email'),
-            'attachment' => $excelData
-        ];
-
-        $sendEmail = $this->mailer->send($emailTo, $emailTitle, $emailTemplate, $emailData, $emailOptions);
-        if (!$sendEmail) {
-            log_message('error', 'Email weekly failed to be sent: ' . $this->email->print_debugger(['headers']));
+        if (!empty($payments)) {
+            $emailTo = get_setting('email_support');
+            $emailTitle = "Payment transfer reminder on " . format_date($filters['payment_date_from'], 'd F Y') . ' (batch transactions)';
+            $emailTemplate = 'emails/payment_request_batch';
+            $emailData = [
+                'email' => $emailTo,
+                'date' => $filters['payment_date_from'],
+                'accountPayablePayments' => $payments,
+                'isReminder' => true
+            ];
+            $emailAttachment = $this->exporter->exportFromArray('Control Data', $dataExport, false);
+            $emailOptions = [
+                'cc' => ['fin2@transcon-indonesia.com', 'acc_mgr@transcon-indonesia.com'],
+                'attachment' => $emailAttachment
+            ];
+            $send = $this->mailer->send($emailTo, $emailTitle, $emailTemplate, $emailData, $emailOptions);
+            if (!$send) {
+                log_message('error', $this->email->print_debugger(['headers']));
+            }
         }
     }
 
     /**
-     * Daily routine to check if pass 6 days the order is not confirmed,
-     * then perform auto confirm.
+     * Send reminder payment plan - 1 day
      */
-    public function check_unconfirmed_order()
+    public function reminder_payment_check()
     {
-        $this->load->model('RequisitionStatusModel', 'requisitionStatus');
-        $this->load->model('PurchaseOfferModel', 'purchaseOffer');
-        $this->load->model('PurchaseOrderModel', 'purchaseOrder');
-        $this->load->model('UserModel', 'user');
-        $this->load->model('NotificationModel', 'notification');
+        $this->load->model('ReportModel', 'report');
+        $this->load->model('AccountPayablePaymentModel', 'accountPayablePayment');
+        $this->load->model('StatusHistoryModel', 'statusHistory');
         $this->load->model('modules/Mailer', 'mailer');
+        $this->load->model('modules/Exporter', 'exporter');
 
-        $askConfirmationOrders = $this->purchaseOrder->getBy([
-            'purchase_offers.status' => PurchaseOfferModel::STATUS_ASK_CONFIRMATION
-        ]);
-        foreach ($askConfirmationOrders as $purchaseOrder) {
-            $statuses = $this->requisitionStatus->getBy([
-                'requisition_statuses.id_requisition' => $purchaseOrder['id_requisition'],
-                'requisition_statuses.status' => PurchaseOfferModel::STATUS_ASK_CONFIRMATION
-            ]);
-            if (!empty($statuses)) {
-                $lastAskConfirmation = end($statuses);
-                $dayElapsed = difference_date(format_date($lastAskConfirmation['created_at']), date('Y-m-d'));
-                if ($dayElapsed >= 7) {
-                    // auto confirmed by system
+        $filters = [
+            'payment_statuses' => AccountPayablePaymentModel::STATUS_PENDING,
+            'payment_date_from' => date('Y-m-d', strtotime('+1 day')),
+            'payment_date_to' => date('Y-m-d', strtotime('+1 days'))
+        ];
+        $payments = $this->report->getPaymentControl($filters);
+        $dataExport = $payments;
 
-                    $this->db->trans_start();
+        if (!empty($payments)) {
+            $emailTo = 'direktur@transcon-indonesia.com';
 
-                    // update rating and received date if necessary
-                    $this->purchaseOrder->update([
-                        'received_date_user' => if_empty($purchaseOrder['received_date'], null),
-                        'receiving_note' => 'Auto confirmed after 7 days',
-                    ], $purchaseOrder['id']);
+            $this->db->trans_start();
 
-                    // update status purchase offer to confirmed
-                    $this->purchaseOffer->update([
-                        'status' => PurchaseOfferModel::STATUS_CONFIRMED
-                    ], $purchaseOrder['id_purchase_offer']);
+            foreach ($payments as &$payment) {
+                if ($payment['payment_check'] == AccountPayablePaymentModel::STATUS_PENDING) {
+                    $this->accountPayablePayment->update([
+                        'status_check' => AccountPayablePaymentModel::STATUS_ASK_APPROVAL
+                    ], $payment['id_account_payable_payment']);
+                }
 
-                    // add requisition status history
-                    $this->requisitionStatus->create([
-                        'id_requisition' => $purchaseOrder['id_requisition'],
-                        'status' => PurchaseOfferModel::STATUS_CONFIRMED,
-                        'description' => "Auto Confirm Order " . $purchaseOrder['no_purchase'],
-                        'data' => json_encode([
-                            'id_purchase_order' => $purchaseOrder['id'],
-                            'no_purchase' => $purchaseOrder['no_purchase'],
-                            'received_date' => $purchaseOrder['received_date'],
-                            'receiving_note' => 'Auto confirmed after 7 days',
-                            'rating_user' => '',
-                            'rating_reason' => '',
-                            'creator' => ''
-                        ])
-                    ]);
+                $this->load->helper('string');
+                $token = random_string('alnum', 32);
 
-                    // send notification to requester owner and purchasing admin
-                    $purchasing = $this->user->getByPermission([PERMISSION_REQUISITION_MANAGE]);
+                $payment['token'] = $token;
 
-                    if (!empty($purchaseOrder['id_user'])) {
-                        $data = [
-                            'id_user' => $purchaseOrder['id_user'],
-                            'id_related' => $purchaseOrder['id'],
-                            'channel' => NotificationModel::SUBSCRIBE_ORDER,
-                            'event' => NotificationModel::EVENT_ORDER_MUTATION,
-                            'payload' => [
-                                'message' => "Handover purchase order {$purchaseOrder['no_purchase']} is AUTO confirmed",
-                                'url' => site_url('purchasing/handover/view/' . $purchaseOrder['id']),
-                                'time' => format_date('now', 'Y-m-d H:i:s'),
-                                'description' => 'Auto confirmed after 7 days'
-                            ]
-                        ];
-                        $this->notification->broadcast($data);
+                $this->statusHistory->create([
+                    'type' => StatusHistoryModel::TYPE_SUBMISSION_PAYMENT,
+                    'id_reference' => $payment['id_account_payable_payment'],
+                    'status' => AccountPayablePaymentModel::STATUS_ASK_APPROVAL,
+                    'description' => 'Auto reminder transfer',
+                    'data' => json_encode([
+                        'token' => $token,
+                        'email' => $emailTo,
+                        'creator' => 0
+                    ])
+                ]);
+            }
 
-                        foreach ($purchasing as $adminPurchasing) {
-                            $data['id_user'] = $adminPurchasing['id'];
-                            $this->notification->broadcast($data);
-                        }
-                    }
+            $this->db->trans_complete();
 
-                    $this->db->trans_complete();
-                    if ($this->db->trans_status()) {
-                        $emailTo = $purchaseOrder['employee_email'];
-                        $emailTitle = "Handover request {$purchaseOrder['request_title']} related with order {$purchaseOrder['no_purchase']} is AUTO confirmed";
-                        $emailTemplate = 'emails/basic';
-                        $emailData = [
-                            'name' => $purchaseOrder['employee_name'],
-                            'email' => $purchaseOrder['employee_email'],
-                            'content' => "
-                                Requisition {$purchaseOrder['request_title']} related with purchase order {$purchaseOrder['no_purchase']}) 
-                                is <b>AUTO CONFIRMED</b>, Purchasing admins will set <strong>complete</strong> to the order.
-                                <br><br>
-                                Note: the order is AUTO CONFIRMED because late to confirm in 7 days"
-                        ];
-                        $emailOptions = [
-                            'cc' => array_column(if_empty($purchasing, []), 'email')
-                        ];
-
-                        $sendEmail = $this->mailer->send($emailTo, $emailTitle, $emailTemplate, $emailData, $emailOptions);
-                        if (!$sendEmail) {
-                            log_message('error', 'Email weekly failed to be sent: ' . $this->email->print_debugger(['headers']));
-                        }
-                    }
+            if ($this->db->trans_status()) {
+                $emailTitle = "Payment transfer request on " . format_date($filters['payment_date_from'], 'd F Y') . ' (batch transactions)';
+                $emailTemplate = 'emails/payment_request_batch';
+                $emailData = [
+                    'email' => $emailTo,
+                    'date' => $filters['payment_date_from'],
+                    'accountPayablePayments' => $payments,
+                    'isReminder' => false
+                ];
+                $emailAttachment = $this->exporter->exportFromArray('Control Data', $dataExport, false);
+                $emailOptions = [
+                    'cc' => ['fin2@transcon-indonesia.com', 'acc_mgr@transcon-indonesia.com', 'md@transcon-indonesia.com'],
+                    'attachment' => $emailAttachment
+                ];
+                $send = $this->mailer->send($emailTo, $emailTitle, $emailTemplate, $emailData, $emailOptions);
+                if (!$send) {
+                    log_message('error', $this->email->print_debugger(['headers']));
                 }
             }
         }
     }
 
 	/**
-	 * Send to decision maker of outstanding requisition.
+	 * Send report payment outstanding
 	 */
-	public function vendor_selection_reminder()
+    public function payment_outstanding_report()
 	{
-		$this->load->model('NotificationModel', 'notification');
-		$this->load->model('RequisitionModel', 'requisition');
-		$this->load->model('PurchaseOfferModel', 'purchaseOffer');
-		$this->load->model('PurchaseOfferItemModel', 'purchaseOfferItem');
-		$this->load->model('EmployeeModel', 'employee');
-		$this->load->model('UserModel', 'user');
+		$this->load->model('ReportModel', 'report');
+		$this->load->model('AccountPayablePaymentModel', 'accountPayablePayment');
+		$this->load->model('modules/Mailer', 'mailer');
 
-		$requisitions = $this->requisition->getBy(['requisitions.status' => RequisitionModel::STATUS_ASK_SELECTION]);
-		if (!empty($requisitions)) {
-			$requisitionMessage = "🛒 *PURCHASING ASK SELECTION*\n";
-			foreach ($requisitions as $requisition) {
-				$purchaseOffers = $this->purchaseOffer->getBy(['purchase_offers.id_requisition' => $requisition['id']]);
-
-				$requisitionMessage .= "-------------------------------------\n";
-				$requisitionMessage .= "*Requisition:* {$requisition['request_title']}\n";
-				$requisitionMessage .= "*No Request:* {$requisition['no_requisition']}\n";
-				$requisitionMessage .= "*Requester:* {$requisition['employee_name']}\n";
-				$requisitionMessage .= "*Urgency:* {$requisition['urgency']}\n";
-				$requisitionMessage .= "*Deadline:* {$requisition['deadline']}\n";
-				$requisitionMessage .= "*Type:* {$requisition['request_type']}\n";
-				$requisitionMessage .= "*Decision Maker:* {$requisition['decision_maker_email']}\n\n";
-				$requisitionMessage .= "💰 *Vendor Offers:* \n";
-				foreach ($purchaseOffers as $purchaseOfferIndex => $purchaseOffer) {
-					$requisitionMessage .= ($purchaseOfferIndex + 1) . ". {$purchaseOffer['vendor']} dengan harga total *Rp. " . numerical($purchaseOffer['total_price']) . "*\n";
-				}
-				$requisitionMessage .= "\n👷🏼‍♂️ *Admin Recommendation:* {$requisition['purchasing_note']}\n";
-			}
-
-			$quotationManageUsers = $this->user->getByPermission(PERMISSION_QUOTATION_MANAGE);
-			foreach ($quotationManageUsers as $quotationManageUser) {
-				$employee = $this->employee->getBy(['ref_employees.id_user' => $quotationManageUser['id']], true);
-				if (!empty($employee['contact_mobile'])) {
-					$this->notification->broadcast([
-						'url' => 'sendMessage',
-						'method' => 'POST',
-						'payload' => [
-							'chatId' => detect_chat_id($employee['contact_mobile']),
-							'body' => $requisitionMessage . "\n\n*Please submit your recommendation immediately!* ✅",
-						]
-					], NotificationModel::TYPE_CHAT_PUSH);
-				}
-			}
-		} else {
-			echo 'No outstanding ask selection';
-		}
-	}
-
-	/**
-	 * Send to decision maker of outstanding requisition.
-	 */
-	public function requisition_approval_reminder()
-	{
-		$this->load->model('NotificationModel', 'notification');
-		$this->load->model('RequisitionModel', 'requisition');
-		$this->load->model('EmployeeModel', 'employee');
-		$this->load->model('UserModel', 'user');
-
-		$requisitions = $this->requisition->getBy(['requisitions.status' => RequisitionModel::STATUS_PENDING]);
-
-		if (!empty($requisitions)) {
-			foreach ($requisitions as $requisition) {
-				$requisitionMessage = "🛒 *REQUISITION PENDING APPROVAL*\n";
-				$requisitionMessage .= "--------------------------------------------\n";
-				$requisitionMessage .= "*Requisition:* {$requisition['request_title']}\n";
-				$requisitionMessage .= "*No Request:* {$requisition['no_requisition']}\n";
-				$requisitionMessage .= "*Requester:* {$requisition['employee_name']}\n";
-				$requisitionMessage .= "*Urgency:* {$requisition['urgency']}\n";
-				$requisitionMessage .= "*Deadline:* {$requisition['deadline']}";
-
-				$employee = $this->employee->getById($requisition['id_supervisor']);
-				if (!empty($employee['contact_mobile'])) {
-					$this->notification->broadcast([
-						'url' => 'sendMessage',
-						'method' => 'POST',
-						'payload' => [
-							'chatId' => detect_chat_id($employee['contact_mobile']),
-							'body' => $requisitionMessage . "\n\n*Please approve ✅ / reject ⛔ the requisition immediately!*",
-						]
-					], NotificationModel::TYPE_CHAT_PUSH);
-				} else {
-					echo $employee['name'] . ' has no contact mobile';
-				}
-			}
-		} else {
-			echo 'No outstanding pending approval';
-		}
-	}
-
-	/**
-	 * Remind user to confirm their handover.
-	 */
-	public function confirmation_reminder()
-	{
-		$this->load->model('UserModel', 'user');
-		$this->load->model('HandoverModel', 'handover');
-		$this->load->model('PurchaseOfferModel', 'purchaseOffer');
-		$this->load->model('NotificationModel', 'notification');
-
-		$handovers = $this->handover->getAll([
-			'statuses' => [PurchaseOfferModel::STATUS_ASK_CONFIRMATION]
+		$outstandingPayments = $this->report->getOutstandingPayment();
+		$holdPayments = $this->accountPayablePayment->getAll([
+			'status' => AccountPayablePaymentModel::STATUS_HOLD
 		]);
 
-		if (!empty($handovers)) {
-			$employeeIds = array_unique(array_column($handovers, 'id_employee'));
-			foreach ($employeeIds as $employeeId) {
-				// filter by employee
-				$userHandovers = array_filter($handovers, function($handover) use ($employeeId) {
-					return $handover['id_employee'] == $employeeId;
-				});
+		if (!empty($outstandingPayments)) {
+			$emailTo = 'direktur@transcon-indonesia.com';
 
-				// get contact from data to reduce performing query
-				$contactMobile = get_if_exist(reset($userHandovers), 'contact_mobile');
-
-				if (!empty($contactMobile)) {
-					$title = "*Outstanding Handover Requisition:*\n";
-					$message = array_reduce($userHandovers, function($carryMessage, $item) {
-						$carryMessage .= "------------------------------------------\n";
-						$carryMessage .= "*Requisition:* {$item['request_title']}\n";
-						$carryMessage .= "*No Request:* {$item['no_requisition']}\n";
-						$carryMessage .= "*Category:* {$item['category']}\n";
-						$carryMessage .= "*Requester:* {$item['employee_name']}\n";
-						$carryMessage .= "*Status:* {$item['status']}\n";
-						$carryMessage .= "*Last Updated:* " . relative_time($item['last_updated_offer']) . "\n";
-						return $carryMessage;
-					}, $title);
-					$message .= "\n*New request will be blocked, please confirm request above.*";
-
-					$result = $this->notification->broadcast([
-						'url' => 'sendMessage',
-						'method' => 'POST',
-						'payload' => [
-							'chatId' => detect_chat_id($contactMobile),
-							'body' => $message
-						]
-					], NotificationModel::TYPE_CHAT_PUSH);
-
-					if ($result) {
-						echo "Outstanding handover {$contactMobile} already sent";
-					} else {
-						echo "Outstanding handover {$contactMobile} failed to be sent";
-					}
-				} else {
-					echo "Outstanding handover not sent because employee does not has mobile contact";
-				}
+			$emailTitle = "Outstanding payment transfer plan per " . format_date('now', 'd F Y');
+			$emailTemplate = 'emails/outstanding_payment';
+			$emailData = [
+				'email' => $emailTo,
+				'outstandingPayments' => $outstandingPayments,
+				'holdPayments' => $holdPayments
+			];
+			$emailOptions = [
+				'cc' => ['fin2@transcon-indonesia.com', 'acc_mgr@transcon-indonesia.com', 'md@transcon-indonesia.com'],
+			];
+			$send = $this->mailer->send($emailTo, $emailTitle, $emailTemplate, $emailData, $emailOptions);
+			if (!$send) {
+				log_message('error', $this->email->print_debugger(['headers']));
 			}
+		}
+	}
+
+	/**
+	 * Reminder realization report
+	 */
+	public function payment_realization_report()
+	{
+		$this->load->model('ReportModel', 'report');
+		$this->load->model('AccountPayablePaymentModel', 'accountPayablePayment');
+		$this->load->model('modules/Mailer', 'mailer');
+
+		$dateFrom = date('d F Y', strtotime('-14 day'));
+		$dateTo = format_date('now', 'd F Y');
+		$realizedPayments = $this->accountPayablePayment->getAll([
+			'status' => AccountPayablePaymentModel::STATUS_PAID_OFF,
+			'date_from' => $dateFrom,
+			'date_to' => $dateTo,
+			'sort_by' => 'ref_bill_categories.bill_category'
+		]);
+
+		if (!empty($realizedPayments)) {
+			$emailTo = 'direktur@transcon-indonesia.com';
+
+			$emailTitle = "Payment realization transfer since " . $dateFrom . ' until ' . $dateTo;
+			$emailTemplate = 'emails/payment_realization';
+			$emailData = [
+				'email' => $emailTo,
+				'realizedPayments' => $realizedPayments,
+				'dateFrom' => $dateFrom,
+				'dateTo' => $dateTo,
+			];
+			$emailOptions = [
+				'cc' => ['fin2@transcon-indonesia.com', 'acc_mgr@transcon-indonesia.com'],
+			];
+			$send = $this->mailer->send($emailTo, $emailTitle, $emailTemplate, $emailData, $emailOptions);
+			if (!$send) {
+				log_message('error', $this->email->print_debugger(['headers']));
+			}
+		}
+	}
+
+	/**
+	 * Get tax base amount summary.
+	 * Expected to be executed at 16th each month and 6th each month
+	 */
+	public function tax_base_summary()
+	{
+		$this->load->model('AccountReceivableModel', 'accountReceivable');
+		$this->load->model('modules/Exporter', 'exporter');
+		$this->load->model('modules/Mailer', 'mailer');
+
+		$currentDate = format_date('now', 'j');
+		if ($currentDate > 15) {
+			$dateFrom = date('Y-m-01');
+			$dateTo = date('Y-m-d');
 		} else {
-			echo "No outstanding handover";
+			$dateFrom = date('Y-m-1', strtotime('-1 months'));
+			$dateTo = date('Y-m-d', strtotime("last day of previous month"));
+		}
+
+		$invoicePLB = $this->accountReceivable->getAll([
+			'date_type' => 'invoice_date',
+			'date_from' => $dateFrom,
+			'date_to' => $dateTo
+		]);
+
+		$invoiceTPP = $this->accountReceivable->getWarehouseInvoice([
+			'date_type' => 'invoice_date',
+			'date_from' => $dateFrom,
+			'date_to' => $dateTo
+		]);
+
+		$invoices = [];
+		$totalPLB = 0;
+		$totalTPP = 0;
+
+		foreach ($invoicePLB as $invoice) {
+			$invoices[] = [
+				'type' => 'PLB',
+				'customer_name' => $invoice['customer_name'],
+				'date' => $invoice['invoice_date'],
+				'no_invoice' => $invoice['no_invoice'],
+				'description' => $invoice['invoice_note'],
+				'base_amount' => $invoice['base_amount'],
+			];
+			$totalPLB += $invoice['base_amount'];
+		}
+
+		foreach ($invoiceTPP as $invoice) {
+			$invoices[] = [
+				'type' => 'TPP',
+				'customer_name' => $invoice['customer_name'],
+				'date' => format_date($invoice['invoice_date']),
+				'no_invoice' => $invoice['no_invoice'],
+				'description' => $invoice['type'] . ' ' . $invoice['no_reference'],
+				'base_amount' => $invoice['dpp'],
+			];
+			$totalTPP += $invoice['dpp'];
+		}
+
+		$attachments = [];
+		if (!empty($invoices)) {
+			$title = 'Invoice DPP Summary ' . $dateFrom . ' Until ' . $dateTo;
+			$exportedData = $this->exporter->exportFromArray($title, $invoices, false);
+			$attachments[] = [
+				'source' => $exportedData,
+				'disposition' => 'attachment',
+				'file_name' => url_title($title) . ".xlsx",
+			];
+		}
+
+		$emailTo = 'md@transcon-indonesia.com';
+		$emailTitle = "Invoice DPP summary since " . $dateFrom . ' until ' . $dateTo;
+		$emailTemplate = 'emails/tax_base_summary';
+		$emailData = [
+			'email' => $emailTo,
+			'invoices' => $invoices,
+			'totalPLB' => $totalPLB,
+			'totalTPP' => $totalTPP,
+			'dateFrom' => $dateFrom,
+			'dateTo' => $dateTo,
+		];
+		$emailOptions = [
+			'cc' => ['acc_mgr@transcon-indonesia.com'],
+			'attachment' => $attachments,
+		];
+		$send = $this->mailer->send($emailTo, $emailTitle, $emailTemplate, $emailData, $emailOptions);
+		if (!$send) {
+			log_message('error', $this->email->print_debugger(['headers']));
 		}
 	}
 }

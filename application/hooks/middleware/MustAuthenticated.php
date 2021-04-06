@@ -21,8 +21,7 @@ class MustAuthenticated
 
     private $allowGuest = [
         Login::class, Register::class, Password::class, Error404::class,
-        Migrate::class, Automate::class, Vendor_selection::class,
-        Vendor_create::class, Vendor_completion::class
+        Migrate::class, Automate::class, Landing::class, Legal::class
     ];
 
     public function __construct()

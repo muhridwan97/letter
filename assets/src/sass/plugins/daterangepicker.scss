@@ -7,3 +7,6 @@
     width: 45%;
   }
 }
+.daterangepicker td.active, .daterangepicker td.active:hover {
+  background-color: $primary;
+}
