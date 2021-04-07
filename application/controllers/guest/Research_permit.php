@@ -3,6 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Class Course
+ * @property LecturerModel $lecturer
  * @property CourseModel $course
  * @property LessonModel $lesson
  * @property CurriculumModel $curriculum
@@ -10,14 +11,16 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @property Exporter $exporter
  * @property Uploader $uploader
  */
-class Letter extends App_Controller
+class Research_permit extends App_Controller
 {
+	protected $layout = 'layouts/landing';
 	/**
 	 * Course constructor.
 	 */
 	public function __construct()
 	{
 		parent::__construct();
+		$this->load->model('LecturerModel', 'lecturer');
 		$this->load->model('CurriculumModel', 'curriculum');
 		$this->load->model('CourseModel', 'course');
 		$this->load->model('LessonModel', 'lesson');
@@ -75,18 +78,14 @@ class Letter extends App_Controller
 	}
 
 	/**
-	 * Show create course.
+	 * Show create Research Permit.
 	 *
-	 * @param null $curriculumId
 	 */
-	public function create($curriculumId = null)
+	public function create()
 	{
-		AuthorizationModel::mustAuthorized(PERMISSION_COURSE_CREATE);
-
-		$curriculums = $this->curriculum->getAll(['status' => CurriculumModel::STATUS_ACTIVE]);
-		$selectedCurriculum = $this->curriculum->getById($curriculumId);
-
-		$this->render('course/create', compact('curriculums', 'selectedCurriculum'));
+		$kaprodis = $this->lecturer->getBy(['position' => 'KAPRODI']);
+		$pembimbings = $this->lecturer->getAll();
+		$this->render('research_permit/create', compact('kaprodis', 'pembimbings'));
 	}
 
 	/**
