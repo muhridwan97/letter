@@ -87,6 +87,10 @@ try {
         import("./pages/exam").then(quiz => quiz.default());
     }
 
+    if ($('#form-assignment-letter').length) {
+        import("./pages/assignment-letter").then(assignmentLetter => assignmentLetter.default());
+    }
+
 } catch (e) {
     console.log(e);
 }

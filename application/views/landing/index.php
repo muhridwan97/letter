@@ -17,9 +17,25 @@
 				<div>
 					<h4 class="mb-0">Surat Izin Penelitian</h4>
 				</div>
-				<img src="<?= base_url('assets/dist/img/chemistry.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
+				<img src="<?= base_url('assets/src/images/chemistry.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
 			</div>
 			<a href="<?= site_url('guest/research-permit/create') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
+				<span class="small">Ayo Buat</span>
+				<i class="mdi mdi-arrow-right"></i>
+			</a>
+		</div>
+		</a>
+	</div>
+	<div class="col-6 col-xl-3">
+		<a href="<?= site_url('guest/assignment-letter/create') ?>" style="text-decoration: none;">
+		<div class="card border-0 shadow-sm mb-3">
+			<div class="card-body d-flex justify-content-between align-items-center">
+				<div>
+					<h4 class="mb-0">Surat Tugas</h4>
+				</div>
+				<img src="<?= base_url('assets/src/images/completed-task.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
+			</div>
+			<a href="<?= site_url('guest/assignment-letter/create') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
 				<span class="small">Ayo Buat</span>
 				<i class="mdi mdi-arrow-right"></i>
 			</a>
@@ -30,23 +46,9 @@
 		<div class="card border-0 shadow-sm mb-3">
 			<div class="card-body d-flex justify-content-between align-items-center">
 				<div>
-					<h4 class="mb-0">Surat Tugas</h4>
-				</div>
-				<img src="<?= base_url('assets/dist/img/completed-task.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
-			</div>
-			<a href="<?= site_url('syllabus/course') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
-				<span class="small">Ayo Buat</span>
-				<i class="mdi mdi-arrow-right"></i>
-			</a>
-		</div>
-	</div>
-	<div class="col-6 col-xl-3">
-		<div class="card border-0 shadow-sm mb-3">
-			<div class="card-body d-flex justify-content-between align-items-center">
-				<div>
 					<h4 class="mb-0">Surat Ijin Wawancara</h4>
 				</div>
-				<img src="<?= base_url('assets/dist/img/conversation.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
+				<img src="<?= base_url('assets/src/images/conversation.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
 			</div>
 			<a href="<?= site_url('syllabus/lesson') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
 				<span class="small">Ayo Buat</span>
@@ -60,7 +62,7 @@
 				<div>
 					<h4 class="mb-0">Surat Permohonan Habis Teori</h4>
 				</div>
-				<img src="<?= base_url('assets/dist/img/university.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
+				<img src="<?= base_url('assets/src/images/university.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
 			</div>
 			<a href="<?= site_url('training/class') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
 				<span class="small">Ayo Buat</span>
@@ -76,7 +78,7 @@
 				<div>
 					<h4 class="mb-0">Surat Pengapusan Mata Kuliah</h4>
 				</div>
-				<img src="<?= base_url('assets/dist/img/file.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
+				<img src="<?= base_url('assets/src/images/file.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
 				<!-- <h1 class="mdi mdi-folder-settings-outline display-4 text-warning" style="line-height: 1; flex-basis: 70px"></h1> -->
 			</div>
 			<a href="<?= site_url('syllabus/curriculum') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
@@ -91,7 +93,7 @@
 				<div>
 					<h4 class="mb-0">Surat Izin Kuliah</h4>
 				</div>
-				<img src="<?= base_url('assets/dist/img/permission.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
+				<img src="<?= base_url('assets/src/images/permission.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
 			</div>
 			<a href="<?= site_url('syllabus/course') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
 				<span class="small">Ayo Buat</span>
@@ -106,7 +108,7 @@
 					<h4 class="mb-0">Surat Rekomendasi</h4>
 					<p class="text-fade mb-0">Surat Rekomendasi</p>
 				</div>
-				<img src="<?= base_url('assets/dist/img/like.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
+				<img src="<?= base_url('assets/src/images/like.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
 			</div>
 			<a href="<?= site_url('syllabus/lesson') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
 				<span class="small">Ayo Buat</span>
@@ -120,7 +122,7 @@
 				<div>
 					<h4 class="mb-0">Download Surat Lainnya</h4>
 				</div>
-				<img src="<?= base_url('assets/dist/img/files.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
+				<img src="<?= base_url('assets/src/images/files.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
 			</div>
 			<a href="<?= site_url('training/class') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
 				<span class="small">Ayo Buat</span>

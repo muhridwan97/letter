@@ -9,7 +9,7 @@
     <title><?= $this->config->item('app_name') ?> | <?= isset($title) ? $title : 'Home' ?></title>
     <link rel="stylesheet" href="<?= base_url(get_asset('vendors.css')) ?>">
     <link rel="stylesheet" href="<?= base_url(get_asset('app.css')) ?>">
-    <link rel="icon" href="<?= base_url('assets/dist/img/uin.png') ?>" type="image/x-icon">
+    <link rel="icon" href="<?= base_url('assets/src/images/uin.png') ?>" type="image/x-icon">
     <script src="https://js.pusher.com/4.3/pusher.min.js"></script>
 </head>
 <body>
