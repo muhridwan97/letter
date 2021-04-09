@@ -4,14 +4,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 /**
  * Class Course
  * @property LecturerModel $lecturer
- * @property CourseModel $course
- * @property LessonModel $lesson
- * @property CurriculumModel $curriculum
  * @property NotificationModel $notification
  * @property Exporter $exporter
  * @property Uploader $uploader
  */
-class Assignment_letter extends App_Controller
+class Interview_permit extends App_Controller
 {
 	protected $layout = 'layouts/landing';
 	/**
@@ -39,6 +36,6 @@ class Assignment_letter extends App_Controller
 	{
 		$kaprodis = $this->lecturer->getBy(['position' => 'KAPRODI']);
 		$pembimbings = $this->lecturer->getAll();
-		$this->render('assignment_letter/create', compact('kaprodis', 'pembimbings'));
+		$this->render('interview_permit/create', compact('kaprodis', 'pembimbings'));
 	}
 }

@@ -43,6 +43,7 @@
 		</a>
 	</div>
 	<div class="col-6 col-xl-3">
+		<a href="<?= site_url('guest/interview-permit/create') ?>" style="text-decoration: none;">
 		<div class="card border-0 shadow-sm mb-3">
 			<div class="card-body d-flex justify-content-between align-items-center">
 				<div>
@@ -50,13 +51,15 @@
 				</div>
 				<img src="<?= base_url('assets/src/images/conversation.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
 			</div>
-			<a href="<?= site_url('syllabus/lesson') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
+			<a href="<?= site_url('guest/interview-permit/create') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
 				<span class="small">Ayo Buat</span>
 				<i class="mdi mdi-arrow-right"></i>
 			</a>
 		</div>
+		</a>
 	</div>
 	<div class="col-6 col-xl-3">
+		<a href="<?= site_url('guest/application-letter/create') ?>" style="text-decoration: none;">
 		<div class="card border-0 shadow-sm mb-3">
 			<div class="card-body d-flex justify-content-between align-items-center">
 				<div>
@@ -64,11 +67,12 @@
 				</div>
 				<img src="<?= base_url('assets/src/images/university.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
 			</div>
-			<a href="<?= site_url('training/class') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
+			<a href="<?= site_url('guest/application-letter/create') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
 				<span class="small">Ayo Buat</span>
 				<i class="mdi mdi-arrow-right"></i>
 			</a>
 		</div>
+		</a>
 	</div>
 </div>
 <div class="row">

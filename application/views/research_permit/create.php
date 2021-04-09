@@ -19,7 +19,7 @@
 			<div class="form-group">
 				<label for="terhormat">Yang Terhormat</label>
 				<input type="text" class="form-control" id="terhormat" name="terhormat" maxlength="100"
-						placeholder="Masukkan tujuan surat"><?= set_value('terhormat') ?>
+						required placeholder="Masukkan tujuan surat"><?= set_value('terhormat') ?>
 				<?= form_error('terhormat') ?>
 			</div>
 			<div class="form-group">

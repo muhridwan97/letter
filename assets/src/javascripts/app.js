@@ -91,6 +91,10 @@ try {
         import("./pages/assignment-letter").then(assignmentLetter => assignmentLetter.default());
     }
 
+    if ($('#form-interview-permit').length) {
+        import("./pages/interview-permit").then(interviewPermit => interviewPermit.default());
+    }
+
 } catch (e) {
     console.log(e);
 }

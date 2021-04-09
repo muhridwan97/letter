@@ -19,7 +19,8 @@
 		"phpoffice/phpspreadsheet": "^1.12",
 		"aws/aws-sdk-php": "^3.138",
      	"ext-fileinfo": "*",
-		"nesbot/carbon": "^2.43"
+		"nesbot/carbon": "^2.43",
+		"milon/barcode": "^8.0"
     },
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

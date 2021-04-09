@@ -89,12 +89,10 @@ class Research_permit extends App_Controller
 	}
 
 	/**
-	 * Save new course data.
-	 * @param null $curriculumId
+	 * Save new research permit.
 	 */
-	public function save($curriculumId = null)
+	public function save()
 	{
-		AuthorizationModel::mustAuthorized(PERMISSION_COURSE_CREATE);
 
 		if ($this->validate()) {
 			$curriculumId = if_empty($curriculumId, $this->input->post('curriculum'));
@@ -302,8 +300,8 @@ class Research_permit extends App_Controller
 	protected function _validation_rules()
 	{
 		return [
-			'course_title' => 'trim|required|max_length[100]',
-			'curriculum' => 'required',
+			'email' => 'trim|required|max_length[100]|valid_email',
+			'terhormat' => 'required|max_length[100]',
 			'status' => 'required|in_list[ACTIVE,INACTIVE]',
 			'description' => 'max_length[500]',
 		];
