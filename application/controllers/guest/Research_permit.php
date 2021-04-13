@@ -103,8 +103,7 @@ class Research_permit extends App_Controller
 				'view' => 'research_permit/print',
 				'data' => compact('tanggalSekarang'),
 			];
-			// $this->load->view('research_permit/print');
-			return $this->exporter->exportToPdf("Surat Izin Penelitian.pdf", null, $options);
+			$this->exporter->exportToPdf("Surat Izin Penelitian.pdf", null, $options);
 		}
 		$this->create();
 	}

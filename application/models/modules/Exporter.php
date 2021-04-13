@@ -139,6 +139,6 @@ class Exporter extends CI_Model
             return $pdf->output();
         }
 
-        $pdf->stream($title . ".pdf", ["Attachment" => false]);
+        $pdf->stream($title . ".pdf", ["Attachment" => true]);//attachment false untuk preview
     }
 }
