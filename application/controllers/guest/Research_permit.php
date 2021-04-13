@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+use Carbon\Carbon;
+
 /**
  * Class Course
  * @property LecturerModel $lecturer
@@ -93,51 +95,16 @@ class Research_permit extends App_Controller
 	 */
 	public function save()
 	{
-
 		if ($this->validate()) {
-			$curriculumId = if_empty($curriculumId, $this->input->post('curriculum'));
-			$courseTitle = $this->input->post('course_title');
-			$status = $this->input->post('status');
-			$description = $this->input->post('description');
-
-			$coverImage = null;
-			if (!empty($_FILES['cover_image']['name'])) {
-				$uploadFile = $this->uploader->setDriver('s3')->uploadTo('cover_image', [
-					'destination' => 'courses/' . date('Y/m')
-				]);
-				if ($uploadFile) {
-					$uploadedData = $this->uploader->getUploadedData();
-					$coverImage = $uploadedData['uploaded_path'];
-				} else {
-					flash('danger', $this->uploader->getDisplayErrors());
-				}
-			} else {
-				$uploadFile = true;
-			}
-
-			if ($uploadFile) {
-				$save = $this->course->create([
-					'id_curriculum' => if_empty($curriculumId, null),
-					'course_title' => $courseTitle,
-					'status' => $status,
-					'cover_image' => if_empty($coverImage, null),
-					'description' => $description,
-					'course_order' => $this->course->getNextRowOrder($curriculumId),
-				]);
-				$courseId = $this->db->insert_id();
-
-				if ($save) {
-					$this->notification
-						->via([Notify::DATABASE_PUSH, Notify::WEB_PUSH])
-						->to(UserModel::loginData())
-						->send(new CreateCourseNotification(
-							$this->course->getById($courseId)
-						));
-					flash('success', "Course {$courseTitle} successfully created", 'syllabus/course');
-				} else {
-					flash('danger', 'Create course failed, try again or contact administrator');
-				}
-			}
+			$dateNow = Carbon::now()->locale('id');
+			$tanggalSekarang = $dateNow->isoFormat('D MMMM YYYY');
+			$options = [
+				'buffer' => false,
+				'view' => 'research_permit/print',
+				'data' => compact('tanggalSekarang'),
+			];
+			// $this->load->view('research_permit/print');
+			return $this->exporter->exportToPdf("Surat Izin Penelitian.pdf", null, $options);
 		}
 		$this->create();
 	}
@@ -302,8 +269,13 @@ class Research_permit extends App_Controller
 		return [
 			'email' => 'trim|required|max_length[100]|valid_email',
 			'terhormat' => 'required|max_length[100]',
-			'status' => 'required|in_list[ACTIVE,INACTIVE]',
-			'description' => 'max_length[500]',
+			'judul' => 'required|max_length[100]',
+			'nama' => 'required|max_length[100]',
+			'nim' => 'required|max_length[100]',
+			'pengambilan_data' => 'required|max_length[100]',
+			'metode' => 'required|max_length[100]',
+			'kaprodi' => 'required|max_length[100]',
+			'pembimbing' => 'required|max_length[100]',
 		];
 	}
 }
