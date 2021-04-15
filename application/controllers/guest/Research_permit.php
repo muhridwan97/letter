@@ -106,13 +106,13 @@ class Research_permit extends App_Controller
 			$metode = $this->input->post('metode');
 			$kaprodi = $this->input->post('kaprodi');
 			$pembimbing = $this->input->post('pembimbing');
-			$kaprodiName = $this->lecturer->getById($kaprodi);
-			$pembimbingName = $this->lecturer->getById($pembimbing);
+			$kaprodi = $this->lecturer->getById($kaprodi);
+			$pembimbing = $this->lecturer->getById($pembimbing);
 			$options = [
 				'buffer' => false,
 				'view' => 'research_permit/print',
 				'data' => compact('tanggalSekarang', 'terhormat', 'judul', 'nama', 'nim',
-				 					'pengambilan_data', 'metode', 'kaprodiName', 'pembimbingName'),
+				 					'pengambilan_data', 'metode', 'kaprodi', 'pembimbing'),
 			];
 			$this->exporter->exportToPdf("Surat Izin Penelitian.pdf", null, $options);
 		}

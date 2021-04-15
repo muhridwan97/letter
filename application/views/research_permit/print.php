@@ -167,11 +167,34 @@
 <p style="margin-left: 60px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
     Wassalamu'alaikum Wr.Wb 
 </p>
-<table style="margin-left:50px;font-size: 14px; margin-top: 40px; margin-bottom: 10px; width: 100%">
+<p style="margin-top: 40px;margin-left: 80px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
+    a.n.Dekan
+</p>
+<table style="margin-left:20px;font-size: 14px; margin-top: 40px; margin-bottom: 10px; width: 100%">
     <tbody>
     <tr>
-        <th><p>Purchasing</p></th>
-        <th><p>Finance</p></th>
+        <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">Ketua Program Studi</p>
+            <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">Pendidikan Fisika</p>
+            </th>
+        <th style="width: 100px;"></th>
+        <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">Dosen Pembimbing</p></th>
+    </tr>
+    <tr>
+        <th colspan="3">&nbsp;</th>
+    </tr>
+    <tr>
+        <th colspan="3">&nbsp;</th>
+    </tr>
+    <tr>
+        <th colspan="3">&nbsp;</th>
+    </tr>
+    <tr>
+        <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"><?= $kaprodi['name'] ?></p>
+            <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">NIP. <?= $kaprodi['no_lecturer'] ?></p>
+            </th>
+        <th style="width: 100px;"></th>
+        <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"><?= $pembimbing['name'] ?></p>
+        <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">NIP. <?= $pembimbing['no_lecturer'] ?></p></th>
     </tr>
     </tbody>
 </table>
