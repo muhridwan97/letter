@@ -51,7 +51,7 @@
                 Nomor&nbsp;&nbsp;&nbsp;:
             </p>
             <p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                Lamp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                Lamp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: -
             </p>
             <p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
                 Hal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: Permohonan Izin Pengambilan data
@@ -63,10 +63,110 @@
 </table>
 
 
-<p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px">
-    PO No :
+<p style="margin-top: 40px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
+    Yth.
 </p>
-
+<p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px">
+    <?= $terhormat ?>
+</p>
+<p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px">
+    Di tempat
+</p>
+<p style="margin-top: 20px;margin-left: 60px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
+    Assalamu’alaikum Wr.Wb.
+</p>
+<p style="margin-left: 60px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
+    Kami beritahukan bahwa untuk kelengkapan penyusunan skripsi dengan judul :
+</p>
+<p style="margin-left: 60px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
+    <strong><?= $judul ?></strong>
+</p>
+<p style="margin-left: 60px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
+    diperlukan penelitian. Oleh karena itu, kami mengharap kiranya Bapak/Ibu berkenan
+</p>
+<p style="margin-left: 60px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
+    memberi izin kepada mahasiswa kami :
+</p>
+<table style="margin-left: 60px;font-size: 14px; margin-bottom: 5px;">
+    <tbody>
+    <tr>
+        <th><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+                Nama
+            </p>
+        </th>
+        <th style="text-align: right;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+                :
+            </p>
+        </th>
+        <th style="text-align: left;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+                <?= $nama ?>
+            </p>
+        </th>
+    </tr>
+    <tr>
+        <th><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+                NIM
+            </p>
+        </th>
+        <th style="text-align: right;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+                :
+            </p>
+        </th>
+        <th style="text-align: left;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+                <?= $nim ?>
+            </p>
+        </th>
+    </tr>
+    <tr>
+        <th><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+                Program studi
+            </p>
+        </th>
+        <th style="text-align: right;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+                :
+            </p>
+        </th>
+        <th style="text-align: left;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+                Pendidikan Fisika
+            </p>
+        </th>
+    </tr>
+    <tr>
+        <th><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+                Untuk pengambilan data
+            </p>
+        </th>
+        <th style="text-align: right;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+                :
+            </p>
+        </th>
+        <th style="text-align: left;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+                <?= $pengambilan_data ?>
+            </p>
+        </th>
+    </tr>
+    <tr>
+        <th><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+                Metode pengumpulan data
+            </p>
+        </th>
+        <th style="text-align: right;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+                :
+            </p>
+        </th>
+        <th style="text-align: left;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+            <?= $metode ?>
+            </p>
+        </th>
+    </tr>
+    </tbody>
+</table>
+<p style="margin-left: 60px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
+    Demikian, atas bantuan dan izin yang diberikan, kami mengucapkan terima kasih. 
+</p>
+<p style="margin-left: 60px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
+    Wassalamu'alaikum Wr.Wb 
+</p>
 <table style="margin-left:50px;font-size: 14px; margin-top: 40px; margin-bottom: 10px; width: 100%">
     <tbody>
     <tr>

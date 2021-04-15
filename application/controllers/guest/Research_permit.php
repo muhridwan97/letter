@@ -98,10 +98,21 @@ class Research_permit extends App_Controller
 		if ($this->validate()) {
 			$dateNow = Carbon::now()->locale('id');
 			$tanggalSekarang = $dateNow->isoFormat('D MMMM YYYY');
+			$terhormat = $this->input->post('terhormat');
+			$judul = $this->input->post('judul');
+			$nama = $this->input->post('nama');
+			$nim = $this->input->post('nim');
+			$pengambilan_data = $this->input->post('pengambilan_data');
+			$metode = $this->input->post('metode');
+			$kaprodi = $this->input->post('kaprodi');
+			$pembimbing = $this->input->post('pembimbing');
+			$kaprodiName = $this->lecturer->getById($kaprodi);
+			$pembimbingName = $this->lecturer->getById($pembimbing);
 			$options = [
 				'buffer' => false,
 				'view' => 'research_permit/print',
-				'data' => compact('tanggalSekarang'),
+				'data' => compact('tanggalSekarang', 'terhormat', 'judul', 'nama', 'nim',
+				 					'pengambilan_data', 'metode', 'kaprodiName', 'pembimbingName'),
 			];
 			$this->exporter->exportToPdf("Surat Izin Penelitian.pdf", null, $options);
 		}

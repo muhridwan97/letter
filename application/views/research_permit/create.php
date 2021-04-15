@@ -84,7 +84,7 @@
 	<div class="card mb-3">
         <div class="card-body d-flex justify-content-between">
             <button onclick="history.back()" type="button" class="btn btn-light">Back</button>
-            <button type="submit" class="btn btn-success" data-toggle="one-touch" data-touch-message="Saving...">
+            <button type="submit" class="btn btn-success">
 				Submit
 			</button>
         </div>
