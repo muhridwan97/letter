@@ -48,7 +48,7 @@
     <tbody>
     <tr>
         <th><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                Nomor&nbsp;&nbsp;&nbsp;:
+                Nomor&nbsp;&nbsp;&nbsp;: <?= $no_letter?>
             </p>
             <p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
                 Lamp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: -

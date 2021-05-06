@@ -13,8 +13,8 @@ class Migration_Create_table_research_permits extends CI_Migration
             'id' => ['type' => 'INT', 'unsigned' => TRUE, 'constraint' => 11, 'auto_increment' => TRUE],
             'id_kaprodi' => ['type' => 'INT', 'unsigned' => TRUE, 'constraint' => 11, 'null' => TRUE],
             'id_pembimbing' => ['type' => 'INT', 'unsigned' => TRUE, 'constraint' => 11, 'null' => TRUE],
-            'no_research_permit' => ['type' => 'VARCHAR', 'constraint' => '50', 'unique' => TRUE],
-            'nim' => ['type' => 'VARCHAR', 'constraint' => '50', 'unique' => TRUE],
+            'id_letter_number' => ['type' => 'INT', 'unsigned' => TRUE, 'constraint' => 11, 'null' => TRUE],
+            'nim' => ['type' => 'VARCHAR', 'constraint' => '50'],
             'name' => ['type' => 'VARCHAR', 'constraint' => '100'],
             'email' => ['type' => 'VARCHAR', 'constraint' => '100', 'null' => TRUE],
             'terhormat' => ['type' => 'VARCHAR', 'constraint' => '100', 'null' => TRUE],
@@ -32,7 +32,8 @@ class Migration_Create_table_research_permits extends CI_Migration
             'deleted_by' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE, 'null' => TRUE]
         ])
         ->add_field('CONSTRAINT fk_kaprodi_rp FOREIGN KEY (id_kaprodi) REFERENCES ref_lecturer(id) ON DELETE CASCADE ON UPDATE CASCADE')
-        ->add_field('CONSTRAINT fk_pembimbing_rp FOREIGN KEY (id_pembimbing) REFERENCES ref_lecturer(id) ON DELETE CASCADE ON UPDATE CASCADE');
+        ->add_field('CONSTRAINT fk_pembimbing_rp FOREIGN KEY (id_pembimbing) REFERENCES ref_lecturer(id) ON DELETE CASCADE ON UPDATE CASCADE')
+        ->add_field('CONSTRAINT fk_letter_number_rp FOREIGN KEY (id_letter_number) REFERENCES letter_numbers(id) ON DELETE CASCADE ON UPDATE CASCADE');
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->create_table('research_permits');
         echo 'Migrate Migration_Create_table_research_permits' . PHP_EOL;

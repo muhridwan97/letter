@@ -12,6 +12,9 @@ use Carbon\Carbon;
  * @property NotificationModel $notification
  * @property Exporter $exporter
  * @property Uploader $uploader
+ * 
+ * @property ResearchPermitModel $researchPermit
+ * @property LetterNumberModel $letterNumber
  */
 class Research_permit extends App_Controller
 {
@@ -30,6 +33,9 @@ class Research_permit extends App_Controller
 		$this->load->model('modules/Exporter', 'exporter');
 		$this->load->model('modules/Uploader', 'uploader');
 		$this->load->model('notifications/CreateCourseNotification');
+
+		$this->load->model('ResearchPermitModel', 'researchPermit');
+		$this->load->model('LetterNumberModel', 'letterNumber');
 
 		$this->setFilterMethods([
 			'sort' => 'GET|PUT'
@@ -99,22 +105,49 @@ class Research_permit extends App_Controller
 			$dateNow = Carbon::now()->locale('id');
 			$tanggalSekarang = $dateNow->isoFormat('D MMMM YYYY');
 			$terhormat = $this->input->post('terhormat');
+			$email = $this->input->post('email');
 			$judul = $this->input->post('judul');
 			$nama = $this->input->post('nama');
 			$nim = $this->input->post('nim');
 			$pengambilan_data = $this->input->post('pengambilan_data');
 			$metode = $this->input->post('metode');
-			$kaprodi = $this->input->post('kaprodi');
-			$pembimbing = $this->input->post('pembimbing');
-			$kaprodi = $this->lecturer->getById($kaprodi);
-			$pembimbing = $this->lecturer->getById($pembimbing);
-			$options = [
-				'buffer' => false,
-				'view' => 'research_permit/print',
-				'data' => compact('tanggalSekarang', 'terhormat', 'judul', 'nama', 'nim',
-				 					'pengambilan_data', 'metode', 'kaprodi', 'pembimbing'),
-			];
-			$this->exporter->exportToPdf("Surat Izin Penelitian.pdf", null, $options);
+			$kaprodiId = $this->input->post('kaprodi');
+			$pembimbingId = $this->input->post('pembimbing');
+			$kaprodi = $this->lecturer->getById($kaprodiId);
+			$pembimbing = $this->lecturer->getById($pembimbingId);
+			$this->db->trans_start();
+
+			$no_letter = $this->letterNumber->getLetterNumber();
+			$this->letterNumber->create([
+				'no_letter' => $no_letter,
+			]);
+			
+			$letterId = $this->db->insert_id();
+			$this->researchPermit->create([
+				'id_kaprodi' => $kaprodiId,
+				'id_pembimbing' => $pembimbingId,
+				'id_letter_number' => $letterId,
+				'nim' => $nim,
+				'name' => $nama,
+				'email' => $email,
+				'terhormat' => $terhormat,
+				'date' => date('Y-m-d'),
+				'judul' => $judul,
+				'pengambilan_data' => $pengambilan_data,
+				'metode' => $metode,
+			]);
+			
+			$this->db->trans_complete();
+
+			if ($this->db->trans_status()) {
+				$options = [
+					'buffer' => false,
+					'view' => 'research_permit/print',
+					'data' => compact('tanggalSekarang', 'terhormat', 'judul', 'nama', 'nim',
+										'pengambilan_data', 'metode', 'kaprodi', 'pembimbing', 'no_letter'),
+				];
+				$this->exporter->exportToPdf("Surat Izin Penelitian.pdf", null, $options);
+			}
 		}
 		$this->create();
 	}
