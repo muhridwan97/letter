@@ -31,11 +31,11 @@ class Research_permit extends App_Controller
 		$this->load->model('LessonModel', 'lesson');
 		$this->load->model('NotificationModel', 'notification');
 		$this->load->model('modules/Exporter', 'exporter');
-		$this->load->model('modules/Uploader', 'uploader');
 		$this->load->model('notifications/CreateCourseNotification');
 
 		$this->load->model('ResearchPermitModel', 'researchPermit');
 		$this->load->model('LetterNumberModel', 'letterNumber');
+		$this->load->model('modules/Uploader', 'uploader');
 
 		$this->setFilterMethods([
 			'sort' => 'GET|PUT'
@@ -141,12 +141,32 @@ class Research_permit extends App_Controller
 
 			if ($this->db->trans_status()) {
 				$options = [
-					'buffer' => false,
+					'buffer' => true,
 					'view' => 'research_permit/print',
 					'data' => compact('tanggalSekarang', 'terhormat', 'judul', 'nama', 'nim',
 										'pengambilan_data', 'metode', 'kaprodi', 'pembimbing', 'no_letter'),
 				];
-				$this->exporter->exportToPdf("Surat Izin Penelitian.pdf", null, $options);
+				$output = $this->exporter->exportToPdf("Surat Izin Penelitian.pdf", null, $options);
+				$this->uploader->makeFolder('research_permit');
+				file_put_contents('uploads/research_permit/Surat Izin Penelitian'.$nim.'.pdf', $output);
+				$filepath = "uploads/research_permit/Surat Izin Penelitian".$nim.".pdf";
+
+				// Process download
+				if(file_exists($filepath)) {
+					header('Content-Description: File Transfer');
+					header('Content-Type: application/octet-stream');
+					header('Content-Disposition: attachment; filename="'.basename($filepath).'"');
+					header('Expires: 0');
+					header('Cache-Control: must-revalidate');
+					header('Pragma: public');
+					header('Content-Length: ' . filesize($filepath));
+					flush(); // Flush system output buffer
+					readfile($filepath);
+					die();
+				} else {
+					flash('warning', "Generate successfully but download fail, please check your email");
+				}
+				redirect('guest/research-permit/create');
 			}
 		}
 		$this->create();
