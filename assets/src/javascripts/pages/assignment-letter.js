@@ -1,8 +1,8 @@
 export default function () {
-    const formInterviewPermit = $('#form-interview-permit');
+    const formAssignmentLetter = $('#form-assignment-letter');
     const studentTemplate = $('#student-template').html();
-    const btnAddStudent = formInterviewPermit.find('#btn-add-student');
-    let studentWrapper = formInterviewPermit.find('#student-wrapper');
+    const btnAddStudent = formAssignmentLetter.find('#btn-add-student');
+    let studentWrapper = formAssignmentLetter.find('#student-wrapper');
     let totalStudent = studentWrapper.children().length;
 
     btnAddStudent.on('click', function (e) {

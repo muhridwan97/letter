@@ -5,6 +5,9 @@ use Carbon\Carbon;
 /**
  * Class Course
  * @property LecturerModel $lecturer
+ * @property AssignmentLetterModel $assignmentLetter
+ * @property AssignmentLetterStudentModel $assignmentLetterStudent
+ * @property LetterNumberModel $letterNumber
  * @property CourseModel $course
  * @property LessonModel $lesson
  * @property CurriculumModel $curriculum
@@ -22,6 +25,9 @@ class Assignment_letter extends App_Controller
 	{
 		parent::__construct();
 		$this->load->model('LecturerModel', 'lecturer');
+		$this->load->model('AssignmentLetterModel', 'assignmentLetter');
+		$this->load->model('AssignmentLetterStudentModel', 'assignmentLetterStudent');
+		$this->load->model('LetterNumberModel', 'letterNumber');
 		$this->load->model('NotificationModel', 'notification');
 		$this->load->model('modules/Exporter', 'exporter');
 		$this->load->model('modules/Uploader', 'uploader');
@@ -51,17 +57,11 @@ class Assignment_letter extends App_Controller
 		if ($this->validate()) {
 			$dateNow = Carbon::now()->locale('id');
 			$tanggalSekarang = $dateNow->isoFormat('D MMMM YYYY');
-			$terhormat = $this->input->post('terhormat');
 			$email = $this->input->post('email');
 			$judul = $this->input->post('judul');
-			$nama = $this->input->post('nama');
-			$nim = $this->input->post('nim');
-			$pengambilan_data = $this->input->post('pengambilan_data');
-			$metode = $this->input->post('metode');
+			$students = $this->input->post('students');
 			$kaprodiId = $this->input->post('kaprodi');
-			$pembimbingId = $this->input->post('pembimbing');
 			$kaprodi = $this->lecturer->getById($kaprodiId);
-			$pembimbing = $this->lecturer->getById($pembimbingId);
 			$this->db->trans_start();
 
 			$no_letter = $this->letterNumber->getLetterNumber();
@@ -70,33 +70,35 @@ class Assignment_letter extends App_Controller
 			]);
 			
 			$letterId = $this->db->insert_id();
-			$this->researchPermit->create([
+			$this->assignmentLetter->create([
 				'id_kaprodi' => $kaprodiId,
-				'id_pembimbing' => $pembimbingId,
 				'id_letter_number' => $letterId,
-				'nim' => $nim,
-				'name' => $nama,
 				'email' => $email,
-				'terhormat' => $terhormat,
 				'date' => date('Y-m-d'),
 				'judul' => $judul,
-				'pengambilan_data' => $pengambilan_data,
-				'metode' => $metode,
 			]);
+			$assignmentLetterId = $this->db->insert_id();
+
+			foreach($students as $student){
+				$this->assignmentLetterStudent->create([
+					'name' => $student['nama'],
+					'jabatan' => $student['jabatan'],
+				]);
+			}
 			
 			$this->db->trans_complete();
 
 			if ($this->db->trans_status()) {
 				$options = [
 					'buffer' => true,
-					'view' => 'research_permit/print',
-					'data' => compact('tanggalSekarang', 'terhormat', 'judul', 'nama', 'nim',
-										'pengambilan_data', 'metode', 'kaprodi', 'pembimbing', 'no_letter'),
+					'view' => 'assignment_letter/print',
+					'data' => compact('tanggalSekarang', 'judul',
+										'kaprodi', 'no_letter'),
 				];
 				$output = $this->exporter->exportToPdf("Surat Izin Penelitian.pdf", null, $options);
-				$this->uploader->makeFolder('research_permit');
-				file_put_contents('uploads/research_permit/Surat Izin Penelitian'.$nim.'.pdf', $output);
-				$filepath = "uploads/research_permit/Surat Izin Penelitian".$nim.".pdf";
+				$this->uploader->makeFolder('assignment_letter');
+				file_put_contents('uploads/assignment_letter/Surat Izin Penelitian'.$email.'.pdf', $output);
+				$filepath = "uploads/assignment_letter/Surat Izin Penelitian".$email.".pdf";
 
 				// Process download
 				if(file_exists($filepath)) {
@@ -117,5 +119,19 @@ class Assignment_letter extends App_Controller
 			}
 		}
 		$this->create();
+	}
+
+	/**
+	 * Return general validation rules.
+	 *
+	 * @return array
+	 */
+	protected function _validation_rules()
+	{
+		return [
+			'email' => 'trim|required|max_length[100]|valid_email',
+			'judul' => 'required|max_length[100]',
+			'kaprodi' => 'required|max_length[100]',
+		];
 	}
 }

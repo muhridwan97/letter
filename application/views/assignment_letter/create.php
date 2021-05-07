@@ -18,8 +18,8 @@
 			<h5 class="card-title">Isi Surat Permohonan Tugas</h5>
 			<div class="form-group">
 				<label for="judul">Judul Kegiatan</label>
-				<input type="text" class="form-control" id="judul" name="judul" maxlength="100"
-						placeholder="Masukkan judul kegiatan"><?= set_value('judul') ?>
+				<input type="text" class="form-control" id="judul" name="judul" maxlength="100" required
+						placeholder="Masukkan judul kegiatan" value="<?= set_value('judul') ?>">
 				<?= form_error('judul') ?>
 			</div>
 			<div id="student-wrapper">
