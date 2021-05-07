@@ -37,7 +37,7 @@ class LetterNumberModel extends App_Model
         } else {
             $nextOrder = 1;
         }
-
-        return 'B-'.$nextOrder . '/Un.02/K.P.Fis/PP.01/' . date('m') . '/' . date('Y');
+        $formatNumber = sprintf("%04d", $nextOrder);
+        return 'B-'.$formatNumber . '/Un.02/K.P.Fis/PP.01/' . date('m') . '/' . date('Y');
     }
 }
