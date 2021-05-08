@@ -83,88 +83,46 @@
 <p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px">
     <strong><?= $judul ?></strong>, maka dengan ini, kami mohon perkenan Bapak untuk menerbitkan surat tugas kepada:
 </p>
-<table style="font-size: 14px; margin-bottom: 5px;border: 1px solid black;">
+<table style="margin-top: 10px;font-size: 14px; margin-bottom: 10px;border: 1px solid black;width: 100%">
     <tbody>
     <tr>
-        <th style="border: 1px solid black;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                Nama
+        <th style="text-align: center;border: 1px solid black;width: 20px"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+            <strong>No</strong>
             </p>
         </th>
-        <th style="text-align: right;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                :
+        <th style="text-align: center;border: 1px solid black;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+                <strong>Nama</strong>
             </p>
         </th>
-        <th style="text-align: left;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                
+        <th style="text-align: center;border: 1px solid black;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+            <strong>Jabatan</strong>
             </p>
         </th>
     </tr>
+    <?php foreach ($students as $key => $student) : ?>
     <tr>
-        <th><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                NIM
+        <td style="text-align: center;border: 1px solid black;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+                <?=$key+1 ?>
             </p>
-        </th>
-        <th style="text-align: right;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                :
+        </td>
+        <td style="text-align: left;border: 1px solid black;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+            <?= $student['nama'];?>
             </p>
-        </th>
-        <th style="text-align: left;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                
+        </td>
+        <td style="text-align: left;border: 1px solid black;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+            <?= $student['jabatan'];?>
             </p>
-        </th>
+        </td>
     </tr>
-    <tr>
-        <th><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                Program studi
-            </p>
-        </th>
-        <th style="text-align: right;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                :
-            </p>
-        </th>
-        <th style="text-align: left;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                Pendidikan Fisika
-            </p>
-        </th>
-    </tr>
-    <tr>
-        <th><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                Untuk pengambilan data
-            </p>
-        </th>
-        <th style="text-align: right;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                :
-            </p>
-        </th>
-        <th style="text-align: left;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                
-            </p>
-        </th>
-    </tr>
-    <tr>
-        <th><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                Metode pengumpulan data
-            </p>
-        </th>
-        <th style="text-align: right;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                :
-            </p>
-        </th>
-        <th style="text-align: left;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-            
-            </p>
-        </th>
-    </tr>
+    <?php endforeach; ?>
     </tbody>
 </table>
-<p style="margin-left: 60px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
-    Demikian, atas bantuan dan izin yang diberikan, kami mengucapkan terima kasih. 
+<p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px">
+Demikian permohonan ini kami sampaikan, atas perhatian dan pertimbangan Bapak, saya ucapkan
+terima kasih. 
 </p>
-<p style="margin-left: 60px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
-    Wassalamu'alaikum Wr.Wb 
-</p>
-<p style="margin-top: 40px;margin-left: 80px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
-    a.n.Dekan
+<p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px">
+    <i>Wassalamu'alaikum Wr.Wb</i>
 </p>
 <table style="margin-left:20px;font-size: 14px; margin-top: 40px; margin-bottom: 10px; width: 100%">
     <tbody>
@@ -173,7 +131,7 @@
             <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"></p>
             </th>
         <th style="width: 100px;"></th>
-        <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">Mengetahui,</p>
+        <th style="text-align: left;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">Mengetahui,</p>
             <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">Kaprodi Pendidikan Fisika</p>
             </th>
     </tr>
@@ -191,7 +149,7 @@
             <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"></p>
             </th>
         <th style="width: 100px;"></th>
-        <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"><?= $kaprodi['name'] ?></p>
+        <th style="text-align: left;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"><?= $kaprodi['name'] ?></p>
         <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">NIP. <?= $kaprodi['no_lecturer'] ?></p></th>
     </tr>
     </tbody>

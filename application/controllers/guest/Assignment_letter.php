@@ -92,13 +92,13 @@ class Assignment_letter extends App_Controller
 				$options = [
 					'buffer' => true,
 					'view' => 'assignment_letter/print',
-					'data' => compact('tanggalSekarang', 'judul',
+					'data' => compact('tanggalSekarang', 'judul', 'students',
 										'kaprodi', 'no_letter'),
 				];
-				$output = $this->exporter->exportToPdf("Surat Izin Penelitian.pdf", null, $options);
+				$output = $this->exporter->exportToPdf("Laporan Surat Tugas.pdf", null, $options);
 				$this->uploader->makeFolder('assignment_letter');
-				file_put_contents('uploads/assignment_letter/Surat Izin Penelitian'.$email.'.pdf', $output);
-				$filepath = "uploads/assignment_letter/Surat Izin Penelitian".$email.".pdf";
+				file_put_contents('uploads/assignment_letter/Laporan Surat Tugas'.$email.'.pdf', $output);
+				$filepath = "uploads/assignment_letter/Laporan Surat Tugas".$email.".pdf";
 
 				// Process download
 				if(file_exists($filepath)) {
