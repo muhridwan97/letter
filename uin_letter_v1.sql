@@ -167,6 +167,97 @@ insert  into `answer_choices`(`id`,`id_question`,`answer`,`is_correct_answer`,`c
 (130,53,'Ramadhan',1,'2021-01-28 11:39:00',NULL),
 (131,53,'Random Access Memory',0,'2021-01-28 11:39:00',NULL);
 
+/*Table structure for table `assignment_letter_students` */
+
+DROP TABLE IF EXISTS `assignment_letter_students`;
+
+CREATE TABLE `assignment_letter_students` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_assignment_letter` int(11) unsigned DEFAULT NULL,
+  `name` varchar(100) NOT NULL,
+  `jabatan` varchar(50) NOT NULL,
+  `description` text,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_by` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_assignment_letter_student` (`id_assignment_letter`),
+  CONSTRAINT `fk_assignment_letter_student` FOREIGN KEY (`id_assignment_letter`) REFERENCES `assignment_letters` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+
+/*Data for the table `assignment_letter_students` */
+
+insert  into `assignment_letter_students`(`id`,`id_assignment_letter`,`name`,`jabatan`,`description`,`created_at`,`created_by`) values 
+(1,NULL,'Ridwan','Manager',NULL,'2021-05-07 16:10:56',0),
+(2,NULL,'Ramdhan','Direktur',NULL,'2021-05-07 16:10:56',0),
+(3,NULL,'Ridwan','Manager',NULL,'2021-05-07 16:11:48',0),
+(4,NULL,'Ramdhan','Direktur',NULL,'2021-05-07 16:11:48',0),
+(5,NULL,'Ridwan','Manager',NULL,'2021-05-07 16:13:09',0),
+(6,NULL,'Ramdhan','Direktur',NULL,'2021-05-07 16:13:09',0),
+(7,NULL,'Ridwan','Manager',NULL,'2021-05-07 16:14:53',0),
+(8,NULL,'Ramdhan','Direktur',NULL,'2021-05-07 16:14:53',0),
+(9,NULL,'Ridwan','Manager',NULL,'2021-05-07 16:16:13',0),
+(10,NULL,'Ridwan','Manager',NULL,'2021-05-07 16:19:25',0),
+(11,NULL,'Ridwan','Manager',NULL,'2021-05-07 16:21:32',0),
+(12,NULL,'Ridwan','Manager',NULL,'2021-05-07 16:26:00',0),
+(13,NULL,'Ridwan','Manager',NULL,'2021-05-07 16:28:22',0),
+(14,NULL,'Ridwan','Manager',NULL,'2021-05-08 08:06:15',0),
+(15,NULL,'Ramdhan','Direktur',NULL,'2021-05-08 08:06:15',0),
+(16,NULL,'Ridwan','Manager',NULL,'2021-05-08 08:22:36',0),
+(17,NULL,'Ramdhan','Direktur',NULL,'2021-05-08 08:22:36',0),
+(18,NULL,'Ridwan','Manager',NULL,'2021-05-08 08:23:41',0),
+(19,NULL,'Ramdhan','Direktur',NULL,'2021-05-08 08:23:41',0),
+(20,NULL,'Ridwan','Manager',NULL,'2021-05-08 08:26:50',0),
+(21,NULL,'Ramdhan','Direktur',NULL,'2021-05-08 08:26:50',0),
+(22,NULL,'Ridwan','Manager',NULL,'2021-05-08 09:35:11',0),
+(23,NULL,'Ridwan','Manager',NULL,'2021-05-08 09:37:53',0),
+(24,NULL,'Ridwan','Manager',NULL,'2021-05-08 09:39:05',0);
+
+/*Table structure for table `assignment_letters` */
+
+DROP TABLE IF EXISTS `assignment_letters`;
+
+CREATE TABLE `assignment_letters` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_kaprodi` int(11) unsigned DEFAULT NULL,
+  `id_letter_number` int(11) unsigned DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `judul` text,
+  `description` text,
+  `is_deleted` int(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_by` int(11) unsigned NOT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `updated_by` int(11) unsigned DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `deleted_by` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_kaprodi_al` (`id_kaprodi`),
+  KEY `fk_letter_number_al` (`id_letter_number`),
+  CONSTRAINT `fk_kaprodi_al` FOREIGN KEY (`id_kaprodi`) REFERENCES `ref_lecturer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_letter_number_al` FOREIGN KEY (`id_letter_number`) REFERENCES `letter_numbers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+
+/*Data for the table `assignment_letters` */
+
+insert  into `assignment_letters`(`id`,`id_kaprodi`,`id_letter_number`,`email`,`date`,`judul`,`description`,`is_deleted`,`created_at`,`created_by`,`updated_at`,`updated_by`,`deleted_at`,`deleted_by`) values 
+(1,1,19,'muh.ridwan97@gmail.com','2021-05-07','Pengembangan Pasukan Elite',NULL,0,'2021-05-07 16:10:56',0,NULL,NULL,NULL,NULL),
+(2,1,20,'muh.ridwan97@gmail.com','2021-05-07','Pengembangan Pasukan Elite',NULL,0,'2021-05-07 16:11:48',0,NULL,NULL,NULL,NULL),
+(3,1,21,'muh.ridwan97@gmail.com','2021-05-07','Pengembangan Pasukan Elite',NULL,0,'2021-05-07 16:13:09',0,NULL,NULL,NULL,NULL),
+(4,1,22,'muh.ridwan97@gmail.com','2021-05-07','Pengembangan Pasukan Elite',NULL,0,'2021-05-07 16:14:52',0,NULL,NULL,NULL,NULL),
+(5,1,23,'muh.ridwan97@gmail.com','2021-05-07','Pengembangan Pasukan Elite',NULL,0,'2021-05-07 16:16:13',0,NULL,NULL,NULL,NULL),
+(6,1,24,'muh.ridwan97@gmail.com','2021-05-07','Pengembangan Pasukan Elite',NULL,0,'2021-05-07 16:19:25',0,NULL,NULL,NULL,NULL),
+(7,1,25,'muh.ridwan97@gmail.com','2021-05-07','Pengembangan Pasukan Elite',NULL,0,'2021-05-07 16:21:32',0,NULL,NULL,NULL,NULL),
+(8,1,26,'muh.ridwan97@gmail.com','2021-05-07','Pengembangan Pasukan Elite',NULL,0,'2021-05-07 16:25:58',0,NULL,NULL,NULL,NULL),
+(9,1,27,'muh.ridwan97@gmail.com','2021-05-07','Pengembangan Pasukan Elite',NULL,0,'2021-05-07 16:28:22',0,NULL,NULL,NULL,NULL),
+(10,1,28,'muh.ridwan97@gmail.com','2021-05-08','Pengembangan Pasukan Elite',NULL,0,'2021-05-08 08:06:15',0,NULL,NULL,NULL,NULL),
+(11,1,29,'muh.ridwan97@gmail.com','2021-05-08','Pengembangan Pasukan Elite',NULL,0,'2021-05-08 08:22:36',0,NULL,NULL,NULL,NULL),
+(12,1,30,'muh.ridwan97@gmail.com','2021-05-08','Pengembangan Pasukan Elite',NULL,0,'2021-05-08 08:23:41',0,NULL,NULL,NULL,NULL),
+(13,1,31,'muh.ridwan97@gmail.com','2021-05-08','Pengembangan Pasukan Elite',NULL,0,'2021-05-08 08:26:50',0,NULL,NULL,NULL,NULL),
+(14,1,32,'muh.ridwan97@gmail.com','2021-05-08','Pengembangan Pasukan Elite',NULL,0,'2021-05-08 09:35:11',0,NULL,NULL,NULL,NULL),
+(15,1,33,'muh.ridwan97@gmail.com','2021-05-08','Pengembangan Pasukan Elite',NULL,0,'2021-05-08 09:37:53',0,NULL,NULL,NULL,NULL),
+(16,1,34,'muh.ridwan97@gmail.com','2021-05-08','Pengembangan Pasukan Elite',NULL,0,'2021-05-08 09:39:05',0,NULL,NULL,NULL,NULL);
+
 /*Table structure for table `courses` */
 
 DROP TABLE IF EXISTS `courses`;
@@ -578,6 +669,57 @@ insert  into `lessons`(`id`,`id_course`,`lesson_title`,`source`,`mime`,`lesson_o
 (27,17,'Petunjuk Pengisian BC 2.7','lessons/2021/01/600b9dc4b99e8.pdf','0',2,'',0,'2021-01-23 10:53:46',467,NULL,NULL,NULL,NULL),
 (28,17,'Petunjuk Pengisian P3BET','lessons/2021/01/600b9e049dd86.pdf','0',3,'-',0,'2021-01-23 10:54:57',467,NULL,NULL,NULL,NULL);
 
+/*Table structure for table `letter_numbers` */
+
+DROP TABLE IF EXISTS `letter_numbers`;
+
+CREATE TABLE `letter_numbers` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `no_letter` varchar(100) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_by` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `no_letter` (`no_letter`)
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+
+/*Data for the table `letter_numbers` */
+
+insert  into `letter_numbers`(`id`,`no_letter`,`created_at`,`created_by`) values 
+(1,'B-1/Un.02/K.P.Fis/PP.01/04/2021','2021-04-06 11:23:14',0),
+(2,'B-2/Un.02/K.P.Fis/PP.01/04/2021','2021-04-06 11:23:43',0),
+(3,'B-1/Un.02/K.P.Fis/PP.01/05/2021','2021-05-06 11:25:45',0),
+(4,'B-2/Un.02/K.P.Fis/PP.01/05/2021','2021-05-06 11:48:40',0),
+(5,'B-3/Un.02/K.P.Fis/PP.01/05/2021','2021-05-06 11:51:21',0),
+(6,'B-4/Un.02/K.P.Fis/PP.01/05/2021','2021-05-06 11:54:58',0),
+(7,'B-5/Un.02/K.P.Fis/PP.01/05/2021','2021-05-06 11:56:25',0),
+(8,'B-6/Un.02/K.P.Fis/PP.01/05/2021','2021-05-06 11:57:42',0),
+(9,'B-7/Un.02/K.P.Fis/PP.01/05/2021','2021-05-06 11:59:36',0),
+(10,'B-8/Un.02/K.P.Fis/PP.01/05/2021','2021-05-06 12:01:56',0),
+(11,'B-9/Un.02/K.P.Fis/PP.01/05/2021','2021-05-06 13:33:07',0),
+(12,'B-10/Un.02/K.P.Fis/PP.01/05/2021','2021-05-06 13:34:14',0),
+(13,'B-11/Un.02/K.P.Fis/PP.01/05/2021','2021-05-06 13:37:05',0),
+(14,'B-12/Un.02/K.P.Fis/PP.01/05/2021','2021-05-06 13:55:11',0),
+(15,'B-13/Un.02/K.P.Fis/PP.01/05/2021','2021-05-06 13:56:19',0),
+(16,'B-14/Un.02/K.P.Fis/PP.01/05/2021','2021-05-06 13:58:55',0),
+(17,'B-0015/Un.02/K.P.Fis/PP.01/05/2021','2021-05-07 13:38:07',0),
+(18,'B-0016/Un.02/K.P.Fis/PP.01/05/2021','2021-05-07 13:38:59',0),
+(19,'B-0017/Un.02/K.P.Fis/PP.01/05/2021','2021-05-07 16:10:55',0),
+(20,'B-0018/Un.02/K.P.Fis/PP.01/05/2021','2021-05-07 16:11:48',0),
+(21,'B-0019/Un.02/K.P.Fis/PP.01/05/2021','2021-05-07 16:13:09',0),
+(22,'B-0020/Un.02/K.P.Fis/PP.01/05/2021','2021-05-07 16:14:52',0),
+(23,'B-0021/Un.02/K.P.Fis/PP.01/05/2021','2021-05-07 16:16:13',0),
+(24,'B-0022/Un.02/K.P.Fis/PP.01/05/2021','2021-05-07 16:19:25',0),
+(25,'B-0023/Un.02/K.P.Fis/PP.01/05/2021','2021-05-07 16:21:32',0),
+(26,'B-0024/Un.02/K.P.Fis/PP.01/05/2021','2021-05-07 16:25:58',0),
+(27,'B-0025/Un.02/K.P.Fis/PP.01/05/2021','2021-05-07 16:28:22',0),
+(28,'B-0026/Un.02/K.P.Fis/PP.01/05/2021','2021-05-08 08:06:15',0),
+(29,'B-0027/Un.02/K.P.Fis/PP.01/05/2021','2021-05-08 08:22:35',0),
+(30,'B-0028/Un.02/K.P.Fis/PP.01/05/2021','2021-05-08 08:23:40',0),
+(31,'B-0029/Un.02/K.P.Fis/PP.01/05/2021','2021-05-08 08:26:50',0),
+(32,'B-0030/Un.02/K.P.Fis/PP.01/05/2021','2021-05-08 09:35:11',0),
+(33,'B-0031/Un.02/K.P.Fis/PP.01/05/2021','2021-05-08 09:37:53',0),
+(34,'B-0032/Un.02/K.P.Fis/PP.01/05/2021','2021-05-08 09:39:05',0);
+
 /*Table structure for table `logs` */
 
 DROP TABLE IF EXISTS `logs`;
@@ -590,7 +732,7 @@ CREATE TABLE `logs` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3650 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3844 DEFAULT CHARSET=utf8;
 
 /*Data for the table `logs` */
 
@@ -4243,7 +4385,201 @@ insert  into `logs`(`id`,`event_access`,`event_type`,`data`,`created_at`,`create
 (3646,'INTERVIEW PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/interview-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-09 10:14:00',0),
 (3647,'INTERVIEW PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/interview-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-09 11:03:10',0),
 (3648,'LANDING','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-12 08:42:54',0),
-(3649,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-12 08:43:14',0);
+(3649,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-12 08:43:14',0),
+(3650,'LANDING','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:09:53',0),
+(3651,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:10:00',0),
+(3652,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:10:18',0),
+(3653,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:12:22',0),
+(3654,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:12:25',0),
+(3655,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:14:31',0),
+(3656,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:14:35',0),
+(3657,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:14:37',0),
+(3658,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:14:43',0),
+(3659,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:14:49',0),
+(3660,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:22:56',0),
+(3661,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:22:58',0),
+(3662,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:37:52',0),
+(3663,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:37:56',0),
+(3664,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:39:10',0),
+(3665,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:41:50',0),
+(3666,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:42:12',0),
+(3667,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:42:35',0),
+(3668,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:42:48',0),
+(3669,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:44:56',0),
+(3670,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:45:33',0),
+(3671,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:45:49',0),
+(3672,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:47:49',0),
+(3673,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:48:13',0),
+(3674,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:49:02',0),
+(3675,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:49:28',0),
+(3676,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:50:04',0),
+(3677,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:50:30',0),
+(3678,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:51:44',0),
+(3679,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:52:19',0),
+(3680,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:52:39',0),
+(3681,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:56:09',0),
+(3682,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:56:58',0),
+(3683,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:57:21',0),
+(3684,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:57:36',0),
+(3685,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:58:08',0),
+(3686,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:58:34',0),
+(3687,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:59:14',0),
+(3688,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:59:39',0),
+(3689,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 09:59:55',0),
+(3690,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:01:44',0),
+(3691,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:02:34',0),
+(3692,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:04:03',0),
+(3693,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:04:29',0),
+(3694,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:04:48',0),
+(3695,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:05:10',0),
+(3696,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:05:34',0),
+(3697,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:08:07',0),
+(3698,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:08:27',0),
+(3699,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:09:20',0),
+(3700,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:14:17',0),
+(3701,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:15:51',0),
+(3702,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:16:08',0),
+(3703,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:19:07',0),
+(3704,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:20:32',0),
+(3705,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:20:33',0),
+(3706,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:21:49',0),
+(3707,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:23:55',0),
+(3708,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:24:45',0),
+(3709,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:25:10',0),
+(3710,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:25:33',0),
+(3711,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:28:40',0),
+(3712,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:28:55',0),
+(3713,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:44:54',0),
+(3714,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:47:56',0),
+(3715,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 10:47:57',0),
+(3716,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 11:01:26',0),
+(3717,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 11:13:14',0),
+(3718,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 11:15:26',0),
+(3719,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 11:15:34',0),
+(3720,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 11:15:51',0),
+(3721,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 11:15:58',0),
+(3722,'LANDING','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 12:25:32',0),
+(3723,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 12:25:33',0),
+(3724,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 12:25:37',0),
+(3725,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 12:26:16',0),
+(3726,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 12:26:53',0),
+(3727,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 12:27:04',0),
+(3728,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 12:27:07',0),
+(3729,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:08:49',0),
+(3730,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:08:52',0),
+(3731,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:12:56',0),
+(3732,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:12:58',0),
+(3733,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:13:52',0),
+(3734,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:13:54',0),
+(3735,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:15:33',0),
+(3736,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:16:36',0),
+(3737,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:18:23',0),
+(3738,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:18:26',0),
+(3739,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:36:52',0),
+(3740,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:40:26',0),
+(3741,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:40:49',0),
+(3742,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:41:47',0),
+(3743,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:50:00',0),
+(3744,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:51:53',0),
+(3745,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:52:17',0),
+(3746,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:52:28',0),
+(3747,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:53:02',0),
+(3748,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:53:16',0),
+(3749,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:53:19',0),
+(3750,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:53:25',0),
+(3751,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:53:36',0),
+(3752,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:53:52',0),
+(3753,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:54:31',0),
+(3754,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:55:02',0),
+(3755,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 13:55:18',0),
+(3756,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 14:05:51',0),
+(3757,'ERROR404','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"assets\\/dist\\/runtime.bundle.bf9f8137f0f936fa821b.js\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 14:05:52',0),
+(3758,'ERROR404','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"assets\\/dist\\/img\\/logo-uin.png\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 14:05:53',0),
+(3759,'ERROR404','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"assets\\/dist\\/fonts\\/materialdesignicons-webfont.woff2\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 14:05:53',0),
+(3760,'ERROR404','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"assets\\/dist\\/fonts\\/materialdesignicons-webfont.woff\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 14:05:54',0),
+(3761,'ERROR404','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"assets\\/dist\\/fonts\\/materialdesignicons-webfont.ttf\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 14:05:54',0),
+(3762,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 14:06:16',0),
+(3763,'ERROR404','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"assets\\/dist\\/runtime.bundle.bf9f8137f0f936fa821b.js\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 14:06:17',0),
+(3764,'ERROR404','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"assets\\/dist\\/img\\/logo-uin.png\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 14:06:17',0),
+(3765,'ERROR404','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"assets\\/dist\\/fonts\\/materialdesignicons-webfont.woff2\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 14:06:17',0),
+(3766,'ERROR404','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"assets\\/dist\\/fonts\\/materialdesignicons-webfont.woff\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 14:06:17',0),
+(3767,'ERROR404','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"assets\\/dist\\/fonts\\/materialdesignicons-webfont.ttf\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 14:06:18',0),
+(3768,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 14:08:31',0),
+(3769,'ERROR404','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"assets\\/dist\\/runtime.bundle.bf9f8137f0f936fa821b.js\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 14:08:31',0),
+(3770,'ERROR404','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"assets\\/dist\\/fonts\\/materialdesignicons-webfont.woff2\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 14:08:32',0),
+(3771,'ERROR404','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"assets\\/dist\\/fonts\\/materialdesignicons-webfont.woff\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 14:08:32',0),
+(3772,'ERROR404','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"assets\\/dist\\/img\\/logo-uin.png\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 14:08:32',0),
+(3773,'ERROR404','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"assets\\/dist\\/fonts\\/materialdesignicons-webfont.ttf\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 14:08:32',0),
+(3774,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 14:09:36',0),
+(3775,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-13 14:10:13',0),
+(3776,'LANDING','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-15 14:56:46',0),
+(3777,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-15 14:56:55',0),
+(3778,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-15 14:57:50',0),
+(3779,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-15 15:03:37',0),
+(3780,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-15 15:04:11',0),
+(3781,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-15 15:04:55',0),
+(3782,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-15 15:06:41',0),
+(3783,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-15 15:08:54',0),
+(3784,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-15 15:10:30',0),
+(3785,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-15 15:12:35',0),
+(3786,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-15 15:14:50',0),
+(3787,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-15 15:16:12',0),
+(3788,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-15 15:16:59',0),
+(3789,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-15 15:17:21',0),
+(3790,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-15 15:17:40',0),
+(3791,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-15 15:17:42',0),
+(3792,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-15 15:20:21',0),
+(3793,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-15 15:24:15',0),
+(3794,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-15 15:25:05',0),
+(3795,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-15 15:25:55',0),
+(3796,'LANDING','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-16 09:43:09',0),
+(3797,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-04-16 09:43:28',0),
+(3798,'LANDING','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-06 09:20:03',0),
+(3799,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-06 09:20:52',0),
+(3800,'LANDING','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-06 09:21:05',0),
+(3801,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-06 09:22:05',0),
+(3802,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-06 09:22:24',0),
+(3803,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-06 10:20:40',0),
+(3804,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-06 10:22:27',0),
+(3805,'LANDING','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 13:30:16',0),
+(3806,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 13:31:44',0),
+(3807,'LANDING','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 13:37:30',0),
+(3808,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 13:37:38',0),
+(3809,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 13:37:39',0),
+(3810,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 13:37:58',0),
+(3811,'RESEARCH PERMIT','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/research-permit\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 13:38:58',0),
+(3812,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 14:13:00',0),
+(3813,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 14:15:35',0),
+(3814,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 15:15:49',0),
+(3815,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 15:28:09',0),
+(3816,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 15:38:26',0),
+(3817,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 15:41:39',0),
+(3818,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 15:42:47',0),
+(3819,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 15:44:38',0),
+(3820,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 15:47:27',0),
+(3821,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 16:10:00',0),
+(3822,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 16:10:54',0),
+(3823,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 16:11:47',0),
+(3824,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 16:12:41',0),
+(3825,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 16:13:08',0),
+(3826,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 16:14:52',0),
+(3827,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 16:15:11',0),
+(3828,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 16:16:13',0),
+(3829,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 16:19:17',0),
+(3830,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 16:19:24',0),
+(3831,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 16:21:26',0),
+(3832,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 16:21:32',0),
+(3833,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 16:25:43',0),
+(3834,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 16:25:55',0),
+(3835,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 16:28:15',0),
+(3836,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-07 16:28:21',0),
+(3837,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-08 09:34:52',0),
+(3838,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-08 09:35:10',0),
+(3839,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-08 09:37:43',0),
+(3840,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-08 09:37:52',0),
+(3841,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-08 09:38:56',0),
+(3842,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/save\",\"query\":\"redirect=\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-08 09:39:04',0),
+(3843,'ASSIGNMENT LETTER','access','{\"host\":\":\\/\\/localhost\\/letter\\/\",\"path\":\"guest\\/assignment-letter\\/create\",\"query\":\"\",\"ip\":\"::1\",\"platform\":\"Windows 10\",\"browser\":\"Chrome\",\"is_mobile\":false}','2021-05-08 10:22:22',0);
 
 /*Table structure for table `migrations` */
 
@@ -4256,7 +4592,7 @@ CREATE TABLE `migrations` (
 /*Data for the table `migrations` */
 
 insert  into `migrations`(`version`) values 
-(20210407000001);
+(20210407000005);
 
 /*Table structure for table `notifications` */
 
@@ -4827,6 +5163,62 @@ CREATE TABLE `ref_lecturer` (
 insert  into `ref_lecturer`(`id`,`no_lecturer`,`name`,`position`,`description`,`is_deleted`,`created_at`,`created_by`,`updated_at`,`updated_by`,`deleted_at`,`deleted_by`) values 
 (1,'19830109 201503 1 002','Agus Kamaludin, M.Pd','KAPRODI',NULL,0,'2021-04-07 15:11:14',0,NULL,NULL,NULL,NULL),
 (2,'19830109 201503 1 001','Ridwan',NULL,NULL,0,'2021-04-07 15:11:14',0,NULL,NULL,NULL,NULL);
+
+/*Table structure for table `research_permits` */
+
+DROP TABLE IF EXISTS `research_permits`;
+
+CREATE TABLE `research_permits` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_kaprodi` int(11) unsigned DEFAULT NULL,
+  `id_pembimbing` int(11) unsigned DEFAULT NULL,
+  `id_letter_number` int(11) unsigned DEFAULT NULL,
+  `nim` varchar(50) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `terhormat` varchar(100) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `judul` text,
+  `pengambilan_data` varchar(100) DEFAULT NULL,
+  `metode` varchar(100) DEFAULT NULL,
+  `description` text,
+  `is_deleted` int(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_by` int(11) unsigned NOT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `updated_by` int(11) unsigned DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `deleted_by` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_kaprodi_rp` (`id_kaprodi`),
+  KEY `fk_pembimbing_rp` (`id_pembimbing`),
+  KEY `fk_letter_number_rp` (`id_letter_number`),
+  CONSTRAINT `fk_kaprodi_rp` FOREIGN KEY (`id_kaprodi`) REFERENCES `ref_lecturer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_letter_number_rp` FOREIGN KEY (`id_letter_number`) REFERENCES `letter_numbers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_pembimbing_rp` FOREIGN KEY (`id_pembimbing`) REFERENCES `ref_lecturer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+
+/*Data for the table `research_permits` */
+
+insert  into `research_permits`(`id`,`id_kaprodi`,`id_pembimbing`,`id_letter_number`,`nim`,`name`,`email`,`terhormat`,`date`,`judul`,`pengambilan_data`,`metode`,`description`,`is_deleted`,`created_at`,`created_by`,`updated_at`,`updated_by`,`deleted_at`,`deleted_by`) values 
+(1,1,2,1,'155150200111057','Ridwan','muh.ridwan97@gmail.com','Bapak Ridwan','2021-05-06','Pengembangan Pasukan Elite','skripsi','kuantitatif',NULL,0,'2021-05-06 11:23:14',0,NULL,NULL,NULL,NULL),
+(2,1,2,2,'155150200111057','Ridwan','muh.ridwan97@gmail.com','Bapak Ridwan','2021-05-06','Pengembangan Pasukan Elite','skripsi','kuantitatif',NULL,0,'2021-05-06 11:23:43',0,NULL,NULL,NULL,NULL),
+(3,1,2,3,'155150200111057','Ridwan','muh.ridwan97@gmail.com','Bapak Ridwan','2021-05-06','Pengembangan Pasukan Elite','skripsi','kuantitatif',NULL,0,'2021-05-06 11:25:45',0,NULL,NULL,NULL,NULL),
+(4,1,2,4,'155150200111057','Ridwan','muh.ridwan97@gmail.com','Bapak Ridwan','2021-05-06','Pengembangan Pasukan Elite','skripsi','kuantitatif',NULL,0,'2021-05-06 11:48:40',0,NULL,NULL,NULL,NULL),
+(5,1,2,5,'155150200111057','Ridwan','muh.ridwan97@gmail.com','Bapak Ridwan','2021-05-06','Pengembangan Pasukan Elite','skripsi','kuantitatif',NULL,0,'2021-05-06 11:51:21',0,NULL,NULL,NULL,NULL),
+(6,1,2,6,'155150200111057','miracle','muh.ridwan97@gmail.com','Bapak Ridwan','2021-05-06','Pengembangan Pasukan Elite','skripsi','metoda ',NULL,0,'2021-05-06 11:54:58',0,NULL,NULL,NULL,NULL),
+(7,1,2,7,'155150200111057','miracle','muh.ridwan97@gmail.com','Bapak Ridwan','2021-05-06','Pengembangan Pasukan Elite','skripsi','kuantitatif',NULL,0,'2021-05-06 11:56:25',0,NULL,NULL,NULL,NULL),
+(8,1,2,8,'155150200111057','miracle','muh.ridwan97@gmail.com','Bapak Ridwan','2021-05-06','Pengembangan Pasukan Elite','skripsi','kuantitatif',NULL,0,'2021-05-06 11:57:42',0,NULL,NULL,NULL,NULL),
+(9,1,2,9,'155150200111057','miracle','muh.ridwan97@gmail.com','Bapak Ridwan','2021-05-06','Pengembangan Pasukan Elite','skripsi','kuantitatif',NULL,0,'2021-05-06 11:59:36',0,NULL,NULL,NULL,NULL),
+(10,1,2,10,'155150200111057','miracle','muh.ridwan97@gmail.com','Bapak Ridwan','2021-05-06','Pengembangan Pasukan Elite','skripsi','kuantitatif',NULL,0,'2021-05-06 12:01:56',0,NULL,NULL,NULL,NULL),
+(11,1,2,11,'155150200111057','miracle','muh.ridwan97@gmail.com','Bapak Ridwan','2021-05-06','Pengembangan Pasukan Elite','skripsi','kuantitatif',NULL,0,'2021-05-06 13:33:08',0,NULL,NULL,NULL,NULL),
+(12,1,2,12,'155150200111057','miracle','muh.ridwan97@gmail.com','Bapak Ridwan','2021-05-06','Pengembangan Pasukan Elite','skripsi','kuantitatif',NULL,0,'2021-05-06 13:34:16',0,NULL,NULL,NULL,NULL),
+(13,1,2,13,'155150200111057','miracle','muh.ridwan97@gmail.com','Bapak Ridwan','2021-05-06','Pengembangan Pasukan Elite','skripsi','kuantitatif',NULL,0,'2021-05-06 13:37:06',0,NULL,NULL,NULL,NULL),
+(14,1,2,14,'155150200111057','miracle','muh.ridwan97@gmail.com','Bapak Ridwan','2021-05-06','Pengembangan Pasukan Elite','skripsi','kuantitatif',NULL,0,'2021-05-06 13:55:12',0,NULL,NULL,NULL,NULL),
+(15,1,2,15,'155150200111057','miracle','muh.ridwan97@gmail.com','Bapak Ridwan','2021-05-06','Pengembangan Pasukan Elite','skripsi','kuantitatif',NULL,0,'2021-05-06 13:56:19',0,NULL,NULL,NULL,NULL),
+(16,1,2,16,'155150200111057','miracle','muh.ridwan97@gmail.com','Bapak Ridwan','2021-05-06','Pengembangan Pasukan Elite','skripsi','kuantitatif',NULL,0,'2021-05-06 13:58:55',0,NULL,NULL,NULL,NULL),
+(17,1,2,17,'123214','Ridwan','muh.ridwan97@gmail.com','Bapak Ridwan','2021-05-07','Pengembangan Pasukan Elite','skripsi','metoda ',NULL,0,'2021-05-07 13:38:07',0,NULL,NULL,NULL,NULL),
+(18,1,2,18,'123214','Ridwan','muh.ridwan97@gmail.com','Bapak Ridwan','2021-05-07','Pengembangan Pasukan Elite','skripsi','metoda ',NULL,0,'2021-05-07 13:38:59',0,NULL,NULL,NULL,NULL);
 
 /*Table structure for table `settings` */
 
