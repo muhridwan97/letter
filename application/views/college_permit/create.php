@@ -1,10 +1,10 @@
 
 <div class="row justify-content-center">
-<form action="<?= site_url('guest/interview-permit/save/' . '?redirect=' . get_url_param('redirect')) ?>" method="POST" enctype="multipart/form-data" id="form-interview-permit">
+<form action="<?= site_url('guest/college-permit/save/' . '?redirect=' . get_url_param('redirect')) ?>" method="POST" enctype="multipart/form-data" id="form-college-permit">
     <?= _csrf() ?>
 	<div class="card mb-3">
         <div class="card-body">
-            <h5 class="card-title">Surat Izin Penelitian</h5>
+            <h5 class="card-title">Surat Izin Kuliah</h5>
 			<div class="form-group">
 				<label for="email">Email Anda</label> <span class="small text-fade">(surat akan dikirimkan ke email anda)</span>
 				<input type="email" class="form-control" id="email" name="email" required maxlength="100" size="100"
@@ -15,20 +15,25 @@
     </div>
 	<div class="card mb-3">
 		<div class="card-body">
-			<h5 class="card-title">Isi Surat Izin Wawancara</h5>
-            <div class="form-group">
-				<label for="terhormat">Yang Terhormat</label>
-				<input type="text" class="form-control" id="terhormat" name="terhormat" maxlength="100"
-						placeholder="Masukkan tujuan surat"><?= set_value('terhormat') ?>
-				<?= form_error('terhormat') ?>
-			</div>
+			<h5 class="card-title">Isi Surat Izin Kuliah</h5>
 			<div class="form-group">
-				<label for="judul">Judul Proposal Skripsi</label>
-				<input type="text" class="form-control" id="judul" name="judul" maxlength="100"
-						placeholder="Masukkan judul proposal"><?= set_value('judul') ?>
-				<?= form_error('judul') ?>
+				<label for="alasan">Alasan Pengajuan Izin Kuliah</label>
+				<input type="text" class="form-control" id="alasan" name="alasan" maxlength="500" required
+						placeholder="Masukkan alasan izin kuliah" value="<?= set_value('alasan') ?>">
+				<?= form_error('alasan') ?>
 			</div>
-			<h5 class="card-title">List nama yang mewawancarai</h5>
+            <div class="form-group">
+                <label for="tanggal">Tanggal Mulai Izin Kuliah</label>
+                <input type="text" class="form-control datepicker" name="tanggal" id="tanggal"
+                        value="<?= get_url_param('tanggal') ?>" placeholder="Pilih tanggal">
+            </div>
+            <div class="form-group">
+				<label for="mata_kuliah">Izin Saat Mata Kuliah</label>
+				<input type="text" class="form-control" id="mata_kuliah" name="mata_kuliah" maxlength="100" required
+						placeholder="Masukkan izin mata kuliah kuliah" value="<?= set_value('mata_kuliah') ?>">
+				<?= form_error('mata_kuliah') ?>
+			</div>
+            <h5 class="card-title">List Nama Yang Izin</h5>
 			<div id="student-wrapper">
             <?php if(set_value('students')): ?>
                 <?php foreach(set_value('students', []) as $index => $student): ?>
@@ -37,7 +42,7 @@
                         <div class="form-group">
                             <label for="nama_<?= $index ?>">Nama <?= $index + 1 ?></label>
                             <input type="text" class="form-control" id="nama_<?= $index ?>" name="students[<?= $index ?>][nama]" required maxlength="100"
-                                    value="<?= set_value("students[<?= $index ?>][nama]", $student['nama']) ?>" placeholder="Nama yang ditugaskan">
+                                    value="<?= set_value("students[<?= $index ?>][nama]", $student['nama']) ?>" placeholder="Nama yang meminta izin">
                             <?= form_error("students[<?= $index ?>][nama]") ?>
                         </div>
                     </div>
@@ -45,14 +50,14 @@
                         <div class="form-group">
                             <label for="nim_<?= $index ?>">NIM <?= $index + 1 ?></label>
                             <input type="text" class="form-control" id="nim_<?= $index ?>" name="students[<?= $index ?>][nim]" required maxlength="50"
-                                    value="<?= set_value("students[<?= $index ?>][nim]", $student['nim']) ?>" placeholder="nim">
+                                    value="<?= set_value("students[<?= $index ?>][nim]", $student['nim']) ?>" placeholder="NIM">
                             <?= form_error("students[<?= $index ?>][nim]") ?>
                         </div>
                     </div>
                     <?php if($index>0): ?>
                     <div class="col-md-1">
                         <div class="form-group">
-                            <button class="btn btn-sm btn-outline-danger btn-remove-location" type="button">
+                            <button class="btn btn-sm btn-outline-danger btn-remove-student" type="button">
                                 <i class="mdi mdi-trash-can-outline"></i>
                             </button>
                         </div>
@@ -66,7 +71,7 @@
                         <div class="form-group">
                             <label for="nama_0">Nama</label>
                             <input type="text" class="form-control" id="nama_0" name="students[0][nama]" required maxlength="100"
-                                value="<?= set_value('students[0][nama]') ?>" placeholder="Nama yang ditugaskan">
+                                value="<?= set_value('students[0][nama]') ?>" placeholder="Nama yang meminta izin">
                             <?= form_error('students[0][nama]') ?>
                         </div>
                     </div>
@@ -74,7 +79,7 @@
                         <div class="form-group">
                             <label for="nim_0">NIM</label>
                             <input type="text" class="form-control" id="nim_0" name="students[0][nim]" required maxlength="50"
-                                value="<?= set_value('students[0][nim]') ?>" placeholder="nim">
+                                value="<?= set_value('students[0][nim]') ?>" placeholder="NIM">
                             <?= form_error('students[0][nim]') ?>
                         </div>
                     </div>
@@ -82,20 +87,8 @@
                 <?php endif; ?>
             </div>
             <div class="text-right">
-                <button class="btn btn-sm btn-info" id="btn-add-student" type="button"> <span class="mdi mdi-plus"></span>TAMBAH NAMA</button>
+                <button class="btn btn-sm btn-info" id="btn-add-student" type="button">ADD STUDENT</button>
             </div>
-			<div class="form-group">
-				<label for="wawancara">Untuk mengadakan wawancara</label>
-				<input type="text" class="form-control" id="wawancara" name="wawancara" maxlength="100"
-						placeholder="Masukkan wawancara"><?= set_value('wawancara') ?>
-				<?= form_error('wawancara') ?>
-			</div>
-			<div class="form-group">
-				<label for="metode">Metode pengumpulan data</label>
-				<input type="text" class="form-control" id="metode" name="metode" maxlength="100"
-						placeholder="Masukkan metode yang anda gunakan untuk pengumpulan data"><?= set_value('metode') ?>
-				<?= form_error('metode') ?>
-			</div>
 			<div class="form-group">
 				<label for="kaprodi">Ketua program studi fisika</label>
 				<select class="form-control select2" name="kaprodi" id="kaprodi" style="width: 100%"
@@ -108,19 +101,6 @@
 					<?php endforeach; ?>
 				</select>
 				<?= form_error('kaprodi') ?>
-			</div>
-			<div class="form-group">
-				<label for="pembimbing">Dosen pembimbing</label>
-				<select class="form-control select2" name="pembimbing" id="pembimbing" style="width: 100%"
-				data-placeholder="Pilih Pembimbing">
-					<option></option>
-					<?php foreach ($pembimbings as $pembimbing): ?>
-						<option value="<?= $pembimbing['id'] ?>"<?= set_select('pembimbing', $pembimbing['id'], get_url_param('pembimbing') == $pembimbing['id']) ?>>
-							<?= $pembimbing['name'] ?>
-						</option>
-					<?php endforeach; ?>
-				</select>
-				<?= form_error('pembimbing') ?>
 			</div>
 		</div>
 	</div>
@@ -141,7 +121,7 @@
 			<div class="form-group">
 				<label for="nama_{{index}}">Nama {{no}}</label>
 				<input type="text" class="form-control" id="nama_{{index}}" name="students[{{index}}][nama]" required maxlength="100"
-					value="<?= set_value('students[{{index}}0][nama]') ?>" placeholder="Nama yang ditugaskan">
+					value="<?= set_value('students[{{index}}0][nama]') ?>" placeholder="Nama yang meminta izin">
 				<?= form_error('students[{{index}}][nama]') ?>
 			</div>
 		</div>
@@ -149,7 +129,7 @@
 			<div class="form-group">
 				<label for="nim_{{index}}">NIM</label>
 				<input type="text" class="form-control" id="nim_{{index}}" name="students[{{index}}][nim]" required maxlength="50"
-					value="<?= set_value('students[{{index}}][nim]') ?>" placeholder="nim">
+					value="<?= set_value('students[{{index}}][nim]') ?>" placeholder="NIM">
 				<?= form_error('students[{{index}}][nim]') ?>
 			</div>
 		</div>

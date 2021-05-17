@@ -95,6 +95,14 @@ try {
         import("./pages/interview-permit").then(interviewPermit => interviewPermit.default());
     }
 
+    if ($('#form-course-elimination').length) {
+        import("./pages/course-elimination").then(courseElimination => courseElimination.default());
+    }
+
+    if ($('#form-college-permit').length) {
+        import("./pages/college-permit").then(collegePermit => collegePermit.default());
+    }
+
 } catch (e) {
     console.log(e);
 }

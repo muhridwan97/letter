@@ -77,6 +77,7 @@
 </div>
 <div class="row">
 	<div class="col-6 col-xl-3">
+		<a href="<?= site_url('guest/course-elimination/create') ?>" style="text-decoration: none;">
 		<div class="card border-0 shadow-sm mb-3">
 			<div class="card-body d-flex justify-content-between align-items-center">
 				<div>
@@ -85,13 +86,15 @@
 				<img src="<?= base_url('assets/src/images/file.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
 				<!-- <h1 class="mdi mdi-folder-settings-outline display-4 text-warning" style="line-height: 1; flex-basis: 70px"></h1> -->
 			</div>
-			<a href="<?= site_url('syllabus/curriculum') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
+			<a href="<?= site_url('guest/course-elimination/create') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
 				<span class="small">Ayo Buat</span>
 				<i class="mdi mdi-arrow-right"></i>
 			</a>
 		</div>
+		</a>
 	</div>
 	<div class="col-6 col-xl-3">
+		<a href="<?= site_url('guest/college-permit/create') ?>" style="text-decoration: none;">
 		<div class="card border-0 shadow-sm mb-3">
 			<div class="card-body d-flex justify-content-between align-items-center">
 				<div>
@@ -99,13 +102,15 @@
 				</div>
 				<img src="<?= base_url('assets/src/images/permission.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
 			</div>
-			<a href="<?= site_url('syllabus/course') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
+			<a href="<?= site_url('guest/college-permit/create') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
 				<span class="small">Ayo Buat</span>
 				<i class="mdi mdi-arrow-right"></i>
 			</a>
 		</div>
+		</a>
 	</div>
 	<div class="col-6 col-xl-3">
+		<a href="<?= site_url('guest/recommendation-letter/create') ?>" style="text-decoration: none;">
 		<div class="card border-0 shadow-sm mb-3">
 			<div class="card-body d-flex justify-content-between align-items-center">
 				<div>
@@ -114,11 +119,12 @@
 				</div>
 				<img src="<?= base_url('assets/src/images/like.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
 			</div>
-			<a href="<?= site_url('syllabus/lesson') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
+			<a href="<?= site_url('guest/recommendation-letter/create') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
 				<span class="small">Ayo Buat</span>
 				<i class="mdi mdi-arrow-right"></i>
 			</a>
 		</div>
+		</a>
 	</div>
 	<div class="col-6 col-xl-3">
 		<div class="card border-0 shadow-sm mb-3">

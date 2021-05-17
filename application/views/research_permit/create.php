@@ -6,7 +6,7 @@
         <div class="card-body">
             <h5 class="card-title">Surat Izin Penelitian</h5>
 			<div class="form-group">
-				<label for="email">Emain Anda</label> <span class="small text-fade">(surat akan dikirimkan ke email anda)</span>
+				<label for="email">Email Anda</label> <span class="small text-fade">(surat akan dikirimkan ke email anda)</span>
 				<input type="email" class="form-control" id="email" name="email" required maxlength="100" size="100"
 						value="<?= set_value('email') ?>" placeholder="Email">
 				<?= form_error('email') ?>
