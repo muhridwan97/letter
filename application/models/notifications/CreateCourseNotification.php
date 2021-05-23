@@ -11,6 +11,10 @@ class CreateCourseNotification extends Notify
 
     public function __construct($course = null)
     {
+        if($course == null){
+            $course['course_title'] = "kosong";
+            $course['id'] = 0;
+        }
         $this->course = $course;
 		$this->message = "Course {$course['course_title']} is created, check it out now";
 		$this->url = site_url("syllabus/course/view/{$course['id']}");
