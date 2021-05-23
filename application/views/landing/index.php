@@ -8,9 +8,8 @@
 <p class="text-fade mb-4">
 	Membuat Surat Menjadi Lebih Mudah
 </p>
-
 <div class="row">
-	<div class="col-6 col-xl-3">
+	<div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
 		<a href="<?= site_url('guest/research-permit/create') ?>" style="text-decoration: none;">
 		<div class="card border-0 shadow-sm mb-3">
 			<div class="card-body d-flex justify-content-between align-items-center">
@@ -26,7 +25,7 @@
 		</div>
 		</a>
 	</div>
-	<div class="col-6 col-xl-3">
+	<div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
 		<a href="<?= site_url('guest/assignment-letter/create') ?>" style="text-decoration: none;">
 		<div class="card border-0 shadow-sm mb-3">
 			<div class="card-body d-flex justify-content-between align-items-center">
@@ -42,7 +41,7 @@
 		</div>
 		</a>
 	</div>
-	<div class="col-6 col-xl-3">
+	<div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
 		<a href="<?= site_url('guest/interview-permit/create') ?>" style="text-decoration: none;">
 		<div class="card border-0 shadow-sm mb-3">
 			<div class="card-body d-flex justify-content-between align-items-center">
@@ -58,7 +57,7 @@
 		</div>
 		</a>
 	</div>
-	<div class="col-6 col-xl-3">
+	<div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
 		<a href="<?= site_url('guest/application-letter/create') ?>" style="text-decoration: none;">
 		<div class="card border-0 shadow-sm mb-3">
 			<div class="card-body d-flex justify-content-between align-items-center">
@@ -74,9 +73,7 @@
 		</div>
 		</a>
 	</div>
-</div>
-<div class="row">
-	<div class="col-6 col-xl-3">
+	<div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
 		<a href="<?= site_url('guest/course-elimination/create') ?>" style="text-decoration: none;">
 		<div class="card border-0 shadow-sm mb-3">
 			<div class="card-body d-flex justify-content-between align-items-center">
@@ -93,7 +90,7 @@
 		</div>
 		</a>
 	</div>
-	<div class="col-6 col-xl-3">
+	<div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
 		<a href="<?= site_url('guest/college-permit/create') ?>" style="text-decoration: none;">
 		<div class="card border-0 shadow-sm mb-3">
 			<div class="card-body d-flex justify-content-between align-items-center">
@@ -109,7 +106,7 @@
 		</div>
 		</a>
 	</div>
-	<div class="col-6 col-xl-3">
+	<div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
 		<a href="<?= site_url('guest/recommendation-letter/create') ?>" style="text-decoration: none;">
 		<div class="card border-0 shadow-sm mb-3">
 			<div class="card-body d-flex justify-content-between align-items-center">
@@ -126,7 +123,7 @@
 		</div>
 		</a>
 	</div>
-	<div class="col-6 col-xl-3">
+	<div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
 		<div class="card border-0 shadow-sm mb-3">
 			<div class="card-body d-flex justify-content-between align-items-center">
 				<div>
