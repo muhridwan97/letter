@@ -166,6 +166,12 @@ class Research_permit extends App_Controller
 				} else {
 					flash('warning', "Generate successfully but download fail, please check your email");
 				}
+				$this->notification
+						->via([Notify::MAIL_PUSH])
+						->to($this->user->getById($employee['id_user']))
+						->send(new CreateTrainingNotification(
+							$this->training->getById($trainingId)
+						));
 				redirect('guest/research-permit/create');
 			}
 		}
