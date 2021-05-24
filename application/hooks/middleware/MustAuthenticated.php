@@ -23,7 +23,7 @@ class MustAuthenticated
         Login::class, Register::class, Password::class, Error404::class,
         Migrate::class, Automate::class, Landing::class, Legal::class,
         Research_permit::class, Assignment_letter::class, Interview_permit::class,
-        Application_letter::class
+        Application_letter::class, Course_elimination::class, College_permit::class, Recommendation_letter::class
     ];
 
     public function __construct()

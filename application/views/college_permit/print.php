@@ -53,10 +53,10 @@
                 Nomor&nbsp;&nbsp;&nbsp;: <?= $no_letter?>
             </p>
             <p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                Lamp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: -
+                Hal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: Permohonan Izin Kuliah
             </p>
             <p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                Hal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: Permohonan Surat Tugas
+                Lamp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: -
             </p>
         </th>
         <th><p style="font-weight: normal;">Yogyakarta, <?= $tanggalSekarang?></p></th>
@@ -69,19 +69,21 @@
     Kepada
 </p>
 <p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px">
-    Yth. Kabag TU
+    Yth. Dosen Pengampu Mata Kuliah <?= $mataKuliah ?>
 </p>
 <p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px">
-    UIN Sunan Kalijaga Yogyakarta
+    Di tempat
 </p>
 <p style="margin-top: 15px;margin-bottom: 5px; line-height: 1.3; font-size: 14px;">
     <i>Assalamu’alaikum Wr.Wb.</i>
 </p>
 <p style="margin-top: 15px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
-    Dengan hormat, sehubungan dengan akan dilaksanakannya kegiatan
+    Dengan hormat,
 </p>
 <p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px">
-    <strong><?= $judul ?></strong>, maka dengan ini, kami mohon perkenan Bapak untuk menerbitkan surat tugas kepada:
+    Dalam rangka pelaksanaan Kerja Program Studi Pendidikan Fisika, kami mengajukan permohonan
+    agar mahasiswa-mahasiswa Program Studi Pendidikan Fisika berikut ini, dapat diijinkan tidak
+    mengikuti perkuliahan yang diampu Bapak dan Ibu Dosen terhitung mulai tanggal <?= $tanggal ?>
 </p>
 <table style="margin-top: 10px;font-size: 14px; margin-bottom: 10px;border: 1px solid black;width: 100%">
     <tbody>
@@ -91,11 +93,11 @@
             </p>
         </th>
         <th style="text-align: center;border: 1px solid black;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                <strong>Nama</strong>
+                <strong>NIM</strong>
             </p>
         </th>
         <th style="text-align: center;border: 1px solid black;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-            <strong>Jabatan</strong>
+            <strong>Nama</strong>
             </p>
         </th>
     </tr>
@@ -106,11 +108,11 @@
             </p>
         </td>
         <td style="text-align: left;border: 1px solid black;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-            <?= $student['nama'];?>
+            <?= $student['nim'];?>
             </p>
         </td>
         <td style="text-align: left;border: 1px solid black;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-            <?= $student['jabatan'];?>
+            <?= $student['nama'];?>
             </p>
         </td>
     </tr>
@@ -118,8 +120,8 @@
     </tbody>
 </table>
 <p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px">
-Demikian permohonan ini kami sampaikan, atas perhatian dan pertimbangan Bapak, saya ucapkan
-terima kasih. 
+Demikian permohonan ini diajukan. Atas perhatian dan kerja sama yang diberikan, diucapkan terima
+kasih.
 </p>
 <p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px">
     <i>Wassalamu'alaikum Wr.Wb</i>

@@ -25,7 +25,8 @@
             <div class="form-group">
                 <label for="tanggal">Tanggal Mulai Izin Kuliah</label>
                 <input type="text" class="form-control datepicker" name="tanggal" id="tanggal"
-                        value="<?= get_url_param('tanggal') ?>" placeholder="Pilih tanggal">
+                        value="<?= set_value('tanggal') ?>" placeholder="Pilih tanggal">
+				<?= form_error('tanggal') ?>
             </div>
             <div class="form-group">
 				<label for="mata_kuliah">Izin Saat Mata Kuliah</label>

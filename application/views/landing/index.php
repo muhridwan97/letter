@@ -112,7 +112,7 @@
 			<div class="card-body d-flex justify-content-between align-items-center">
 				<div>
 					<h4 class="mb-0">Surat Rekomendasi</h4>
-					<p class="text-fade mb-0">Surat Rekomendasi</p>
+					<!-- <p class="text-fade mb-0">Surat Rekomendasi</p> -->
 				</div>
 				<img src="<?= base_url('assets/src/images/like.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
 			</div>
@@ -131,7 +131,7 @@
 				</div>
 				<img src="<?= base_url('assets/src/images/files.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
 			</div>
-			<a href="<?= site_url('training/class') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
+			<a href="<?= site_url('#') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
 				<span class="small">Ayo Buat</span>
 				<i class="mdi mdi-arrow-right"></i>
 			</a>
