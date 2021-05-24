@@ -46,12 +46,12 @@
                 Di Yogyakarta
             </p>
         </th>
-        <th><p style="font-weight: normal;">Yogyakarta, <?= $tanggalSekarang?></p></th>
+        <th><p style="text-align: right;font-weight: normal;">Yogyakarta, <?= $tanggalSekarang?></p></th>
     </tr>
     </tbody>
 </table>
 
-<p style="margin-left: 10px;margin-top: 15px;margin-bottom: 5px; line-height: 1.3; font-size: 14px;">
+<p style="margin-left: 10px;margin-top: 20px;margin-bottom: 5px; line-height: 1.3; font-size: 14px;">
     <i>Assalamu’alaikum Wr.Wb.</i>
 </p>
 
