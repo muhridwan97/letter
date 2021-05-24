@@ -49,7 +49,7 @@
                         <div class="form-group">
                             <label for="nama_<?= $index ?>">Nama Mata Kuliah <?= $index + 1 ?></label>
                             <input type="text" class="form-control" id="nama_<?= $index ?>" name="courses[<?= $index ?>][nama]" required maxlength="100"
-                                    value="<?= set_value("courses[<?= $index ?>][nama]", $course['nama']) ?>" placeholder="Nama yang ditugaskan">
+                                    value="<?= set_value("courses[<?= $index ?>][nama]", $course['nama']) ?>" placeholder="Nama mata kuliah">
                             <?= form_error("courses[<?= $index ?>][nama]") ?>
                         </div>
                     </div>
@@ -84,9 +84,9 @@
                 <div class="row card-course">
                     <div class="col-md-5">
                         <div class="form-group">
-                            <label for="nama_0">Nama</label>
+                            <label for="nama_0">Nama Mata Kuliah</label>
                             <input type="text" class="form-control" id="nama_0" name="courses[0][nama]" required maxlength="100"
-                                value="<?= set_value('courses[0][nama]') ?>" placeholder="Nama yang ditugaskan">
+                                value="<?= set_value('courses[0][nama]') ?>" placeholder="Nama mata kuliah">
                             <?= form_error('courses[0][nama]') ?>
                         </div>
                     </div>
@@ -157,7 +157,7 @@
 			<div class="form-group">
 				<label for="nama_{{index}}">Nama {{no}}</label>
 				<input type="text" class="form-control" id="nama_{{index}}" name="courses[{{index}}][nama]" required maxlength="100"
-					value="<?= set_value('courses[{{index}}0][nama]') ?>" placeholder="Nama yang ditugaskan">
+					value="<?= set_value('courses[{{index}}0][nama]') ?>" placeholder="Nama mata kuliah">
 				<?= form_error('courses[{{index}}][nama]') ?>
 			</div>
 		</div>

@@ -5,9 +5,8 @@ use Carbon\Carbon;
 /**
  * Class Course
  * @property LecturerModel $lecturer
- * @property AssignmentLetterModel $assignmentLetter
- * @property AssignmentLetterStudentModel $assignmentLetterStudent
- * @property LetterNumberModel $letterNumber
+ * @property CourseEliminationModel $courseElimination
+ * @property CourseEliminationCourseModel $courseEliminationCourse
  * @property CourseModel $course
  * @property LessonModel $lesson
  * @property CurriculumModel $curriculum
@@ -25,9 +24,8 @@ class Course_elimination extends App_Controller
 	{
 		parent::__construct();
 		$this->load->model('LecturerModel', 'lecturer');
-		$this->load->model('AssignmentLetterModel', 'assignmentLetter');
-		$this->load->model('AssignmentLetterStudentModel', 'assignmentLetterStudent');
-		$this->load->model('LetterNumberModel', 'letterNumber');
+		$this->load->model('CourseEliminationModel', 'courseElimination');
+		$this->load->model('CourseEliminationCourseModel', 'courseEliminationCourse');
 		$this->load->model('NotificationModel', 'notification');
 		$this->load->model('modules/Exporter', 'exporter');
 		$this->load->model('modules/Uploader', 'uploader');
@@ -50,7 +48,7 @@ class Course_elimination extends App_Controller
 	}
 
 	/**
-	 * Save new assignment letter.
+	 * Save new course elimination.
 	 */
 	public function save()
 	{
@@ -58,31 +56,35 @@ class Course_elimination extends App_Controller
 			$dateNow = Carbon::now()->locale('id');
 			$tanggalSekarang = $dateNow->isoFormat('D MMMM YYYY');
 			$email = $this->input->post('email');
-			$judul = $this->input->post('judul');
-			$students = $this->input->post('students');
+			$nama = $this->input->post('nama');
+			$nim = $this->input->post('nim');
+			$sks = $this->input->post('sks');
+			$sks_pilihan = $this->input->post('sks_pilihan');
+			$courses = $this->input->post('courses');
 			$kaprodiId = $this->input->post('kaprodi');
 			$kaprodi = $this->lecturer->getById($kaprodiId);
+			$pembimbingId = $this->input->post('pembimbing');
+			$pembimbing = $this->lecturer->getById($pembimbingId);
 			$this->db->trans_start();
-
-			$no_letter = $this->letterNumber->getLetterNumber();
-			$this->letterNumber->create([
-				'no_letter' => $no_letter,
-			]);
 			
 			$letterId = $this->db->insert_id();
-			$this->assignmentLetter->create([
+			$this->courseElimination->create([
 				'id_kaprodi' => $kaprodiId,
-				'id_letter_number' => $letterId,
+				'id_pembimbing' => $pembimbingId,
 				'email' => $email,
 				'date' => date('Y-m-d'),
-				'judul' => $judul,
+				'name' => $nama,
+				'nim' => $nim,
+				'sks' => $sks,
+				'sks_pilihan' => $sks_pilihan,
 			]);
-			$assignmentLetterId = $this->db->insert_id();
+			$courseEliminationId = $this->db->insert_id();
 
-			foreach($students as $student){
-				$this->assignmentLetterStudent->create([
-					'name' => $student['nama'],
-					'jabatan' => $student['jabatan'],
+			foreach($courses as $course){
+				$this->courseEliminationCourse->create([
+					'mata_kuliah' => $course['nama'],
+					'sks' => $course['sks'],
+					'nilai' => $course['nilai'],
 				]);
 			}
 			
@@ -91,14 +93,14 @@ class Course_elimination extends App_Controller
 			if ($this->db->trans_status()) {
 				$options = [
 					'buffer' => true,
-					'view' => 'assignment_letter/print',
-					'data' => compact('tanggalSekarang', 'judul', 'students',
-										'kaprodi', 'no_letter'),
+					'view' => 'course_elimination/print',
+					'data' => compact('tanggalSekarang', 'nama', 'nim', 'sks', 'sks_pilihan', 'courses',
+										'kaprodi', 'pembimbing'),
 				];
-				$output = $this->exporter->exportToPdf("Laporan Surat Tugas.pdf", null, $options);
-				$this->uploader->makeFolder('assignment_letter');
-				file_put_contents('uploads/assignment_letter/Laporan Surat Tugas'.$email.'.pdf', $output);
-				$filepath = "uploads/assignment_letter/Laporan Surat Tugas".$email.".pdf";
+				$output = $this->exporter->exportToPdf("Laporan Surat Hapus Matkul.pdf", null, $options);
+				$this->uploader->makeFolder('course_elimination');
+				file_put_contents('uploads/course_elimination/Laporan Surat Hapus Matkul'.$email.'.pdf', $output);
+				$filepath = "uploads/course_elimination/Laporan Surat Hapus Matkul".$email.".pdf";
 
 				// Process download
 				if(file_exists($filepath)) {
@@ -115,7 +117,7 @@ class Course_elimination extends App_Controller
 				} else {
 					flash('warning', "Generate successfully but download fail, please check your email");
 				}
-				redirect('guest/research-permit/create');
+				redirect('guest/course-elimination/create');
 			}
 		}
 		$this->create();
@@ -130,8 +132,12 @@ class Course_elimination extends App_Controller
 	{
 		return [
 			'email' => 'trim|required|max_length[100]|valid_email',
-			'judul' => 'required|max_length[100]',
+			'nama' => 'required|max_length[100]',
+			'nim' => 'required|max_length[100]',
+			'sks' => 'required|max_length[100]|numeric',
+			'sks_pilihan' => 'required|max_length[100]|numeric',
 			'kaprodi' => 'required|max_length[100]',
+			'pembimbing' => 'required|max_length[100]',
 		];
 	}
 }
