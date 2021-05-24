@@ -1,6 +1,6 @@
 
 <div class="row justify-content-center">
-<form action="<?= site_url('guest/interview-permit/save/' . '?redirect=' . get_url_param('redirect')) ?>" method="POST" enctype="multipart/form-data" id="form-interview-permit">
+<form action="<?= site_url('guest/application-letter/save/' . '?redirect=' . get_url_param('redirect')) ?>" method="POST" enctype="multipart/form-data" id="form-interview-permit">
     <?= _csrf() ?>
 	<div class="card mb-3">
         <div class="card-body">
@@ -36,14 +36,14 @@
 			</div>
 			<div class="form-group">
 				<label for="alamat">Alamat</label>
-				<input type="text" class="form-control" id="alamat" name="alamat" maxlength="100"
+				<input type="text" class="form-control" id="alamat" name="alamat" maxlength="500"
 						placeholder="Masukkan alamat anda"><?= set_value('alamat') ?>
 				<?= form_error('alamat') ?>
 			</div>
 			<div class="form-group">
-				<label for="no_telepon">No. Telepon</label>
+				<label for="no_telepon">No. Telepon/HP</label>
 				<input type="text" class="form-control" id="no_telepon" name="no_telepon" maxlength="100"
-						placeholder="Masukkan no_telepon anda"><?= set_value('no_telepon') ?>
+						placeholder="Masukkan no telepon anda"><?= set_value('no_telepon') ?>
 				<?= form_error('no_telepon') ?>
 			</div>
 			<div class="form-group">
