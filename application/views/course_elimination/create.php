@@ -115,7 +115,7 @@
 			<div class="form-group">
 				<label for="kaprodi">Ketua program studi fisika</label>
 				<select class="form-control select2" name="kaprodi" id="kaprodi" style="width: 100%"
-					data-placeholder="Pilih Kaprodi">
+                required data-placeholder="Pilih Kaprodi">
 					<option></option>
 					<?php foreach ($kaprodis as $kaprodi): ?>
 						<option value="<?= $kaprodi['id'] ?>"<?= set_select('kaprodi', $kaprodi['id'], get_url_param('kaprodi') == $kaprodi['id']) ?>>
@@ -128,7 +128,7 @@
             <div class="form-group">
 				<label for="pembimbing">Dosen pembimbing</label>
 				<select class="form-control select2" name="pembimbing" id="pembimbing" style="width: 100%"
-				data-placeholder="Pilih Pembimbing">
+				required data-placeholder="Pilih Pembimbing">
 					<option></option>
 					<?php foreach ($pembimbings as $pembimbing): ?>
 						<option value="<?= $pembimbing['id'] ?>"<?= set_select('pembimbing', $pembimbing['id'], get_url_param('pembimbing') == $pembimbing['id']) ?>>

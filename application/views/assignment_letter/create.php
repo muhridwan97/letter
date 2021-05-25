@@ -80,7 +80,7 @@
 			<div class="form-group">
 				<label for="kaprodi">Ketua program studi fisika</label>
 				<select class="form-control select2" name="kaprodi" id="kaprodi" style="width: 100%"
-					data-placeholder="Pilih Kaprodi">
+                required data-placeholder="Pilih Kaprodi">
 					<option></option>
 					<?php foreach ($kaprodis as $kaprodi): ?>
 						<option value="<?= $kaprodi['id'] ?>"<?= set_select('kaprodi', $kaprodi['id'], get_url_param('kaprodi') == $kaprodi['id']) ?>>

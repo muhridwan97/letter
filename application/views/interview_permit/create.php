@@ -19,13 +19,13 @@
             <div class="form-group">
 				<label for="terhormat">Yang Terhormat</label>
 				<input type="text" class="form-control" id="terhormat" name="terhormat" maxlength="100"
-						placeholder="Masukkan tujuan surat"><?= set_value('terhormat') ?>
+				required placeholder="Masukkan tujuan surat"><?= set_value('terhormat') ?>
 				<?= form_error('terhormat') ?>
 			</div>
 			<div class="form-group">
 				<label for="judul">Judul Proposal Skripsi</label>
 				<input type="text" class="form-control" id="judul" name="judul" maxlength="100"
-						placeholder="Masukkan judul proposal"><?= set_value('judul') ?>
+				required placeholder="Masukkan judul proposal"><?= set_value('judul') ?>
 				<?= form_error('judul') ?>
 			</div>
 			<h5 class="card-title">List nama yang mewawancarai</h5>
@@ -87,19 +87,19 @@
 			<div class="form-group">
 				<label for="wawancara">Untuk mengadakan wawancara</label>
 				<input type="text" class="form-control" id="wawancara" name="wawancara" maxlength="100"
-						placeholder="Masukkan wawancara"><?= set_value('wawancara') ?>
+				required placeholder="Masukkan wawancara"><?= set_value('wawancara') ?>
 				<?= form_error('wawancara') ?>
 			</div>
 			<div class="form-group">
 				<label for="metode">Metode pengumpulan data</label>
 				<input type="text" class="form-control" id="metode" name="metode" maxlength="100"
-						placeholder="Masukkan metode yang anda gunakan untuk pengumpulan data"><?= set_value('metode') ?>
+				required placeholder="Masukkan metode yang anda gunakan untuk pengumpulan data"><?= set_value('metode') ?>
 				<?= form_error('metode') ?>
 			</div>
 			<div class="form-group">
 				<label for="kaprodi">Ketua program studi fisika</label>
 				<select class="form-control select2" name="kaprodi" id="kaprodi" style="width: 100%"
-					data-placeholder="Pilih Kaprodi">
+				required data-placeholder="Pilih Kaprodi">
 					<option></option>
 					<?php foreach ($kaprodis as $kaprodi): ?>
 						<option value="<?= $kaprodi['id'] ?>"<?= set_select('kaprodi', $kaprodi['id'], get_url_param('kaprodi') == $kaprodi['id']) ?>>
@@ -112,7 +112,7 @@
 			<div class="form-group">
 				<label for="pembimbing">Dosen pembimbing</label>
 				<select class="form-control select2" name="pembimbing" id="pembimbing" style="width: 100%"
-				data-placeholder="Pilih Pembimbing">
+				required data-placeholder="Pilih Pembimbing">
 					<option></option>
 					<?php foreach ($pembimbings as $pembimbing): ?>
 						<option value="<?= $pembimbing['id'] ?>"<?= set_select('pembimbing', $pembimbing['id'], get_url_param('pembimbing') == $pembimbing['id']) ?>>

@@ -19,37 +19,37 @@
             <div class="form-group">
 				<label for="nama">Nama</label>
 				<input type="text" class="form-control" id="nama" name="nama" maxlength="100"
-						placeholder="Masukkan nama anda"><?= set_value('nama') ?>
+				required placeholder="Masukkan nama anda"><?= set_value('nama') ?>
 				<?= form_error('nama') ?>
 			</div>
 			<div class="form-group">
 				<label for="nim">NIM</label>
 				<input type="text" class="form-control" id="nim" name="nim" maxlength="100"
-						placeholder="Masukkan nim anda"><?= set_value('nim') ?>
+				required placeholder="Masukkan nim anda"><?= set_value('nim') ?>
 				<?= form_error('nim') ?>
 			</div>
 			<div class="form-group">
 				<label for="semester">Semester</label>
 				<input type="text" class="form-control" id="semester" name="semester" maxlength="100"
-						placeholder="Masukkan semester kuliah anda"><?= set_value('semester') ?>
+				required placeholder="Masukkan semester kuliah anda"><?= set_value('semester') ?>
 				<?= form_error('semester') ?>
 			</div>
 			<div class="form-group">
 				<label for="alamat">Alamat</label>
 				<input type="text" class="form-control" id="alamat" name="alamat" maxlength="500"
-						placeholder="Masukkan alamat anda"><?= set_value('alamat') ?>
+				required placeholder="Masukkan alamat anda"><?= set_value('alamat') ?>
 				<?= form_error('alamat') ?>
 			</div>
 			<div class="form-group">
 				<label for="no_telepon">No. Telepon/HP</label>
 				<input type="text" class="form-control" id="no_telepon" name="no_telepon" maxlength="100"
-						placeholder="Masukkan no telepon anda"><?= set_value('no_telepon') ?>
+				required placeholder="Masukkan no telepon anda"><?= set_value('no_telepon') ?>
 				<?= form_error('no_telepon') ?>
 			</div>
 			<div class="form-group">
 				<label for="kaprodi">Ketua program studi fisika</label>
 				<select class="form-control select2" name="kaprodi" id="kaprodi" style="width: 100%"
-					data-placeholder="Pilih Kaprodi">
+				required data-placeholder="Pilih Kaprodi">
 					<option></option>
 					<?php foreach ($kaprodis as $kaprodi): ?>
 						<option value="<?= $kaprodi['id'] ?>"<?= set_select('kaprodi', $kaprodi['id'], get_url_param('kaprodi') == $kaprodi['id']) ?>>

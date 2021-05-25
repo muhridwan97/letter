@@ -25,7 +25,7 @@
             <div class="form-group">
                 <label for="tanggal">Tanggal Mulai Izin Kuliah</label>
                 <input type="text" class="form-control datepicker" name="tanggal" id="tanggal"
-                        value="<?= set_value('tanggal') ?>" placeholder="Pilih tanggal">
+                required value="<?= set_value('tanggal') ?>" placeholder="Pilih tanggal">
 				<?= form_error('tanggal') ?>
             </div>
             <div class="form-group">
@@ -93,7 +93,7 @@
 			<div class="form-group">
 				<label for="kaprodi">Ketua program studi fisika</label>
 				<select class="form-control select2" name="kaprodi" id="kaprodi" style="width: 100%"
-					data-placeholder="Pilih Kaprodi">
+                required data-placeholder="Pilih Kaprodi">
 					<option></option>
 					<?php foreach ($kaprodis as $kaprodi): ?>
 						<option value="<?= $kaprodi['id'] ?>"<?= set_select('kaprodi', $kaprodi['id'], get_url_param('kaprodi') == $kaprodi['id']) ?>>
