@@ -2,10 +2,10 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Class Migration_Create_table_research_permits
+ * Class Migration_Create_table_ref_lecturers
  * @property CI_DB_forge $dbforge
  */
-class Migration_Create_table_research_permits extends CI_Migration
+class Migration_Create_table_ref_lecturers extends CI_Migration
 {
     public function up()
     {
@@ -24,13 +24,13 @@ class Migration_Create_table_research_permits extends CI_Migration
             'deleted_by' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE, 'null' => TRUE]
         ]);
         $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->create_table('research_permits');
-        echo 'Migrate Migration_Create_table_research_permits' . PHP_EOL;
+        $this->dbforge->create_table('ref_lecturers');
+        echo 'Migrate Migration_Create_table_ref_lecturers' . PHP_EOL;
     }
 
     public function down()
     {
-        $this->dbforge->drop_table('research_permits');
-        echo 'Rollback Migration_Create_table_research_permits' . PHP_EOL;
+        $this->dbforge->drop_table('ref_lecturers');
+        echo 'Rollback Migration_Create_table_ref_lecturers' . PHP_EOL;
     }
 }

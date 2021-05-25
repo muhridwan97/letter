@@ -74,7 +74,7 @@ $segment2 = $this->uri->segment(2);
 
 		<?php
 		if (AuthorizationModel::hasPermission([
-			PERMISSION_DEPARTMENT_VIEW, PERMISSION_EMPLOYEE_VIEW,
+			PERMISSION_DEPARTMENT_VIEW, PERMISSION_LECTURER_VIEW,
 		])):
 		?>
 			<li class="nav-item<?= $segment1 == 'master' && !in_array($segment2, ['role', 'user']) ? ' active' : '' ?>">
@@ -97,105 +97,15 @@ $segment2 = $this->uri->segment(2);
 								</a>
 							</li>
 						<?php endif; ?>
-						<?php if(AuthorizationModel::isAuthorized(PERMISSION_EMPLOYEE_VIEW)): ?>
-							<li class="nav-item<?= $segment1 == 'master' && $segment2 == 'employee' ? ' active' : '' ?>">
-								<a class="nav-link" href="<?= site_url('master/employee') ?>">
-									<i class="mdi mdi-badge-account-horizontal-outline mr-2"></i>Employee
+						<?php if(AuthorizationModel::isAuthorized(PERMISSION_LECTURER_VIEW)): ?>
+							<li class="nav-item<?= $segment1 == 'master' && $segment2 == 'lecturer' ? ' active' : '' ?>">
+								<a class="nav-link" href="<?= site_url('master/lecturer') ?>">
+									<i class="mdi mdi-badge-account-horizontal-outline mr-2"></i>Lecturer
 									<?php if($this->config->item('sso_enable')): ?>
 										<span class="badge badge-info badge-pill ml-auto">
 											HR
 										</span>
 									<?php endif; ?>
-								</a>
-							</li>
-						<?php endif; ?>
-					</ul>
-				</div>
-			</li>
-		<?php endif; ?>
-
-		<?php
-		if (AuthorizationModel::hasPermission([
-			PERMISSION_CURRICULUM_VIEW, PERMISSION_COURSE_VIEW, PERMISSION_LESSON_VIEW, PERMISSION_EXERCISE_VIEW
-		])):
-		?>
-			<li class="nav-item<?= $segment1 == 'syllabus' ? ' active' : '' ?>">
-				<a class="nav-link" data-toggle="collapse" href="#syllabus" aria-expanded="<?= $segment1 == 'syllabus' ? 'true' : 'false' ?>" aria-controls="syllabus">
-					<i class="mdi mdi-inbox-full-outline menu-icon"></i>
-					<span class="menu-title">Syllabus</span>
-					<i class="menu-arrow"></i>
-				</a>
-				<div class="collapse<?= $segment1 == 'syllabus' ? ' show' : '' ?>" id="syllabus">
-					<ul class="nav flex-column sub-menu">
-						<?php if(AuthorizationModel::isAuthorized(PERMISSION_CURRICULUM_VIEW)): ?>
-							<li class="nav-item<?= $segment1 == 'syllabus' && $segment2 == 'curriculum' ? ' active' : '' ?>">
-								<a class="nav-link" href="<?= site_url('syllabus/curriculum') ?>">
-									<i class="mdi mdi-folder-settings-outline mr-2"></i>Curriculum
-								</a>
-							</li>
-						<?php endif; ?>
-						<?php if(AuthorizationModel::isAuthorized(PERMISSION_COURSE_VIEW)): ?>
-							<li class="nav-item<?= $segment1 == 'syllabus' && $segment2 == 'course' ? ' active' : '' ?>">
-								<a class="nav-link" href="<?= site_url('syllabus/course') ?>">
-									<i class="mdi mdi-form-select mr-2"></i>Course
-								</a>
-							</li>
-						<?php endif; ?>
-						<?php if(AuthorizationModel::isAuthorized(PERMISSION_LESSON_VIEW)): ?>
-							<li class="nav-item<?= $segment1 == 'syllabus' && $segment2 == 'lesson' ? ' active' : '' ?>">
-								<a class="nav-link" href="<?= site_url('syllabus/lesson') ?>">
-									<i class="mdi mdi-book-check-outline mr-2"></i>Lesson
-								</a>
-							</li>
-						<?php endif; ?>
-						<?php if(AuthorizationModel::isAuthorized(PERMISSION_EXERCISE_VIEW)): ?>
-							<li class="nav-item<?= $segment1 == 'syllabus' && $segment2 == 'exercise' && get_url_param('type') == 'lesson-exercise' ? ' active' : '' ?>">
-								<a class="nav-link" href="<?= site_url('syllabus/exercise?type=lesson-exercise') ?>">
-									<i class="mdi mdi-file-document-edit-outline mr-2"></i>Exercise
-								</a>
-							</li>
-							<li class="nav-item<?= $segment1 == 'syllabus' && $segment2 == 'exercise' && get_url_param('type') == 'curriculum-exam' ? ' active' : '' ?>">
-								<a class="nav-link" href="<?= site_url('syllabus/exercise?type=curriculum-exam') ?>">
-									<i class="mdi mdi-text-box-search-outline mr-2"></i>Exam
-								</a>
-							</li>
-						<?php endif; ?>
-					</ul>
-				</div>
-			</li>
-		<?php endif; ?>
-
-		<?php
-		if (AuthorizationModel::hasPermission([
-			PERMISSION_TRAINING_VIEW, PERMISSION_EXAM_VIEW, PERMISSION_EXAM_ASSESS
-		])):
-		?>
-			<li class="nav-item<?= $segment1 == 'training' && !in_array($segment2, ['role', 'user']) ? ' active' : '' ?>">
-				<a class="nav-link" data-toggle="collapse" href="#training" aria-expanded="<?= $segment1 == 'training' ? 'true' : 'false' ?>" aria-controls="training">
-					<i class="mdi mdi-lightbulb-on-outline menu-icon"></i>
-					<span class="menu-title">Training</span>
-					<i class="menu-arrow"></i>
-				</a>
-				<div class="collapse<?= $segment1 == 'training' ? ' show' : '' ?>" id="training">
-					<ul class="nav flex-column sub-menu">
-						<?php if(AuthorizationModel::isAuthorized(PERMISSION_TRAINING_VIEW)): ?>
-							<li class="nav-item<?= $segment1 == 'training' && $segment2 == 'class' ? ' active' : '' ?>">
-								<a class="nav-link" href="<?= site_url('training/class') ?>">
-									<i class="mdi mdi-school-outline mr-2"></i>Training Class
-								</a>
-							</li>
-						<?php endif; ?>
-						<?php if(AuthorizationModel::isAuthorized(PERMISSION_EXAM_VIEW)): ?>
-							<li class="nav-item<?= $segment1 == 'training' && ($segment2 == 'exam' || $segment2 == 'exam-exercise') ? ' active' : '' ?>">
-								<a class="nav-link" href="<?= site_url('training/exam') ?>">
-									<i class="mdi mdi-ballot-outline mr-2"></i>Training Exams
-								</a>
-							</li>
-						<?php endif; ?>
-						<?php if(AuthorizationModel::isAuthorized(PERMISSION_EXAM_ASSESS)): ?>
-							<li class="nav-item<?= $segment1 == 'training' && $segment2 == 'assessment' ? ' active' : '' ?>">
-								<a class="nav-link" href="<?= site_url('training/assessment') ?>">
-									<i class="mdi mdi-file-document-outline mr-2"></i>Assessment
 								</a>
 							</li>
 						<?php endif; ?>

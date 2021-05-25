@@ -114,6 +114,12 @@ defined('PERMISSION_EMPLOYEE_CREATE') OR define('PERMISSION_EMPLOYEE_CREATE', 'e
 defined('PERMISSION_EMPLOYEE_EDIT') OR define('PERMISSION_EMPLOYEE_EDIT', 'employee-edit');
 defined('PERMISSION_EMPLOYEE_DELETE') OR define('PERMISSION_EMPLOYEE_DELETE', 'employee-delete');
 
+// Master lecturer permission
+defined('PERMISSION_LECTURER_VIEW') OR define('PERMISSION_LECTURER_VIEW', 'lecturer-view');
+defined('PERMISSION_LECTURER_CREATE') OR define('PERMISSION_LECTURER_CREATE', 'lecturer-create');
+defined('PERMISSION_LECTURER_EDIT') OR define('PERMISSION_LECTURER_EDIT', 'lecturer-edit');
+defined('PERMISSION_LECTURER_DELETE') OR define('PERMISSION_LECTURER_DELETE', 'lecturer-delete');
+
 // Curriculum permission
 defined('PERMISSION_CURRICULUM_VIEW') OR define('PERMISSION_CURRICULUM_VIEW', 'curriculum-view');
 defined('PERMISSION_CURRICULUM_CREATE') OR define('PERMISSION_CURRICULUM_CREATE', 'curriculum-create');
