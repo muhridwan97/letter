@@ -103,7 +103,7 @@ class Assignment_letter extends App_Controller
 
 				//notif email
 				$attachments = [];
-				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'assignment_letter' . DIRECTORY_SEPARATOR . 'Laporan Surat Tugas'.$email.'.pdf';
+				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'assignment_letter' . DIRECTORY_SEPARATOR . 'Surat Permohonan Tugas'.$email.'.pdf';
 				$attachments[] = [
 					'source' => $uploadedPath,
 				];
