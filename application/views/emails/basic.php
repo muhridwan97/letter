@@ -102,7 +102,7 @@ $style = [
                                         <tr>
                                             <td align="center">
                                                 <a href="mailto:<?= $this->config->item('admin_email') ?>"
-                                                   style="<?php echo $fontFamily ?> <?php echo $style['button'] ?> <?php echo $style['button--blue'] ?>" class="button" target="_blank">
+                                                   style="<?php echo $fontFamily ?> <?php echo $style['button'] ?> <?php echo $style['button--green'] ?>" class="button" target="_blank">
                                                     CONTACT SUPPORT
                                                 </a>
                                             </td>
@@ -112,7 +112,7 @@ $style = [
                                     <!-- Salutation -->
                                     <p style="<?php echo $style['paragraph'] ?>">
                                         Regards,<br>
-                                        <b><?= $this->config->item('app_name') ?></b>
+                                        <b>Fisika UIN Sunan Kalijaga</b>
                                     </p>
 
                                     <!-- Sub Copy -->

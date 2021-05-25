@@ -14,6 +14,7 @@ use Carbon\Carbon;
  * @property NotificationModel $notification
  * @property Exporter $exporter
  * @property Uploader $uploader
+ * @property Mailer $mailer
  */
 class Assignment_letter extends App_Controller
 {
@@ -31,7 +32,7 @@ class Assignment_letter extends App_Controller
 		$this->load->model('NotificationModel', 'notification');
 		$this->load->model('modules/Exporter', 'exporter');
 		$this->load->model('modules/Uploader', 'uploader');
-		$this->load->model('notifications/CreateCourseNotification');
+		$this->load->model('modules/Mailer', 'mailer');
 
 		$this->setFilterMethods([
 			'sort' => 'GET|PUT'
@@ -95,11 +96,32 @@ class Assignment_letter extends App_Controller
 					'data' => compact('tanggalSekarang', 'judul', 'students',
 										'kaprodi', 'no_letter'),
 				];
-				$output = $this->exporter->exportToPdf("Laporan Surat Tugas.pdf", null, $options);
+				$output = $this->exporter->exportToPdf("Surat Permohonan Tugas.pdf", null, $options);
 				$this->uploader->makeFolder('assignment_letter');
-				file_put_contents('uploads/assignment_letter/Laporan Surat Tugas'.$email.'.pdf', $output);
-				$filepath = "uploads/assignment_letter/Laporan Surat Tugas".$email.".pdf";
+				file_put_contents('uploads/assignment_letter/Surat Permohonan Tugas'.$email.'.pdf', $output);
+				$filepath = "uploads/assignment_letter/Surat Permohonan Tugas".$email.".pdf";
 
+				//notif email
+				$attachments = [];
+				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'assignment_letter' . DIRECTORY_SEPARATOR . 'Laporan Surat Tugas'.$email.'.pdf';
+				$attachments[] = [
+					'source' => $uploadedPath,
+				];
+
+                $emailOptions = [
+                    'attachment' => $attachments,
+                ];
+
+                $emailTo = $email;
+                $emailTitle = "Surat Permohonan Tugas";
+                $emailTemplate = 'emails/basic';
+                $emailData = [
+                    'title' => 'Surat Permohonan Tugas',
+                    'name' => '',
+                    'email' => $emailTo,
+                    'content' => 'Berikut ini terlampir Surat Permohonan Tugas anda',
+                ];
+                $this->mailer->send($emailTo, $emailTitle, $emailTemplate, $emailData, $emailOptions);
 				// Process download
 				if(file_exists($filepath)) {
 					header('Content-Description: File Transfer');
@@ -115,7 +137,7 @@ class Assignment_letter extends App_Controller
 				} else {
 					flash('warning', "Generate successfully but download fail, please check your email");
 				}
-				redirect('guest/research-permit/create');
+				redirect('guest/assignment-letter/create');
 			}
 		}
 		$this->create();

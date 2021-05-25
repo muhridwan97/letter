@@ -11,6 +11,7 @@ use Carbon\Carbon;
  * @property NotificationModel $notification
  * @property Exporter $exporter
  * @property Uploader $uploader
+ * @property Mailer $mailer
  */
 class Interview_permit extends App_Controller
 {
@@ -28,6 +29,7 @@ class Interview_permit extends App_Controller
 		$this->load->model('NotificationModel', 'notification');
 		$this->load->model('modules/Exporter', 'exporter');
 		$this->load->model('modules/Uploader', 'uploader');
+		$this->load->model('modules/Mailer', 'mailer');
 		$this->load->model('notifications/CreateCourseNotification');
 
 		$this->setFilterMethods([
@@ -106,6 +108,27 @@ class Interview_permit extends App_Controller
 				file_put_contents('uploads/interview_permit/Laporan Surat Izin Wawancara'.$email.'.pdf', $output);
 				$filepath = "uploads/interview_permit/Laporan Surat Izin Wawancara".$email.".pdf";
 
+				//notif email
+				$attachments = [];
+				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'interview_permit' . DIRECTORY_SEPARATOR . 'Laporan Surat Izin Wawancara'.$email.'.pdf';
+				$attachments[] = [
+					'source' => $uploadedPath,
+				];
+
+                $emailOptions = [
+                    'attachment' => $attachments,
+                ];
+
+                $emailTo = $email;
+                $emailTitle = "Surat Izin Wawancara";
+                $emailTemplate = 'emails/basic';
+                $emailData = [
+                    'title' => 'Surat Izin Wawancara',
+                    'name' => '',
+                    'email' => $emailTo,
+                    'content' => 'Berikut ini terlampir Surat Izin Wawancara anda',
+                ];
+                $this->mailer->send($emailTo, $emailTitle, $emailTemplate, $emailData, $emailOptions);
 				// Process download
 				if(file_exists($filepath)) {
 					header('Content-Description: File Transfer');

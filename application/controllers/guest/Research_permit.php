@@ -12,6 +12,7 @@ use Carbon\Carbon;
  * @property NotificationModel $notification
  * @property Exporter $exporter
  * @property Uploader $uploader
+ * @property Mailer $mailer
  * 
  * @property ResearchPermitModel $researchPermit
  * @property LetterNumberModel $letterNumber
@@ -36,6 +37,7 @@ class Research_permit extends App_Controller
 		$this->load->model('ResearchPermitModel', 'researchPermit');
 		$this->load->model('LetterNumberModel', 'letterNumber');
 		$this->load->model('modules/Uploader', 'uploader');
+		$this->load->model('modules/Mailer', 'mailer');
 
 		$this->setFilterMethods([
 			'sort' => 'GET|PUT'
@@ -151,6 +153,26 @@ class Research_permit extends App_Controller
 				file_put_contents('uploads/research_permit/Surat Izin Penelitian'.$nim.'.pdf', $output);
 				$filepath = "uploads/research_permit/Surat Izin Penelitian".$nim.".pdf";
 
+				//notif email
+				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'research_permit' . DIRECTORY_SEPARATOR . 'Surat Izin Penelitian'.$nim.'.pdf';
+				$attachments[] = [
+					'source' => $uploadedPath,
+				];
+
+                $emailOptions = [
+                    'attachment' => $attachments,
+                ];
+
+                $emailTo = $email;
+                $emailTitle = "Surat Izin Penelitian";
+                $emailTemplate = 'emails/basic';
+                $emailData = [
+                    'title' => 'Surat Izin Penelitian',
+                    'name' => $nama,
+                    'email' => $emailTo,
+                    'content' => 'Berikut ini terlampir Surat Izin Penelitian anda',
+                ];
+                $this->mailer->send($emailTo, $emailTitle, $emailTemplate, $emailData, $emailOptions);
 				// Process download
 				if(file_exists($filepath)) {
 					header('Content-Description: File Transfer');
@@ -166,12 +188,6 @@ class Research_permit extends App_Controller
 				} else {
 					flash('warning', "Generate successfully but download fail, please check your email");
 				}
-				$this->notification
-						->via([Notify::MAIL_PUSH])
-						->to($this->user->getById($employee['id_user']))
-						->send(new CreateTrainingNotification(
-							$this->training->getById($trainingId)
-						));
 				redirect('guest/research-permit/create');
 			}
 		}

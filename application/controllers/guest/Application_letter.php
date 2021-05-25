@@ -10,6 +10,7 @@ use Carbon\Carbon;
  * @property NotificationModel $notification
  * @property Exporter $exporter
  * @property Uploader $uploader
+ * @property Mailer $mailer
  */
 class Application_letter extends App_Controller
 {
@@ -25,6 +26,7 @@ class Application_letter extends App_Controller
 		$this->load->model('NotificationModel', 'notification');
 		$this->load->model('modules/Exporter', 'exporter');
 		$this->load->model('modules/Uploader', 'uploader');
+		$this->load->model('modules/Mailer', 'mailer');
 		$this->load->model('notifications/CreateCourseNotification');
 
 		$this->setFilterMethods([
@@ -86,7 +88,29 @@ class Application_letter extends App_Controller
 				$this->uploader->makeFolder('application_letter');
 				file_put_contents('uploads/application_letter/Surat teori'.$nim.'.pdf', $output);
 				$filepath = "uploads/application_letter/Surat teori".$nim.".pdf";
+				
+				//notif email
+				$attachments = [];
+				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'application_letter' . DIRECTORY_SEPARATOR . 'Surat teori'.$nim.'.pdf';
+				$attachments[] = [
+					'source' => $uploadedPath,
+				];
 
+                $emailOptions = [
+                    'attachment' => $attachments,
+                ];
+
+                $emailTo = $email;
+                $emailTitle = "Surat teori";
+                $emailTemplate = 'emails/basic';
+                $emailData = [
+                    'title' => 'Surat teori',
+                    'name' => $nama,
+                    'email' => $emailTo,
+                    'content' => 'Berikut ini terlampir Surat teori anda',
+                ];
+                $this->mailer->send($emailTo, $emailTitle, $emailTemplate, $emailData, $emailOptions);
+				
 				// Process download
 				if(file_exists($filepath)) {
 					header('Content-Description: File Transfer');

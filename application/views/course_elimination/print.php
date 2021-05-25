@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset='utf-8'>
-    <title>Researh Permit</title>
+    <title>Hapus Mata Kuliah</title>
 	<link rel="stylesheet" href="<?= base_url(get_asset('vendors.css')) ?>">
 	<link rel="stylesheet" href="<?= base_url(get_asset('app.css')) ?>">
     <style>

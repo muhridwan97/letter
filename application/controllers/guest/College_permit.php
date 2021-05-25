@@ -11,6 +11,7 @@ use Carbon\Carbon;
  * @property NotificationModel $notification
  * @property Exporter $exporter
  * @property Uploader $uploader
+ * @property Mailer $mailer
  */
 class College_permit extends App_Controller
 {
@@ -28,6 +29,7 @@ class College_permit extends App_Controller
 		$this->load->model('NotificationModel', 'notification');
 		$this->load->model('modules/Exporter', 'exporter');
 		$this->load->model('modules/Uploader', 'uploader');
+		$this->load->model('modules/Mailer', 'mailer');
 		$this->load->model('notifications/CreateCourseNotification');
 
 		$this->setFilterMethods([
@@ -96,11 +98,32 @@ class College_permit extends App_Controller
 					'data' => compact('tanggalSekarang', 'alasan', 'mataKuliah', 'students',
 										'tanggal', 'kaprodi', 'no_letter'),
 				];
-				$output = $this->exporter->exportToPdf("Laporan Surat Tugas.pdf", null, $options);
+				$output = $this->exporter->exportToPdf("Laporan Izin Kuliah.pdf", null, $options);
 				$this->uploader->makeFolder('college_permit');
-				file_put_contents('uploads/college_permit/Laporan Surat Tugas'.$email.'.pdf', $output);
-				$filepath = "uploads/college_permit/Laporan Surat Tugas".$email.".pdf";
+				file_put_contents('uploads/college_permit/Laporan Izin Kuliah'.$email.'.pdf', $output);
+				$filepath = "uploads/college_permit/Laporan Izin Kuliah".$email.".pdf";
 
+				//notif email
+				$attachments = [];
+				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'college_permit' . DIRECTORY_SEPARATOR . 'Laporan Izin Kuliah'.$email.'.pdf';
+				$attachments[] = [
+					'source' => $uploadedPath,
+				];
+
+                $emailOptions = [
+                    'attachment' => $attachments,
+                ];
+
+                $emailTo = $email;
+                $emailTitle = "Surat Izin Kuliah";
+                $emailTemplate = 'emails/basic';
+                $emailData = [
+                    'title' => 'Surat Izin Kuliah',
+                    'name' => '',
+                    'email' => $emailTo,
+                    'content' => 'Berikut ini terlampir Surat Izin Kuliah anda',
+                ];
+                $this->mailer->send($emailTo, $emailTitle, $emailTemplate, $emailData, $emailOptions);
 				// Process download
 				if(file_exists($filepath)) {
 					header('Content-Description: File Transfer');

@@ -13,6 +13,7 @@ use Carbon\Carbon;
  * @property NotificationModel $notification
  * @property Exporter $exporter
  * @property Uploader $uploader
+ * @property Mailer $mailer
  */
 class Course_elimination extends App_Controller
 {
@@ -29,6 +30,7 @@ class Course_elimination extends App_Controller
 		$this->load->model('NotificationModel', 'notification');
 		$this->load->model('modules/Exporter', 'exporter');
 		$this->load->model('modules/Uploader', 'uploader');
+		$this->load->model('modules/Mailer', 'mailer');
 		$this->load->model('notifications/CreateCourseNotification');
 
 		$this->setFilterMethods([
@@ -101,7 +103,29 @@ class Course_elimination extends App_Controller
 				$this->uploader->makeFolder('course_elimination');
 				file_put_contents('uploads/course_elimination/Laporan Surat Hapus Matkul'.$email.'.pdf', $output);
 				$filepath = "uploads/course_elimination/Laporan Surat Hapus Matkul".$email.".pdf";
+				
+				//notif email
+				$attachments = [];
+				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'course_elimination' . DIRECTORY_SEPARATOR . 'Laporan Surat Hapus Matkul'.$email.'.pdf';
+				$attachments[] = [
+					'source' => $uploadedPath,
+				];
 
+                $emailOptions = [
+                    'attachment' => $attachments,
+                ];
+
+                $emailTo = $email;
+                $emailTitle = "Surat Hapus Matkul";
+                $emailTemplate = 'emails/basic';
+                $emailData = [
+                    'title' => 'Surat Hapus Matkul',
+                    'name' => $nama,
+                    'email' => $emailTo,
+                    'content' => 'Berikut ini terlampir Surat Hapus Matkul anda',
+                ];
+                $this->mailer->send($emailTo, $emailTitle, $emailTemplate, $emailData, $emailOptions);				
+				
 				// Process download
 				if(file_exists($filepath)) {
 					header('Content-Description: File Transfer');

@@ -10,6 +10,7 @@ use Carbon\Carbon;
  * @property NotificationModel $notification
  * @property Exporter $exporter
  * @property Uploader $uploader
+ * @property Mailer $mailer
  */
 class Recommendation_letter extends App_Controller
 {
@@ -26,6 +27,7 @@ class Recommendation_letter extends App_Controller
 		$this->load->model('NotificationModel', 'notification');
 		$this->load->model('modules/Exporter', 'exporter');
 		$this->load->model('modules/Uploader', 'uploader');
+		$this->load->model('modules/Mailer', 'mailer');
 		$this->load->model('notifications/CreateCourseNotification');
 
 		$this->setFilterMethods([
@@ -91,11 +93,32 @@ class Recommendation_letter extends App_Controller
 					'data' => compact('tanggalSekarang', 'namaDosen', 'jabatan', 'namaMahasiswa', 'nim',
 										'rekomendasi', 'kaprodi', 'no_letter', 'prodi'),
 				];
-				$output = $this->exporter->exportToPdf("Surat Izin Penelitian.pdf", null, $options);
+				$output = $this->exporter->exportToPdf("Surat Rekomendasi.pdf", null, $options);
 				$this->uploader->makeFolder('recommendation_letter');
-				file_put_contents('uploads/recommendation_letter/Surat Izin Penelitian'.$nim.'.pdf', $output);
-				$filepath = "uploads/recommendation_letter/Surat Izin Penelitian".$nim.".pdf";
+				file_put_contents('uploads/recommendation_letter/Surat Rekomendasi'.$nim.'.pdf', $output);
+				$filepath = "uploads/recommendation_letter/Surat Rekomendasi".$nim.".pdf";
 
+				//notif email
+				$attachments = [];
+				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'recommendation_letter' . DIRECTORY_SEPARATOR . 'Surat Rekomendasi'.$nim.'.pdf';
+				$attachments[] = [
+					'source' => $uploadedPath,
+				];
+
+                $emailOptions = [
+                    'attachment' => $attachments,
+                ];
+
+                $emailTo = $email;
+                $emailTitle = "Surat Rekomendasi";
+                $emailTemplate = 'emails/basic';
+                $emailData = [
+                    'title' => 'Surat Rekomendasi',
+                    'name' => '',
+                    'email' => $emailTo,
+                    'content' => 'Berikut ini terlampir Surat Rekomendasi anda',
+                ];
+                $this->mailer->send($emailTo, $emailTitle, $emailTemplate, $emailData, $emailOptions);
 				// Process download
 				if(file_exists($filepath)) {
 					header('Content-Description: File Transfer');
