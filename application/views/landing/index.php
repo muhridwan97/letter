@@ -125,7 +125,7 @@
 	</div>
 	
 	<div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
-		<a href="<?= site_url('guest/recommendation-letter/create') ?>" style="text-decoration: none;">
+		<a href="<?= site_url('guest/appointment-lecturer/create') ?>" style="text-decoration: none;">
 		<div class="card border-0 shadow-sm mb-3">
 			<div class="card-body d-flex justify-content-between align-items-center">
 				<div>
@@ -134,7 +134,7 @@
 				</div>
 				<img src="<?= base_url('assets/src/images/tunjuk.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
 			</div>
-			<a href="<?= site_url('guest/recommendation-letter/create') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
+			<a href="<?= site_url('guest/appointment-lecturer/create') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
 				<span class="small">Ayo Buat</span>
 				<i class="mdi mdi-arrow-right"></i>
 			</a>

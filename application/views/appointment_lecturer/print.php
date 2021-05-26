@@ -24,18 +24,51 @@
     </style>
 </head>
 <body>
-
-<p style="margin-left: 10px;font-size: 18px; margin-bottom: 0; line-height: 1.1; text-align:center;">
-    <strong>PERMOHONAN HABIS TEORI</strong>
+<div style="margin-right: 50px;" >
+    <div style="display: inline-block">
+        <p style="font-family:Likhan; font-size: 12px; margin-bottom: 0; line-height: 1.1; text-align:left;">  
+        <img src="<?= FCPATH . 'assets/dist/img/uin2.png' ?>" width="20" height="25" ><strong>Universitas Islam Negeri Sunan Kalijaga</strong>
+        </p>
+    </div>
+</div>
+<p style="margin-left: 10px;font-size: 14px; margin-top: 20px;margin-bottom: 0; line-height: 1.1; text-align:center;">
+    <strong><u>PENUNJUKAN PEMBIMBING SKRIPSI</u></strong>
+</p>
+<table style="font-size: 14px; margin-top: 40px; margin-bottom: 10px; width: 100%;">
+    <tbody>
+    <tr>
+        <th><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+                No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <?= $no_letter?>
+            </p>
+            <p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+                Hal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <strong>Penunjukan Pembimbing</strong>
+            </p>
+        </th>
+    </tr>
+    </tbody>
+</table>
+<p style="margin-left: 30px;margin-top: 10px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
+    Kepada Yth.
+</p>
+<p style="margin-left: 30px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
+    <?= $pembimbing['name'] ?>
+</p>
+<p style="margin-left: 30px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
+    di Tempat
+</p>
+<p style="margin-left: 30px;margin-top: 15px;margin-bottom: 5px; line-height: 1.3; font-size: 14px;">
+    <i>Assalamu’alaikum Wr.Wb.</i>
+</p>
+<p style="margin-left: 30px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
+    Dengan hormat,
+</p>
+<p style="margin-left: 10px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
+    Berdasarkan rapat koordinasi dosen Program Studi Pendidikan Fisika pada tanggal <?= $tanggal ?> tentang outline skripsi mahasiswa, kami menunjuk
+    Bapak/Ibu sebagai pembimbing skripsi mahasiswa berikut.
 </p>
 
-<p style="margin-left: 10px;margin-top: 60px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
-    Yang bertandatangan di bawah ini, saya mahasiswa Fakultas Sains dan Teknologi UIN Sunan Kalijaga
-    Yogyakarta,
-</p>
 
-
-<table style="margin-left: 10px;margin-top: 15px;font-size: 14px; margin-bottom: 5px;">
+<table style="margin-left: 30px;font-size: 14px; margin-bottom: 5px;">
     <tbody>
     <tr>
         <th><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
@@ -53,7 +86,7 @@
     </tr>
     <tr>
         <th><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-            Nomor Induk Mahasiswa
+            NIM
             </p>
         </th>
         <th style="text-align: right;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
@@ -67,7 +100,7 @@
     </tr>
     <tr>
         <th><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-            Semester
+            Prodi/Smt
             </p>
         </th>
         <th style="text-align: right;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
@@ -75,13 +108,13 @@
             </p>
         </th>
         <th style="text-align: left;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                <?= $semester ?>
+                Pendidikan Fisika/<?= $semester ?>
             </p>
         </th>
     </tr>
     <tr>
         <th><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-            Jurusan / Program studi
+            Fakultas
             </p>
         </th>
         <th style="text-align: right;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
@@ -89,13 +122,13 @@
             </p>
         </th>
         <th style="text-align: left;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                Pendidikan Fisika
+            Ilmu Tarbiyah dan Keguruan UIN Sunan Kalijaga Yogyakarta
             </p>
         </th>
     </tr>
     <tr>
         <th><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-            Alamat
+            Judul Skripsi
             </p>
         </th>
         <th style="text-align: right;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
@@ -103,39 +136,30 @@
             </p>
         </th>
         <th style="text-align: left;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                <?= $alamat ?>
-            </p>
-        </th>
-    </tr>
-    <tr>
-        <th><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-            Telp/HP
-            </p>
-        </th>
-        <th style="text-align: right;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                :
-            </p>
-        </th>
-        <th style="text-align: left;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-            <?= $noTelepon ?>
+                <strong><?= $judul ?></strong>
             </p>
         </th>
     </tr>
     </tbody>
 </table>
-<p style="margin-left: 10px;margin-top: 15px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
-    Bermaksud mengajukan Surat Keterangan Habis Teori kepada Dekan Fakultas Sains dan Teknologi
-    untuk keperluan persyaratan akademik.
+<p style="margin-left: 10px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
+    Demikian surat ini kami sampaikan, kami berharap Ibu dapat segera mengarahkan dan
+    membimbing mahasiswa tersebut untuk menyusun skripsi. Atas perhatiannya, kami
+    menyampaikan terima kasih.
+</p>
+
+<p style="margin-left: 30px;margin-top: 15px;margin-bottom: 5px; line-height: 1.3; font-size: 14px;">
+    <i>Wassalaamu’alaikum wr.wb.</i>
 </p>
 <table style="margin-left:20px;font-size: 14px; margin-top: 60px; margin-bottom: 10px; width: 100%">
     <tbody>
     <tr>
-        <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">Mengetahui,</p>
-            <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">Kaprodi Pendidikan Fisika</p>
+        <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"></p>
+            <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"></p>
             </th>
         <th style="width: 100px;"></th>
         <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">Yogyakarta, <?= $tanggalSekarang?></p>
-            <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">Yang mengajukan</p>
+            <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">Kaprodi Pendidikan Fisika</p>
         </th>
     </tr>
     <tr>
@@ -148,12 +172,12 @@
         <th colspan="3">&nbsp;</th>
     </tr>
     <tr>
-        <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"><?= $kaprodi['name'] ?></p>
-            <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">NIP. <?= $kaprodi['no_lecturer'] ?></p>
+        <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"></p>
+            <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"></p>
             </th>
         <th style="width: 100px;"></th>
-        <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"><?= $nama ?></p>
-        <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">NIM. <?= $nim ?></p></th>
+        <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"><u><?= $kaprodi['name'] ?></u></p>
+        <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">NIP. <?= $kaprodi['no_lecturer'] ?></th>
     </tr>
     </tbody>
 </table>

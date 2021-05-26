@@ -25,7 +25,7 @@ class Migration_Create_table_assignment_letters extends CI_Migration
             'deleted_at' => ['type' => 'TIMESTAMP', 'null' => true],
             'deleted_by' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE, 'null' => TRUE]
         ])
-        ->add_field('CONSTRAINT fk_kaprodi_al FOREIGN KEY (id_kaprodi) REFERENCES ref_lecturer(id) ON DELETE CASCADE ON UPDATE CASCADE')
+        ->add_field('CONSTRAINT fk_kaprodi_al FOREIGN KEY (id_kaprodi) REFERENCES ref_lecturers(id) ON DELETE CASCADE ON UPDATE CASCADE')
         ->add_field('CONSTRAINT fk_letter_number_al FOREIGN KEY (id_letter_number) REFERENCES letter_numbers(id) ON DELETE CASCADE ON UPDATE CASCADE');
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->create_table('assignment_letters');

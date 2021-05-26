@@ -12,6 +12,8 @@
 
         body {
             margin: 10px;
+            margin-left: 30px;
+            margin-right: 30px;
             background: none;
         }
 

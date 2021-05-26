@@ -17,7 +17,7 @@
 		<div class="card-body">
 			<h5 class="card-title">Isi Surat Permohonan Surat Tugas</h5>
             <div class="form-group">
-				<label for="tujuan">Ketua program studi pendidikan fisika</label>
+				<label for="tujuan">Ketua Program Studi Pendidikan Fisika</label>
 				<select class="form-control select2" name="tujuan" id="tujuan" style="width: 100%"
                 required data-placeholder="Pilih tujuan">
 					<option></option>
@@ -133,7 +133,7 @@
                 <button class="btn btn-sm btn-info" id="btn-add-student" type="button">ADD</button>
             </div>
 			<div class="form-group">
-				<label for="kaprodi">Ketua program studi pendidikan fisika</label>
+				<label for="kaprodi">Ketua Program Studi Pendidikan Fisika</label>
 				<select class="form-control select2" name="kaprodi" id="kaprodi" style="width: 100%"
                 required data-placeholder="Pilih Kaprodi">
 					<option></option>

@@ -1,10 +1,10 @@
 
 <div class="row justify-content-center">
-<form action="<?= site_url('guest/application-letter/save/' . '?redirect=' . get_url_param('redirect')) ?>" method="POST" enctype="multipart/form-data" id="form-interview-permit">
+<form action="<?= site_url('guest/appointment-lecturer/save/' . '?redirect=' . get_url_param('redirect')) ?>" method="POST" enctype="multipart/form-data" id="form-interview-permit">
     <?= _csrf() ?>
 	<div class="card mb-3">
         <div class="card-body">
-            <h5 class="card-title">Surat Permohonan Habis Teori</h5>
+            <h5 class="card-title">Surat Penunjukan Pembimbing Skripsi</h5>
 			<div class="form-group">
 				<label for="email">Email Anda</label> <span class="small text-fade">(surat akan dikirimkan ke email anda)</span>
 				<input type="email" class="form-control" id="email" name="email" required maxlength="100" size="100"
@@ -15,7 +15,7 @@
     </div>
 	<div class="card mb-3">
 		<div class="card-body">
-			<h5 class="card-title">Isi Surat Permohonan Habis Teori</h5>
+			<h5 class="card-title">Isi Surat Penunjukan Pembimbing Skripsi</h5>
             <div class="form-group">
 				<label for="nama">Nama</label>
 				<input type="text" class="form-control" id="nama" name="nama" maxlength="100"
@@ -35,16 +35,29 @@
 				<?= form_error('semester') ?>
 			</div>
 			<div class="form-group">
-				<label for="alamat">Alamat</label>
-				<input type="text" class="form-control" id="alamat" name="alamat" maxlength="500"
-				required placeholder="Masukkan alamat anda"><?= set_value('alamat') ?>
-				<?= form_error('alamat') ?>
+				<label for="judul">Judul</label>
+				<textarea type="text" class="form-control" id="judul" name="judul" maxlength="500" rows="2"
+				required placeholder="Masukkan judul anda"><?= set_value('judul') ?></textarea>
+				<?= form_error('judul') ?>
 			</div>
 			<div class="form-group">
-				<label for="no_telepon">No. Telepon/HP</label>
-				<input type="text" class="form-control" id="no_telepon" name="no_telepon" maxlength="100"
-				required placeholder="Masukkan no telepon anda"><?= set_value('no_telepon') ?>
-				<?= form_error('no_telepon') ?>
+				<label for="tanggal">Tanggal Penentuan Pembimbing</label>
+				<input type="text" class="form-control datepicker" id="tanggal" name="tanggal" maxlength="100"
+				required placeholder="Masukkan tanggal Penetapan"><?= set_value('tanggal') ?>
+				<?= form_error('tanggal') ?>
+			</div>
+			<div class="form-group">
+				<label for="pembimbing">Dosen Pembimbing</label>
+				<select class="form-control select2" name="pembimbing" id="pembimbing" style="width: 100%"
+				required data-placeholder="Pilih Pembimbing">
+					<option></option>
+					<?php foreach ($pembimbings as $pembimbing): ?>
+						<option value="<?= $pembimbing['id'] ?>"<?= set_select('pembimbing', $pembimbing['id'], get_url_param('pembimbing') == $pembimbing['id']) ?>>
+							<?= $pembimbing['name'] ?>
+						</option>
+					<?php endforeach; ?>
+				</select>
+				<?= form_error('pembimbing') ?>
 			</div>
 			<div class="form-group">
 				<label for="kaprodi">Ketua Program Studi Pendidikan Fisika</label>

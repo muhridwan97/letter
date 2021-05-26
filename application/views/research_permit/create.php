@@ -53,7 +53,7 @@
 				<?= form_error('metode') ?>
 			</div>
 			<div class="form-group">
-				<label for="kaprodi">Ketua program studi pendidikan fisika</label>
+				<label for="kaprodi">Ketua Program Studi Pendidikan Fisika</label>
 				<select class="form-control select2" name="kaprodi" id="kaprodi" style="width: 100%"
 				required data-placeholder="Pilih Kaprodi">
 					<option></option>
@@ -66,7 +66,7 @@
 				<?= form_error('kaprodi') ?>
 			</div>
 			<div class="form-group">
-				<label for="pembimbing">Dosen pembimbing</label>
+				<label for="pembimbing">Dosen Pembimbing</label>
 				<select class="form-control select2" name="pembimbing" id="pembimbing" style="width: 100%"
 				required data-placeholder="Pilih Pembimbing">
 					<option></option>
