@@ -23,7 +23,7 @@
 				<?= form_error('terhormat') ?>
 			</div>
 			<div class="form-group">
-				<label for="judul">Judul Proposal Skripsi</label>
+				<label for="judul">Judul Proposal Skripsi / Tugas</label>
 				<input type="text" class="form-control" id="judul" name="judul" maxlength="100"
 				required placeholder="Masukkan judul proposal"><?= set_value('judul') ?>
 				<?= form_error('judul') ?>
@@ -85,9 +85,9 @@
                 <button class="btn btn-sm btn-info" id="btn-add-student" type="button"> <span class="mdi mdi-plus"></span>TAMBAH NAMA</button>
             </div>
 			<div class="form-group">
-				<label for="wawancara">Untuk mengadakan wawancara</label>
+				<label for="wawancara">Keperluan wawancara</label>
 				<input type="text" class="form-control" id="wawancara" name="wawancara" maxlength="100"
-				required placeholder="Masukkan wawancara"><?= set_value('wawancara') ?>
+				required placeholder="Masukkan keperluan wawancara"><?= set_value('wawancara') ?>
 				<?= form_error('wawancara') ?>
 			</div>
 			<div class="form-group">
@@ -110,7 +110,7 @@
 				<?= form_error('kaprodi') ?>
 			</div>
 			<div class="form-group">
-				<label for="pembimbing">Dosen Pembimbing</label>
+				<label for="pembimbing">Dosen Pembimbing Akademik</label>
 				<select class="form-control select2" name="pembimbing" id="pembimbing" style="width: 100%"
 				required data-placeholder="Pilih Pembimbing">
 					<option></option>

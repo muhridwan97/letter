@@ -100,12 +100,12 @@ class College_permit extends App_Controller
 				];
 				$output = $this->exporter->exportToPdf("Laporan Izin Kuliah.pdf", null, $options);
 				$this->uploader->makeFolder('college_permit');
-				file_put_contents('uploads/college_permit/Laporan Izin Kuliah'.$email.'.pdf', $output);
-				$filepath = "uploads/college_permit/Laporan Izin Kuliah".$email.".pdf";
+				file_put_contents('uploads/college_permit/Laporan Izin Kuliah.pdf', $output);
+				$filepath = "uploads/college_permit/Laporan Izin Kuliah.pdf";
 
 				//notif email
 				$attachments = [];
-				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'college_permit' . DIRECTORY_SEPARATOR . 'Laporan Izin Kuliah'.$email.'.pdf';
+				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'college_permit' . DIRECTORY_SEPARATOR . 'Laporan Izin Kuliah.pdf';
 				$attachments[] = [
 					'source' => $uploadedPath,
 				];

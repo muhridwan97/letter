@@ -1,20 +1,20 @@
 <h4 class="mb-2">Dashboard</h4>
 <p class="text-fade mb-4">
-	Training is teaching, or developing in oneself or others, any skills and knowledge or fitness that relate to specific useful competencies.
+	FisApp is a program from physics education in managing student letters and theses.
 </p>
 
-<?php if(AuthorizationModel::hasPermission(PERMISSION_TRAINING_MANAGE)): ?>
+<?php if(AuthorizationModel::hasPermission(PERMISSION_LECTURER_CREATE)): ?>
 	<div class="row">
 		<div class="col-6 col-xl-3">
 			<div class="card border-0 shadow-sm mb-3">
 				<div class="card-body d-flex justify-content-between align-items-center">
 					<div>
-						<h3 class="mb-0"><?= numerical($totalCurriculum) ?></h3>
-						<p class="text-fade mb-0">Total Curriculum</p>
+						<h3 class="mb-0"><?= numerical($totalLecturer) ?></h3>
+						<p class="text-fade mb-0">Total Lecturer</p>
 					</div>
 					<h1 class="mdi mdi-folder-settings-outline display-4 text-warning" style="line-height: 1; flex-basis: 70px"></h1>
 				</div>
-				<a href="<?= site_url('syllabus/curriculum') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
+				<a href="<?= site_url('master/lecturer') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
 					<span class="small">Show Detail</span>
 					<i class="mdi mdi-arrow-right"></i>
 				</a>
@@ -24,12 +24,12 @@
 			<div class="card border-0 shadow-sm mb-3">
 				<div class="card-body d-flex justify-content-between align-items-center">
 					<div>
-						<h3 class="mb-0"><?= numerical($totalCourse) ?></h3>
-						<p class="text-fade mb-0">Total Course</p>
+						<h3 class="mb-0"><?= numerical($totalStudent) ?></h3>
+						<p class="text-fade mb-0">Total Student</p>
 					</div>
 					<h1 class="mdi mdi-form-select display-4 text-primary" style="line-height: 1; flex-basis: 70px"></h1>
 				</div>
-				<a href="<?= site_url('syllabus/course') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
+				<a href="<?= site_url('master/student') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
 					<span class="small">Show Detail</span>
 					<i class="mdi mdi-arrow-right"></i>
 				</a>
@@ -40,7 +40,7 @@
 				<div class="card-body d-flex justify-content-between align-items-center">
 					<div>
 						<h3 class="mb-0"><?= numerical($totalLesson) ?></h3>
-						<p class="text-fade mb-0">Total Lessons</p>
+						<p class="text-fade mb-0">Total Skripsi</p>
 					</div>
 					<h1 class="mdi mdi-book-check-outline display-4 text-info" style="line-height: 1; flex-basis: 70px"></h1>
 				</div>
@@ -54,12 +54,12 @@
 			<div class="card border-0 shadow-sm mb-3">
 				<div class="card-body d-flex justify-content-between align-items-center">
 					<div>
-						<h3 class="mb-0"><?= numerical($totalTraining) ?></h3>
-						<p class="text-fade mb-0">Total Trainings</p>
+						<h3 class="mb-0"><?= numerical($totalLetterNumber) ?></h3>
+						<p class="text-fade mb-0">Total Surat</p>
 					</div>
 					<h1 class="mdi mdi-ballot-outline display-4 text-success" style="line-height: 1; flex-basis: 70px"></h1>
 				</div>
-				<a href="<?= site_url('training/class') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
+				<a href="<?= site_url('#') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
 					<span class="small">Show Detail</span>
 					<i class="mdi mdi-arrow-right"></i>
 				</a>
@@ -79,13 +79,13 @@
 					<div class="card-body py-2 px-3 d-flex justify-content-between align-items-center">
 						<div>
 							<a href="<?= site_url('training/class/view/' . $training['id']) ?>">
-								<h5 class="font-weight-bold mb-1"><?= $training['curriculum_title'] ?></h5>
+								<h5 class="font-weight-bold mb-1"><?= $training['lecturer_title'] ?></h5>
 							</a>
 							<p class="mb-0 text-muted">
 								<?= word_limiter(if_empty($training['description'], 'No description'), 20) ?>
 							</p>
 							<span class="text-fade small">
-							<?= $training['total_courses'] ?> Courses - Last updated at <?= format_date(if_empty($training['updated_at'], $training['created_at']), 'd M Y H:i') ?>
+							<?= $training['total_students'] ?> Students - Last updated at <?= format_date(if_empty($training['updated_at'], $training['created_at']), 'd M Y H:i') ?>
 						</span>
 						</div>
 						<div>
@@ -100,6 +100,8 @@
 	</div>
 <?php endif; ?>
 
+
+<?php if(false): ?>
 <div class="card mb-3">
 	<div class="card-body">
 		<div class="d-flex justify-content-between">
@@ -163,3 +165,4 @@
 		</table>
 	</div>
 </div>
+<?php endif; ?>

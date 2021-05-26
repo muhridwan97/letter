@@ -105,12 +105,12 @@ class Interview_permit extends App_Controller
 				];
 				$output = $this->exporter->exportToPdf("Laporan Surat Izin Wawancara.pdf", null, $options);
 				$this->uploader->makeFolder('interview_permit');
-				file_put_contents('uploads/interview_permit/Laporan Surat Izin Wawancara'.$email.'.pdf', $output);
-				$filepath = "uploads/interview_permit/Laporan Surat Izin Wawancara".$email.".pdf";
+				file_put_contents('uploads/interview_permit/Laporan Surat Izin Wawancara.pdf', $output);
+				$filepath = "uploads/interview_permit/Laporan Surat Izin Wawancara.pdf";
 
 				//notif email
 				$attachments = [];
-				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'interview_permit' . DIRECTORY_SEPARATOR . 'Laporan Surat Izin Wawancara'.$email.'.pdf';
+				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'interview_permit' . DIRECTORY_SEPARATOR . 'Laporan Surat Izin Wawancara.pdf';
 				$attachments[] = [
 					'source' => $uploadedPath,
 				];

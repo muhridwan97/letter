@@ -95,12 +95,12 @@ class Recommendation_letter extends App_Controller
 				];
 				$output = $this->exporter->exportToPdf("Surat Rekomendasi.pdf", null, $options);
 				$this->uploader->makeFolder('recommendation_letter');
-				file_put_contents('uploads/recommendation_letter/Surat Rekomendasi'.$nim.'.pdf', $output);
-				$filepath = "uploads/recommendation_letter/Surat Rekomendasi".$nim.".pdf";
+				file_put_contents('uploads/recommendation_letter/Surat Rekomendasi.pdf', $output);
+				$filepath = "uploads/recommendation_letter/Surat Rekomendasi.pdf";
 
 				//notif email
 				$attachments = [];
-				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'recommendation_letter' . DIRECTORY_SEPARATOR . 'Surat Rekomendasi'.$nim.'.pdf';
+				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'recommendation_letter' . DIRECTORY_SEPARATOR . 'Surat Rekomendasi.pdf';
 				$attachments[] = [
 					'source' => $uploadedPath,
 				];

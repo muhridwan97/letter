@@ -101,12 +101,12 @@ class Course_elimination extends App_Controller
 				];
 				$output = $this->exporter->exportToPdf("Laporan Surat Hapus Matkul.pdf", null, $options);
 				$this->uploader->makeFolder('course_elimination');
-				file_put_contents('uploads/course_elimination/Laporan Surat Hapus Matkul'.$email.'.pdf', $output);
-				$filepath = "uploads/course_elimination/Laporan Surat Hapus Matkul".$email.".pdf";
+				file_put_contents('uploads/course_elimination/Laporan Surat Hapus Matkul.pdf', $output);
+				$filepath = "uploads/course_elimination/Laporan Surat Hapus Matkul.pdf";
 				
 				//notif email
 				$attachments = [];
-				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'course_elimination' . DIRECTORY_SEPARATOR . 'Laporan Surat Hapus Matkul'.$email.'.pdf';
+				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'course_elimination' . DIRECTORY_SEPARATOR . 'Laporan Surat Hapus Matkul.pdf';
 				$attachments[] = [
 					'source' => $uploadedPath,
 				];

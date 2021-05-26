@@ -86,12 +86,12 @@ class Application_letter extends App_Controller
 				];
 				$output = $this->exporter->exportToPdf("Surat teori.pdf", null, $options);
 				$this->uploader->makeFolder('application_letter');
-				file_put_contents('uploads/application_letter/Surat teori'.$nim.'.pdf', $output);
-				$filepath = "uploads/application_letter/Surat teori".$nim.".pdf";
+				file_put_contents('uploads/application_letter/Surat teori.pdf', $output);
+				$filepath = "uploads/application_letter/Surat teori.pdf";
 				
 				//notif email
 				$attachments = [];
-				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'application_letter' . DIRECTORY_SEPARATOR . 'Surat teori'.$nim.'.pdf';
+				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'application_letter' . DIRECTORY_SEPARATOR . 'Surat teori.pdf';
 				$attachments[] = [
 					'source' => $uploadedPath,
 				];

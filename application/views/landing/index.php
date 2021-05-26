@@ -30,7 +30,7 @@
 		<div class="card border-0 shadow-sm mb-3">
 			<div class="card-body d-flex justify-content-between align-items-center">
 				<div>
-					<h4 class="mb-0">Surat Tugas</h4>
+					<h4 class="mb-0">Permohonan Surat Tugas</h4>
 				</div>
 				<img src="<?= base_url('assets/src/images/completed-task.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
 			</div>

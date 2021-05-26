@@ -66,7 +66,7 @@
 				<?= form_error('kaprodi') ?>
 			</div>
 			<div class="form-group">
-				<label for="pembimbing">Dosen Pembimbing</label>
+				<label for="pembimbing">Dosen Pembimbing Akademik</label>
 				<select class="form-control select2" name="pembimbing" id="pembimbing" style="width: 100%"
 				required data-placeholder="Pilih Pembimbing">
 					<option></option>

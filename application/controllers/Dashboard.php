@@ -2,10 +2,10 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * @property CurriculumModel $curriculum
- * @property CourseModel $course
+ * @property LecturerModel $lecturer
+ * @property StudentModel $student
  * @property LessonModel $lesson
- * @property TrainingModel $training
+ * @property LetterNumberModel $letterNumber
  * @property ExamExerciseModel $examExercise
  * Class Dashboard
  */
@@ -17,11 +17,12 @@ class Dashboard extends App_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('CurriculumModel', 'curriculum');
-		$this->load->model('CourseModel', 'course');
+		$this->load->model('LecturerModel', 'lecturer');
+		$this->load->model('StudentModel', 'student');
 		$this->load->model('LessonModel', 'lesson');
-		$this->load->model('TrainingModel', 'training');
+		$this->load->model('LetterNumberModel', 'letterNumber');
 		$this->load->model('ExamExerciseModel', 'examExercise');
+		$this->load->model('TrainingModel', 'training');
 	}
 
     /**
@@ -30,10 +31,10 @@ class Dashboard extends App_Controller
     public function index()
     {
 		$data = [
-			'totalCurriculum' => $this->curriculum->getBy([], 'COUNT'),
-			'totalCourse' => $this->course->getBy([], 'COUNT'),
+			'totalLecturer' => $this->lecturer->getBy([], 'COUNT'),
+			'totalStudent' => $this->student->getBy([], 'COUNT'),
 			'totalLesson' => $this->lesson->getBy([], 'COUNT'),
-			'totalTraining' => $this->training->getBy([], 'COUNT'),
+			'totalLetterNumber' => $this->letterNumber->getBy([], 'COUNT'),
 		];
 
 		$data['latestExams'] = $this->examExercise->getAll([

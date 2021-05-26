@@ -138,7 +138,7 @@
     </tr>
     <tr>
         <th><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-            Untuk mengadakan wawancara
+            Keperluan wawancara
             </p>
         </th>
         <th style="text-align: right;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
@@ -182,7 +182,7 @@
             <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">Pendidikan Fisika</p>
             </th>
         <th style="width: 100px;"></th>
-        <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">Dosen Pembimbing</p></th>
+        <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">Dosen Pembimbing Akademik</p></th>
     </tr>
     <tr>
         <th colspan="3">&nbsp;</th>

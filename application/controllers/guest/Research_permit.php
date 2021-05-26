@@ -150,11 +150,11 @@ class Research_permit extends App_Controller
 				];
 				$output = $this->exporter->exportToPdf("Surat Izin Penelitian.pdf", null, $options);
 				$this->uploader->makeFolder('research_permit');
-				file_put_contents('uploads/research_permit/Surat Izin Penelitian'.$nim.'.pdf', $output);
-				$filepath = "uploads/research_permit/Surat Izin Penelitian".$nim.".pdf";
+				file_put_contents('uploads/research_permit/Surat Izin Penelitian.pdf', $output);
+				$filepath = "uploads/research_permit/Surat Izin Penelitian.pdf";
 
 				//notif email
-				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'research_permit' . DIRECTORY_SEPARATOR . 'Surat Izin Penelitian'.$nim.'.pdf';
+				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'research_permit' . DIRECTORY_SEPARATOR . 'Surat Izin Penelitian.pdf';
 				$attachments[] = [
 					'source' => $uploadedPath,
 				];
