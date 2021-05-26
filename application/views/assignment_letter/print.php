@@ -25,26 +25,24 @@
 
 <div style="margin-right: 50px;" >
     <div style="display: inline-block">
-        <img src="<?= FCPATH . 'assets/dist/img/uin.png' ?>" width="60" height="100" >
+        <img src="<?= FCPATH . 'assets/dist/img/uin2.png' ?>" width="60" height="80" >
     </div>
     <div style="display: inline-block;">
-        <p style="margin-left: 10px;font-size: 18px; margin-bottom: 0; line-height: 1.1; text-align:center;">
-            KEMENTERIAN AGAMA REPUBLIK INDONESIA
-            UNIVERSITAS ISLAM NEGERI SUNAN KALIJAGA YOGYAKARTA
+        <p style="font-family:Likhan; font-size: 18px; margin-bottom: 0; line-height: 1.1; text-align:center;">
+            KEMENTERIAN AGAMA
+        </p><p style="font-family:Likhan; font-size: 18px; margin-bottom: 0; line-height: 1.1; text-align:center;">
+            UNIVERSITAS ISLAM NEGERI SUNAN KALIJAGA
         </p>
-        <p style="margin-left: 10px;font-size: 18px; margin-bottom: 0; line-height: 1.1; text-align:center;">
-            <strong>FAKULTAS ILMU TARBIYAH DAN KEGURUAN</strong>
+        <p style="font-family:Likhan;font-size: 18px; margin-bottom: 0; line-height: 1.1; text-align:center;">
+            FAKULTAS ILMU TARBIYAH DAN KEGURUAN
         </p>
-        <p style="margin-left: 10px;font-size: 18px; margin-bottom: 0; line-height: 1.1; text-align:center;">
-        Alamat: Jln. Marsda Adisucipto telepon 0274519739 fax 0274540971
-        </p>
-        <p style="margin-left: 10px;font-size: 18px; margin-bottom: 0; line-height: 1.1; text-align:center;">
-            E-mail: ftk@uin-suka.com Yogyakarta 55281
+        <p style="font-family:Likhan;font-size: 14px; margin-bottom: 0; line-height: 1.1; text-align:center;">
+        Jl. Marsda Adisucipto Telp. (0274) 513056 Fax. (0274) 586117 Yogyakarta 55281
         </p>
     </div>
 </div>
 
-<hr style="border: 2px solid black;margin-top: 0px;">
+<hr style="border: 1px solid black;margin-top: 0px;">
 
 <table style="font-size: 14px; margin-top: 40px; margin-bottom: 10px; width: 100%;">
     <tbody>
@@ -53,7 +51,7 @@
                 Nomor&nbsp;&nbsp;&nbsp;: <?= $no_letter?>
             </p>
             <p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-                Lamp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: -
+                Lamp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 1 Lampiran
             </p>
             <p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
                 Hal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: Permohonan Surat Tugas
@@ -66,10 +64,10 @@
 
 
 <p style="margin-top: 40px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
-    Kepada
+    Kepada Yth.
 </p>
 <p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px">
-    Yth. Kabag TU
+    <?= $tujuan ?>
 </p>
 <p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px">
     UIN Sunan Kalijaga Yogyakarta
@@ -78,10 +76,13 @@
     <i>Assalamu’alaikum Wr.Wb.</i>
 </p>
 <p style="margin-top: 15px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
-    Dengan hormat, sehubungan dengan akan dilaksanakannya kegiatan
+    Dengan hormat,
 </p>
 <p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px">
-    <strong><?= $judul ?></strong>, maka dengan ini, kami mohon perkenan Bapak untuk menerbitkan surat tugas kepada:
+    Berkaitan dengan pelaksanaan <strong><?= $judul ?></strong>, yang diselenggarakan oleh <?= $penyelenggara ?>, pada tanggal <?= $tanggal_pelaksana ?>.
+</p>
+<p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px">
+    Dengan ini kami mohon perkenan Bapak/Ibu untuk menerbitkan surat tugas kepada:
 </p>
 <table style="margin-top: 10px;font-size: 14px; margin-bottom: 10px;border: 1px solid black;width: 100%">
     <tbody>
@@ -92,6 +93,10 @@
         </th>
         <th style="text-align: center;border: 1px solid black;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
                 <strong>Nama</strong>
+            </p>
+        </th>
+        <th style="text-align: center;border: 1px solid black;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+            <strong>NIP</strong>
             </p>
         </th>
         <th style="text-align: center;border: 1px solid black;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
@@ -109,7 +114,11 @@
             <?= $student['nama'];?>
             </p>
         </td>
-        <td style="text-align: left;border: 1px solid black;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+        <td style="text-align: center;border: 1px solid black;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
+            <?= $student['nip'];?>
+            </p>
+        </td>
+        <td style="text-align: center;border: 1px solid black;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
             <?= $student['jabatan'];?>
             </p>
         </td>
@@ -118,7 +127,7 @@
     </tbody>
 </table>
 <p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px">
-Demikian permohonan ini kami sampaikan, atas perhatian dan pertimbangan Bapak, saya ucapkan
+Demikian surat permohonan dari kami, atas perhatian dan perkenan Bapak/Ibu, kami ucapkan
 terima kasih. 
 </p>
 <p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px">

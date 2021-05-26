@@ -63,6 +63,11 @@ class Assignment_letter extends App_Controller
 			$students = $this->input->post('students');
 			$kaprodiId = $this->input->post('kaprodi');
 			$kaprodi = $this->lecturer->getById($kaprodiId);
+			$tujuan = $this->input->post('tujuan');
+			$tanggal_mulai = $this->input->post('tanggal_mulai');
+			$tanggal_selesai = $this->input->post('tanggal_selesai');
+			$tempat = $this->input->post('tempat');
+			$penyelenggara = $this->input->post('penyelenggara');
 			$this->db->trans_start();
 
 			$no_letter = $this->letterNumber->getLetterNumber();
@@ -77,33 +82,63 @@ class Assignment_letter extends App_Controller
 				'email' => $email,
 				'date' => date('Y-m-d'),
 				'judul' => $judul,
+				'tujuan' => $tujuan,
+				'tanggal_mulai' => $tanggal_mulai,
+				'tanggal_selesai' => $tanggal_selesai,
+				'tempat' => $tempat,
+				'penyelenggara' => $penyelenggara,
 			]);
 			$assignmentLetterId = $this->db->insert_id();
 
 			foreach($students as $student){
 				$this->assignmentLetterStudent->create([
 					'name' => $student['nama'],
+					'nip' => $student['nip'],
 					'jabatan' => $student['jabatan'],
 				]);
 			}
 			
 			$this->db->trans_complete();
+			$tanggal_pelaksana = '';
+			if($tanggal_mulai == $tanggal_selesai){
+				$dateStart = Carbon::createFromDate($tanggal_mulai)->locale('id');
+				$tanggalMulai = $dateStart->isoFormat('D MMMM YYYY');
+				$tanggal_pelaksana = $tanggalMulai;
+			}else{
+				if(date('Y',strtotime($tanggal_mulai)) != date('Y',strtotime($tanggal_selesai))){
+					$dateStart = Carbon::createFromDate($tanggal_mulai)->locale('id');
+					$tanggalMulai = $dateStart->isoFormat('D MMMM YYYY');
+					$dateEnd = Carbon::createFromDate($tanggal_selesai)->locale('id');
+					$tanggalSelesai = $dateEnd->isoFormat('D MMMM YYYY');
+					$tanggal_pelaksana = $tanggalMulai.' - '. $tanggalSelesai;
+				}else if(date('m',strtotime($tanggal_mulai)) != date('m',strtotime($tanggal_selesai))){
+					$dateStart = Carbon::createFromDate($tanggal_mulai)->locale('id');
+					$tanggalMulai = $dateStart->isoFormat('D MMMM');
+					$dateEnd = Carbon::createFromDate($tanggal_selesai)->locale('id');
+					$tanggalSelesai = $dateEnd->isoFormat('D MMMM');
+					$tanggal_pelaksana = $tanggalMulai.' - '. $tanggalSelesai. ' '.date('Y',strtotime($tanggal_mulai));
+				}else if(date('d',strtotime($tanggal_mulai)) != date('d',strtotime($tanggal_selesai))){
+					$dateStart = Carbon::createFromDate($tanggal_mulai)->locale('id');
+					$tanggalMulai = $dateStart->isoFormat('MMMM YYYY');
+					$tanggal_pelaksana = date('d',strtotime($tanggal_mulai)).' - '. date('d',strtotime($tanggal_selesai)). ' '.$tanggalMulai;
+				}
+			}
 
 			if ($this->db->trans_status()) {
 				$options = [
 					'buffer' => true,
 					'view' => 'assignment_letter/print',
-					'data' => compact('tanggalSekarang', 'judul', 'students',
-										'kaprodi', 'no_letter'),
+					'data' => compact('tanggalSekarang', 'judul', 'students', 'tujuan', 'penyelenggara',
+										'kaprodi', 'no_letter', 'tanggal_pelaksana', 'tempat'),
 				];
 				$output = $this->exporter->exportToPdf("Surat Permohonan Tugas.pdf", null, $options);
 				$this->uploader->makeFolder('assignment_letter');
-				file_put_contents('uploads/assignment_letter/Surat Permohonan Tugas'.$email.'.pdf', $output);
-				$filepath = "uploads/assignment_letter/Surat Permohonan Tugas".$email.".pdf";
+				file_put_contents('uploads/assignment_letter/Surat Permohonan Tugas.pdf', $output);
+				$filepath = "uploads/assignment_letter/Surat Permohonan Tugas.pdf";
 
 				//notif email
 				$attachments = [];
-				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'assignment_letter' . DIRECTORY_SEPARATOR . 'Surat Permohonan Tugas'.$email.'.pdf';
+				$uploadedPath = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'assignment_letter' . DIRECTORY_SEPARATOR . 'Surat Permohonan Tugas.pdf';
 				$attachments[] = [
 					'source' => $uploadedPath,
 				];

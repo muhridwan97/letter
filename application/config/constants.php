@@ -120,6 +120,18 @@ defined('PERMISSION_LECTURER_CREATE') OR define('PERMISSION_LECTURER_CREATE', 'l
 defined('PERMISSION_LECTURER_EDIT') OR define('PERMISSION_LECTURER_EDIT', 'lecturer-edit');
 defined('PERMISSION_LECTURER_DELETE') OR define('PERMISSION_LECTURER_DELETE', 'lecturer-delete');
 
+// Master student permission
+defined('PERMISSION_STUDENT_VIEW') OR define('PERMISSION_STUDENT_VIEW', 'student-view');
+defined('PERMISSION_STUDENT_CREATE') OR define('PERMISSION_STUDENT_CREATE', 'student-create');
+defined('PERMISSION_STUDENT_EDIT') OR define('PERMISSION_STUDENT_EDIT', 'student-edit');
+defined('PERMISSION_STUDENT_DELETE') OR define('PERMISSION_STUDENT_DELETE', 'student-delete');
+
+// Skripsi  permission
+defined('PERMISSION_SKRIPSI_VIEW') OR define('PERMISSION_SKRIPSI_VIEW', 'skripsi-view');
+defined('PERMISSION_SKRIPSI_CREATE') OR define('PERMISSION_SKRIPSI_CREATE', 'skripsi-create');
+defined('PERMISSION_SKRIPSI_EDIT') OR define('PERMISSION_SKRIPSI_EDIT', 'skripsi-edit');
+defined('PERMISSION_SKRIPSI_DELETE') OR define('PERMISSION_SKRIPSI_DELETE', 'skripsi-delete');
+
 // Curriculum permission
 defined('PERMISSION_CURRICULUM_VIEW') OR define('PERMISSION_CURRICULUM_VIEW', 'curriculum-view');
 defined('PERMISSION_CURRICULUM_CREATE') OR define('PERMISSION_CURRICULUM_CREATE', 'curriculum-create');

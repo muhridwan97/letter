@@ -47,7 +47,7 @@
 				<?= form_error('no_telepon') ?>
 			</div>
 			<div class="form-group">
-				<label for="kaprodi">Ketua program studi fisika</label>
+				<label for="kaprodi">Ketua program studi pendidikan fisika</label>
 				<select class="form-control select2" name="kaprodi" id="kaprodi" style="width: 100%"
 				required data-placeholder="Pilih Kaprodi">
 					<option></option>

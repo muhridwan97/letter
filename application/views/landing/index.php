@@ -4,7 +4,7 @@
 		box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
 	}
 </style>
-<h4 class="mb-2">WEB SURAT FISIKA UIN SUNAN KALIJAGA</h4>
+<h4 class="mb-2">WEB SURAT PENDIDIKAN FISIKA UIN SUNAN KALIJAGA</h4>
 <p class="text-fade mb-4">
 	Membuat Surat Menjadi Lebih Mudah
 </p>
@@ -115,6 +115,24 @@
 					<!-- <p class="text-fade mb-0">Surat Rekomendasi</p> -->
 				</div>
 				<img src="<?= base_url('assets/src/images/like.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
+			</div>
+			<a href="<?= site_url('guest/recommendation-letter/create') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
+				<span class="small">Ayo Buat</span>
+				<i class="mdi mdi-arrow-right"></i>
+			</a>
+		</div>
+		</a>
+	</div>
+	
+	<div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+		<a href="<?= site_url('guest/recommendation-letter/create') ?>" style="text-decoration: none;">
+		<div class="card border-0 shadow-sm mb-3">
+			<div class="card-body d-flex justify-content-between align-items-center">
+				<div>
+					<h4 class="mb-0">Penunjukan Pembimbing Skripsi</h4>
+					<!-- <p class="text-fade mb-0">Surat Rekomendasi</p> -->
+				</div>
+				<img src="<?= base_url('assets/src/images/tunjuk.png') ?>" style="margin-right:auto;margin-left:auto;width:110px">
 			</div>
 			<a href="<?= site_url('guest/recommendation-letter/create') ?>" class="card-footer btn-link d-flex justify-content-between align-items-center bg-white py-2">
 				<span class="small">Ayo Buat</span>

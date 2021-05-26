@@ -25,19 +25,19 @@
 
 <div style="margin-right: 50px;" >
     <div style="display: inline-block">
-        <img src="<?= FCPATH . 'assets/dist/img/uin.png' ?>" width="60" height="100" >
+        <img src="<?= FCPATH . 'assets/dist/img/uin2.png' ?>" width="60" height="80" >
     </div>
     <div style="display: inline-block;">
-        <p style="margin-left: 10px;font-size: 18px; margin-bottom: 0; line-height: 1.1; text-align:center;">
-            KEMENTERIAN AGAMA REPUBLIK INDONESIA
-            UNIVERSITAS ISLAM NEGERI SUNAN KALIJAGA YOGYAKARTA
+        <p style="font-family:Likhan; font-size: 18px; margin-bottom: 0; line-height: 1.1; text-align:center;">
+            KEMENTERIAN AGAMA
+        </p><p style="font-family:Likhan; font-size: 18px; margin-bottom: 0; line-height: 1.1; text-align:center;">
+            UNIVERSITAS ISLAM NEGERI SUNAN KALIJAGA
         </p>
-        <p style="margin-left: 10px;font-size: 18px; margin-bottom: 0; line-height: 1.1; text-align:center;">
-            <strong>FAKULTAS ILMU TARBIYAH DAN KEGURUAN</strong>
+        <p style="font-family:Likhan;font-size: 18px; margin-bottom: 0; line-height: 1.1; text-align:center;">
+            FAKULTAS ILMU TARBIYAH DAN KEGURUAN
         </p>
-        <p style="margin-left: 10px;font-size: 18px; margin-bottom: 0; line-height: 1.1; text-align:center;">
-        Alamat: Jln. Marsda Adisucipto telepon 0274519739 fax 0274540971
-            http://saintek.uin-suka.ac.id Yogyakarta 55281
+        <p style="font-family:Likhan;font-size: 14px; margin-bottom: 0; line-height: 1.1; text-align:center;">
+        Jl. Marsda Adisucipto Telp. (0274) 513056 Fax. (0274) 586117 Yogyakarta 55281
         </p>
     </div>
 </div>

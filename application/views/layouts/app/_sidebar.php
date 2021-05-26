@@ -85,18 +85,6 @@ $segment2 = $this->uri->segment(2);
 				</a>
 				<div class="collapse<?= $segment1 == 'master' && !in_array($segment2, ['role', 'user']) ? ' show' : '' ?>" id="master">
 					<ul class="nav flex-column sub-menu">
-						<?php if(AuthorizationModel::isAuthorized(PERMISSION_DEPARTMENT_VIEW)): ?>
-							<li class="nav-item<?= $segment1 == 'master' && $segment2 == 'department' ? ' active' : '' ?>">
-								<a class="nav-link" href="<?= site_url('master/department') ?>">
-									<i class="mdi mdi-office-building-outline mr-2"></i>Department
-									<?php if($this->config->item('sso_enable')): ?>
-										<span class="badge badge-info badge-pill ml-auto">
-											HR
-										</span>
-									<?php endif; ?>
-								</a>
-							</li>
-						<?php endif; ?>
 						<?php if(AuthorizationModel::isAuthorized(PERMISSION_LECTURER_VIEW)): ?>
 							<li class="nav-item<?= $segment1 == 'master' && $segment2 == 'lecturer' ? ' active' : '' ?>">
 								<a class="nav-link" href="<?= site_url('master/lecturer') ?>">
@@ -109,10 +97,55 @@ $segment2 = $this->uri->segment(2);
 								</a>
 							</li>
 						<?php endif; ?>
+						<?php if(AuthorizationModel::isAuthorized(PERMISSION_STUDENT_VIEW)): ?>
+							<li class="nav-item<?= $segment1 == 'master' && $segment2 == 'student' ? ' active' : '' ?>">
+								<a class="nav-link" href="<?= site_url('master/student') ?>">
+									<i class="mdi mdi-office-building-outline mr-2"></i>Student
+									<?php if($this->config->item('sso_enable')): ?>
+										<span class="badge badge-info badge-pill ml-auto">
+											HR
+										</span>
+									<?php endif; ?>
+								</a>
+							</li>
+						<?php endif; ?>
 					</ul>
 				</div>
 			</li>
 		<?php endif; ?>
+
+		<li class="nav-item<?= $segment1 == '' ? ' active' : '' ?>">
+            <a class="nav-link" href="<?= base_url('') ?>">
+                <i class="mdi mdi-mail menu-icon"></i>
+                <span class="menu-title">Letter</span>
+            </a>
+        </li>
+
+			<li class="nav-item<?= $segment1 == 'skripsi' && !in_array($segment2, ['role', 'user']) ? ' active' : '' ?>">
+				<a class="nav-link" data-toggle="collapse" href="#skripsi" aria-expanded="<?= $segment1 == 'skripsi' && !in_array($segment2, ['role', 'user']) ? 'true' : 'false' ?>" aria-controls="master">
+					<i class="mdi mdi-folder-multiple menu-icon"></i>
+					<span class="menu-title">Skripsi</span>
+					<i class="menu-arrow"></i>
+				</a>
+				<div class="collapse<?= $segment1 == 'skripsi' && !in_array($segment2, ['role', 'user']) ? ' show' : '' ?>" id="skripsi">
+					<ul class="nav flex-column sub-menu">
+						<?php if(AuthorizationModel::isAuthorized(PERMISSION_DEPARTMENT_VIEW)): ?>
+							<li class="nav-item<?= $segment1 == 'skripsi' && $segment2 == 'skripsi' ? ' active' : '' ?>">
+								<a class="nav-link" href="<?= site_url('skripsi/skripsi') ?>">
+									<i class="mdi mdi-folder-outline mr-2"></i>Skripsi
+								</a>
+							</li>
+						<?php endif; ?>
+						<?php if(AuthorizationModel::isAuthorized(PERMISSION_LECTURER_VIEW)): ?>
+							<li class="nav-item<?= $segment1 == 'skripsi' && $segment2 == 'logbook' ? ' active' : '' ?>">
+								<a class="nav-link" href="<?= site_url('skripsi/logbook') ?>">
+									<i class="mdi mdi-content-paste mr-2"></i>Logbook
+								</a>
+							</li>
+						<?php endif; ?>
+					</ul>
+				</div>
+			</li>
 
 		<?php if(AuthorizationModel::isAuthorized(PERMISSION_ACCOUNT_EDIT)): ?>
 			<li class="nav-title">ACCOUNT & SETTING <i class="mdi mdi-arrow-right ml-auto"></i></li>

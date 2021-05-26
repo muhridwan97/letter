@@ -112,7 +112,7 @@ $style = [
                                     <!-- Salutation -->
                                     <p style="<?php echo $style['paragraph'] ?>">
                                         Regards,<br>
-                                        <b>Fisika UIN Sunan Kalijaga</b>
+                                        <b>Pendidikan Fisika UIN Sunan Kalijaga</b>
                                     </p>
 
                                     <!-- Sub Copy -->
