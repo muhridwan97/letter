@@ -132,6 +132,13 @@ defined('PERMISSION_SKRIPSI_CREATE') OR define('PERMISSION_SKRIPSI_CREATE', 'skr
 defined('PERMISSION_SKRIPSI_EDIT') OR define('PERMISSION_SKRIPSI_EDIT', 'skripsi-edit');
 defined('PERMISSION_SKRIPSI_DELETE') OR define('PERMISSION_SKRIPSI_DELETE', 'skripsi-delete');
 
+// Logbook  permission
+defined('PERMISSION_LOGBOOK_VIEW') OR define('PERMISSION_LOGBOOK_VIEW', 'logbook-view');
+defined('PERMISSION_LOGBOOK_CREATE') OR define('PERMISSION_LOGBOOK_CREATE', 'logbook-create');
+defined('PERMISSION_LOGBOOK_EDIT') OR define('PERMISSION_LOGBOOK_EDIT', 'logbook-edit');
+defined('PERMISSION_LOGBOOK_DELETE') OR define('PERMISSION_LOGBOOK_DELETE', 'logbook-delete');
+defined('PERMISSION_LOGBOOK_VALIDATE') OR define('PERMISSION_LOGBOOK_VALIDATE', 'logbook-validate');
+
 // Curriculum permission
 defined('PERMISSION_CURRICULUM_VIEW') OR define('PERMISSION_CURRICULUM_VIEW', 'curriculum-view');
 defined('PERMISSION_CURRICULUM_CREATE') OR define('PERMISSION_CURRICULUM_CREATE', 'curriculum-create');
