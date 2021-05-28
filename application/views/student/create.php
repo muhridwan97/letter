@@ -21,12 +21,24 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group">
+                <label for="pembimbing">Pembimbing</label>
+                <select class="custom-select select2" id="pembimbing" name="pembimbing" data-placeholder="Select Pembimbing">>
+                    <option value=""></option>
+                    <?php foreach ($pembimbings as $pembimbing): ?>
+                        <option value="<?= $pembimbing['id'] ?>"<?= set_select('pembimbing', $pembimbing['id']) ?>>
+                            <?= $pembimbing['name'] ?> (<?= $pembimbing['no_lecturer'] ?>)
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <?= form_error('pembimbing') ?>
+            </div>
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="user">Related User Account</label>
-                        <select class="custom-select" id="user" name="user">
-                            <option value="">-- User --</option>
+                        <select class="custom-select select2" id="user" name="user" data-placeholder="Select User">
+                            <option value=""></option>
                             <?php foreach ($users as $user): ?>
                                 <option value="<?= $user['id'] ?>"<?= set_select('user', $user['id']) ?>>
                                     <?= $user['name'] ?> (<?= $user['email'] ?>)

@@ -102,6 +102,9 @@ try {
     if ($('#form-college-permit').length) {
         import("./pages/college-permit").then(collegePermit => collegePermit.default());
     }
+    if ($('#form-skripsi').length) {
+        import("./pages/skripsi").then(skripsi => skripsi.default());
+    }
 
 } catch (e) {
     console.log(e);

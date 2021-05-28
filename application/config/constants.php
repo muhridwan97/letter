@@ -131,6 +131,7 @@ defined('PERMISSION_SKRIPSI_VIEW') OR define('PERMISSION_SKRIPSI_VIEW', 'skripsi
 defined('PERMISSION_SKRIPSI_CREATE') OR define('PERMISSION_SKRIPSI_CREATE', 'skripsi-create');
 defined('PERMISSION_SKRIPSI_EDIT') OR define('PERMISSION_SKRIPSI_EDIT', 'skripsi-edit');
 defined('PERMISSION_SKRIPSI_DELETE') OR define('PERMISSION_SKRIPSI_DELETE', 'skripsi-delete');
+defined('PERMISSION_SKRIPSI_VALIDATE') OR define('PERMISSION_SKRIPSI_VALIDATE', 'skripsi-validate');
 
 // Curriculum permission
 defined('PERMISSION_CURRICULUM_VIEW') OR define('PERMISSION_CURRICULUM_VIEW', 'curriculum-view');

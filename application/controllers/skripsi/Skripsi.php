@@ -2,20 +2,23 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Class Lecturer
- * @property LecturerModel $lecturer
+ * Class Skripsi
+ * @property SkripsiModel $skripsi
+ * @property StudentModel $student
  * @property DepartmentModel $department
  * @property UserModel $user
  * @property Exporter $exporter
  * @property Mailer $mailer
  * @property Uploader $uploader
  */
-class Lecturer extends App_Controller
+class Skripsi extends App_Controller
 {
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('LecturerModel', 'lecturer');
+        $this->load->model('SkripsiModel', 'skripsi');
+        $this->load->model('StudentModel', 'student');
+
         $this->load->model('DepartmentModel', 'department');
         $this->load->model('UserModel', 'user');
         $this->load->model('modules/Mailer', 'mailer');
@@ -24,69 +27,69 @@ class Lecturer extends App_Controller
     }
 
     /**
-     * Show Lecturer index page.
+     * Show Skripsi index page.
      */
     public function index()
     {
-        AuthorizationModel::mustAuthorized(PERMISSION_LECTURER_VIEW);
+        AuthorizationModel::mustAuthorized(PERMISSION_SKRIPSI_VIEW);
 
         $filters = array_merge($_GET, ['page' => get_url_param('page', 1)]);
 
         $export = $this->input->get('export');
         if ($export) unset($filters['page']);
 
-        $lecturers = $this->lecturer->getAll($filters);
+        $skripsis = $this->skripsi->getAll($filters);
 
         if ($export) {
-            $this->exporter->exportFromArray('lecturer', $lecturers);
+            $this->exporter->exportFromArray('skripsi', $skripsis);
         }
 
-        $this->render('lecturer/index', compact('lecturers'));
+        $this->render('skripsi/index', compact('skripsis'));
     }
 
     /**
-     * Show Lecturer data.
+     * Show Skripsi data.
      *
      * @param $id
      */
     public function view($id)
     {
-        AuthorizationModel::mustAuthorized(PERMISSION_LECTURER_VIEW);
+        AuthorizationModel::mustAuthorized(PERMISSION_SKRIPSI_VIEW);
 
-        $lecturer = $this->lecturer->getById($id);
+        $skripsi = $this->skripsi->getById($id);
 
-        $this->render('lecturer/view', compact('lecturer'));
+        $this->render('skripsi/view', compact('skripsi'));
     }
 
     /**
-     * Show create Lecturer.
+     * Show create Skripsi.
      */
     public function create()
     {
-        AuthorizationModel::mustAuthorized(PERMISSION_LECTURER_CREATE);
+        AuthorizationModel::mustAuthorized(PERMISSION_SKRIPSI_CREATE);
 
-        $users = $this->user->getUnattachedUsers();
+        $students = $this->student->getAll(['status'=> StudentModel::STATUS_ACTIVE]);
 
-        $this->render('lecturer/create', compact('users'));
+        $this->render('skripsi/create', compact('students'));
     }
 
     /**
-     * Save new Lecturer data.
+     * Save new Skripsi data.
      */
     public function save()
     {
-        AuthorizationModel::mustAuthorized(PERMISSION_LECTURER_CREATE);
+        AuthorizationModel::mustAuthorized(PERMISSION_SKRIPSI_CREATE);
 
         if ($this->validate()) {
-            $lecturerNo = $this->input->post('no_lecturer');
+            $skripsiNo = $this->input->post('no_skripsi');
             $name = $this->input->post('name');
             $status = $this->input->post('status');
             $position = $this->input->post('position');
             $user = $this->input->post('user');
             $description = $this->input->post('description');
 
-            $save = $this->lecturer->create([
-                'no_lecturer' => $lecturerNo,
+            $save = $this->skripsi->create([
+                'no_skripsi' => $skripsiNo,
                 'id_user' => if_empty($user, null),
                 'name' => $name,
                 'position' => $position,
@@ -95,81 +98,81 @@ class Lecturer extends App_Controller
             ]);
 
             if ($save) {
-                flash('success', "Lecturer {$name} successfully created", 'master/lecturer');
+                flash('success', "Skripsi {$name} successfully created", 'master/skripsi');
             } else {
-                flash('danger', "Create Lecturer failed, try again of contact administrator");
+                flash('danger', "Create Skripsi failed, try again of contact administrator");
             }
         }
         $this->create();
     }
 
     /**
-     * Show edit Lecturer form.
+     * Show edit Skripsi form.
      * @param $id
      */
     public function edit($id)
     {
-        AuthorizationModel::mustAuthorized(PERMISSION_LECTURER_EDIT);
+        AuthorizationModel::mustAuthorized(PERMISSION_SKRIPSI_EDIT);
 
-        $lecturer = $this->lecturer->getById($id);
-        $users = $this->user->getUnattachedUsers($lecturer['id_user']);
+        $skripsi = $this->skripsi->getById($id);
+        $users = $this->user->getUnattachedUsers($skripsi['id_user']);
 
-        $this->render('lecturer/edit', compact('users', 'lecturer'));
+        $this->render('skripsi/edit', compact('users', 'skripsi'));
     }
 
     /**
-     * Save new Lecturer data.
+     * Save new Skripsi data.
      * @param $id
      */
     public function update($id)
     {
-        AuthorizationModel::mustAuthorized(PERMISSION_LECTURER_EDIT);
+        AuthorizationModel::mustAuthorized(PERMISSION_SKRIPSI_EDIT);
 
         if ($this->validate($this->_validation_rules($id))) {
-            $lecturerNo = $this->input->post('no_lecturer');
+            $skripsiNo = $this->input->post('no_skripsi');
             $name = $this->input->post('name');
             $status = $this->input->post('status');
             $position = $this->input->post('position');
             $user = $this->input->post('user');
             $description = $this->input->post('description');
 
-            $lecturer = $this->lecturer->getById($id);
+            $skripsi = $this->skripsi->getById($id);
 
-            $save = $this->lecturer->update([
+            $save = $this->skripsi->update([
                 'id_user' => if_empty($user, null),
                 'name' => $name,
-                'no_lecturer' => $lecturerNo,
+                'no_skripsi' => $skripsiNo,
                 'position' => $position,
                 'description' => $description,
                 'status' => $status,
             ], $id);
 
             if ($save) {
-                flash('success', "User {$name} successfully updated", 'master/lecturer');
+                flash('success', "User {$name} successfully updated", 'master/skripsi');
             } else {
-                flash('danger', "Update Lecturer failed, try again of contact administrator");
+                flash('danger', "Update Skripsi failed, try again of contact administrator");
             }
         }
         $this->edit($id);
     }
 
     /**
-     * Perform deleting Lecturer data.
+     * Perform deleting Skripsi data.
      *
      * @param $id
      */
     public function delete($id)
     {
-        AuthorizationModel::mustAuthorized(PERMISSION_LECTURER_DELETE);
+        AuthorizationModel::mustAuthorized(PERMISSION_SKRIPSI_DELETE);
 
-        $lecturer = $this->lecturer->getById($id);
+        $skripsi = $this->skripsi->getById($id);
 
-        if ($this->lecturer->delete($id, true)) {
-            flash('warning', "Lecturer {$lecturer['name']} successfully deleted");
+        if ($this->skripsi->delete($id, true)) {
+            flash('warning', "Skripsi {$skripsi['name']} successfully deleted");
         } else {
-            flash('danger', "Delete Lecturer failed, try again or contact administrator");
+            flash('danger', "Delete Skripsi failed, try again or contact administrator");
         }
-        redirect('master/lecturer');
+        redirect('master/skripsi');
     }
 
     /**
@@ -182,12 +185,12 @@ class Lecturer extends App_Controller
     {
         $id = isset($params[0]) ? $params[0] : 0;
         return [
-            'no_lecturer' => [
-                'trim', 'required', 'max_length[100]', ['no_lecturer_exists', function ($no) use ($id) {
-                    $this->form_validation->set_message('no_lecturer_exists', 'The %s has been registered before, try another');
-                    return empty($this->lecturer->getBy([
-                    	'ref_lecturers.no_lecturer' => $no,
-						'ref_lecturers.id!=' => $id
+            'no_skripsi' => [
+                'trim', 'required', 'max_length[100]', ['no_skripsi_exists', function ($no) use ($id) {
+                    $this->form_validation->set_message('no_skripsi_exists', 'The %s has been registered before, try another');
+                    return empty($this->skripsi->getBy([
+                    	'ref_skripsis.no_skripsi' => $no,
+						'ref_skripsis.id!=' => $id
 					]));
                 }]
             ],

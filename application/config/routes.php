@@ -71,3 +71,11 @@ $route['privacy'] = 'legal/privacy';
 $route['agreement'] = 'legal/agreement';
 $route['cookie'] = 'legal/cookie';
 $route['sla'] = 'legal/sla';
+
+$route['skripsi'] = 'skripsi/skripsi';
+$route['skripsi/create'] = 'skripsi/skripsi/create';
+$route['skripsi/save'] = 'skripsi/skripsi/save';
+$route['skripsi/edit'] = 'skripsi/skripsi/edit';
+$route['skripsi/update'] = 'skripsi/skripsi/update';
+$route['skripsi/delete'] = 'skripsi/skripsi/delete';
+$route['skripsi/view'] = 'skripsi/skripsi/view';

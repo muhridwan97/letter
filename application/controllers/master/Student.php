@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Class Student
  * @property StudentModel $student
+ * @property LecturerModel $lecturer
  * @property DepartmentModel $department
  * @property UserModel $user
  * @property Exporter $exporter
@@ -16,11 +17,17 @@ class Student extends App_Controller
     {
         parent::__construct();
         $this->load->model('StudentModel', 'student');
+        $this->load->model('LecturerModel', 'lecturer');
         $this->load->model('DepartmentModel', 'department');
         $this->load->model('UserModel', 'user');
         $this->load->model('modules/Mailer', 'mailer');
         $this->load->model('modules/Exporter', 'exporter');
         $this->load->model('modules/Uploader', 'uploader');
+
+        
+		$this->setFilterMethods([
+			'ajax_get_pembimbing' => 'GET',
+		]);
     }
 
     /**
@@ -66,8 +73,9 @@ class Student extends App_Controller
         AuthorizationModel::mustAuthorized(PERMISSION_STUDENT_CREATE);
 
         $users = $this->user->getUnattachedUsers();
+        $pembimbings = $this->lecturer->getAll(['status' => LecturerModel::STATUS_ACTIVE]);
 
-        $this->render('student/create', compact('users'));
+        $this->render('student/create', compact('users', 'pembimbings'));
     }
 
     /**
@@ -81,12 +89,14 @@ class Student extends App_Controller
             $studentNo = $this->input->post('no_student');
             $name = $this->input->post('name');
             $status = $this->input->post('status');
+            $pembimbing = $this->input->post('pembimbing');
             $user = $this->input->post('user');
             $description = $this->input->post('description');
 
             $save = $this->student->create([
                 'no_student' => $studentNo,
                 'id_user' => if_empty($user, null),
+                'id_pembimbing' => if_empty($pembimbing, null),
                 'name' => $name,
                 'description' => $description,
                 'status' => $status,
@@ -111,8 +121,9 @@ class Student extends App_Controller
 
         $student = $this->student->getById($id);
         $users = $this->user->getUnattachedUsers($student['id_user']);
+        $pembimbings = $this->lecturer->getAll(['status' => LecturerModel::STATUS_ACTIVE]);
 
-        $this->render('student/edit', compact('users', 'student'));
+        $this->render('student/edit', compact('users', 'student', 'pembimbings'));
     }
 
     /**
@@ -127,6 +138,7 @@ class Student extends App_Controller
             $studentNo = $this->input->post('no_student');
             $name = $this->input->post('name');
             $status = $this->input->post('status');
+            $pembimbing = $this->input->post('pembimbing');
             $user = $this->input->post('user');
             $description = $this->input->post('description');
 
@@ -134,6 +146,7 @@ class Student extends App_Controller
 
             $save = $this->student->update([
                 'id_user' => if_empty($user, null),
+                'id_pembimbing' => if_empty($pembimbing, null),
                 'name' => $name,
                 'no_student' => $studentNo,
                 'description' => $description,
@@ -168,6 +181,17 @@ class Student extends App_Controller
         redirect('master/student');
     }
 
+    /**
+	 * Get paid leave data.
+	 */
+	public function ajax_get_pembimbing()
+	{
+		$studentId = get_url_param('id_student');
+
+		$student = $this->student->getById($studentId);
+
+		$this->renderJson($student);
+	}
     /**
      * Return general validation rules.
      *
