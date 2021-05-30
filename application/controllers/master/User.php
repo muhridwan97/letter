@@ -335,7 +335,7 @@ class User extends App_Controller
             'user_type' => 'trim|required|in_list[INTERNAL,EXTERNAL]',
         ];
 
-        if ($user['username'] != 'admin') {
+        if (isset($user['username']) && $user['username'] != 'admin') {
             $baseRule = array_merge($baseRule, [
                 'status' => 'trim|required',
                 'roles[]' => [

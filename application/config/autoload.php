@@ -139,4 +139,8 @@ $autoload['model'] = [
     'NotificationModel' => 'NotificationModel',
     'DepartmentModel' => 'DepartmentModel',
     'EmployeeModel' => 'EmployeeModel',
+    'LecturerModel' => 'LecturerModel',
+    'StudentModel' => 'StudentModel',
+    'SkripsiModel' => 'SkripsiModel',
+    'LogbookModel' => 'LogbookModel',
 ];

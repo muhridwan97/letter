@@ -3,8 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Class Search
- * @property CurriculumModel $curriculum
- * @property CourseModel $course
+ * @property SkripsiModel $skripsi
+ * @property LogbookModel $logbook
  * @property LessonModel $lesson
  */
 class Search extends App_Controller
@@ -14,8 +14,8 @@ class Search extends App_Controller
     {
         parent::__construct();
 
-        $this->load->model('CurriculumModel', 'curriculum');
-        $this->load->model('CourseModel', 'course');
+        $this->load->model('SkripsiModel', 'skripsi');
+        $this->load->model('LogbookModel', 'logbook');
         $this->load->model('LessonModel', 'lesson');
     }
 
@@ -25,10 +25,10 @@ class Search extends App_Controller
     public function index()
     {
         $q = get_url_param('q');
-        $curriculums = empty($q) ? [] : $this->curriculum->search($q, 6);
-        $courses = empty($q) ? [] : $this->course->search($q, 4);
+        $skripsis = empty($q) ? [] : $this->skripsi->search($q, 6);
+        $logbooks = empty($q) ? [] : $this->logbook->search($q, 4);
         $lessons = empty($q) ? [] : $this->lesson->search($q, 10);
 
-        $this->render('search/index', compact('curriculums', 'courses', 'lessons'));
+        $this->render('search/index', compact('skripsis', 'logbooks', 'lessons'));
     }
 }

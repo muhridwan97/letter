@@ -5,6 +5,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Class Logbook
  * @property LogbookModel $logbook
  * @property LecturerModel $lecturer
+ * @property SkripsiModel $skripsi
+ * @property StatusHistoryModel $statusHistory
  * @property UserModel $user
  * @property Exporter $exporter
  * @property Mailer $mailer
@@ -17,10 +19,17 @@ class Logbook extends App_Controller
         parent::__construct();
         $this->load->model('LogbookModel', 'logbook');
         $this->load->model('LecturerModel', 'lecturer');
+        $this->load->model('SkripsiModel', 'skripsi');
+        $this->load->model('StatusHistoryModel', 'statusHistory');
         $this->load->model('UserModel', 'user');
         $this->load->model('modules/Mailer', 'mailer');
         $this->load->model('modules/Exporter', 'exporter');
         $this->load->model('modules/Uploader', 'uploader');
+        
+        $this->setFilterMethods([
+			'validate_logbook' => 'POST|PUT',
+			'outstanding' => 'GET',
+		]);
     }
 
     /**
@@ -35,7 +44,14 @@ class Logbook extends App_Controller
         $export = $this->input->get('export');
         if ($export) unset($filters['page']);
 
-        $logbooks = $this->lecturer->getAll($filters);
+        $civitasLoggedIn = UserModel::loginData('id_civitas', '-1');
+        $civitasType = UserModel::loginData('civitas_type', 'Admin');
+		if($civitasType == "DOSEN"){
+            $filters['dosen'] = $civitasLoggedIn;
+        }else if($civitasType == "MAHASISWA"){
+            $filters['mahasiswa'] = $civitasLoggedIn;
+        }
+        $logbooks = $this->logbook->getAll($filters);
 
         if ($export) {
             $this->exporter->exportFromArray('logbook', $logbooks);
@@ -59,15 +75,54 @@ class Logbook extends App_Controller
     }
 
     /**
+     * Show Outstanding Logbook data.
+     *
+     * @param $id
+     */
+    public function outstanding()
+    {
+        AuthorizationModel::mustAuthorized(PERMISSION_LOGBOOK_VIEW);
+
+        $filters = array_merge($_GET, ['page' => get_url_param('page', 1)]);
+        $filters['status'] = LogbookModel::STATUS_PENDING;
+
+        $export = $this->input->get('export');
+        if ($export) unset($filters['page']);
+
+        $civitasLoggedIn = UserModel::loginData('id_civitas', '-1');
+        $civitasType = UserModel::loginData('civitas_type', 'Admin');
+		if($civitasType == "DOSEN"){
+            $filters['dosen'] = $civitasLoggedIn;
+        }else if($civitasType == "MAHASISWA"){
+            $filters['mahasiswa'] = $civitasLoggedIn;
+        }
+        $logbooks = $this->logbook->getAll($filters);
+
+        if ($export) {
+            $this->exporter->exportFromArray('logbook', $logbooks);
+        }
+
+        $this->render('logbook/index', compact('logbooks'));
+    }
+
+    /**
      * Show create Logbook.
      */
     public function create()
     {
         AuthorizationModel::mustAuthorized(PERMISSION_LOGBOOK_CREATE);
 
-        $users = $this->user->getUnattachedUsers();
+        $civitasLoggedIn = UserModel::loginData('id_civitas', '-1');
+        $civitasType = UserModel::loginData('civitas_type', 'Admin');
+        $filters = ['status' => SkripsiModel::STATUS_ACTIVE];
+		if($civitasType == "DOSEN"){
+            $filters['dosen'] = $civitasLoggedIn;
+        }else if($civitasType == "MAHASISWA"){
+            $filters['mahasiswa'] = $civitasLoggedIn;
+        }
+        $skripsis = $this->skripsi->getAll($filters);
 
-        $this->render('logbook/create', compact('users'));
+        $this->render('logbook/create', compact('skripsis'));
     }
 
     /**
@@ -78,24 +133,20 @@ class Logbook extends App_Controller
         AuthorizationModel::mustAuthorized(PERMISSION_LOGBOOK_CREATE);
 
         if ($this->validate()) {
-            $logbookNo = $this->input->post('no_logbook');
-            $name = $this->input->post('name');
-            $status = $this->input->post('status');
-            $position = $this->input->post('position');
-            $user = $this->input->post('user');
+            $skripsi = $this->input->post('skripsi');
+            $tanggal = $this->input->post('tanggal');
+            $konsultasi = $this->input->post('konsultasi');
             $description = $this->input->post('description');
 
             $save = $this->logbook->create([
-                'no_logbook' => $logbookNo,
-                'id_user' => if_empty($user, null),
-                'name' => $name,
-                'position' => $position,
+                'id_skripsi' => $skripsi,
+                'tanggal' => format_date($tanggal),
+                'konsultasi' => $konsultasi,
                 'description' => $description,
-                'status' => $status,
             ]);
 
             if ($save) {
-                flash('success', "Logbook {$name} successfully created", 'master/logbook');
+                flash('success', "Logbook {$konsultasi} successfully created", 'skripsi/logbook');
             } else {
                 flash('danger', "Create Logbook failed, try again of contact administrator");
             }
@@ -112,9 +163,17 @@ class Logbook extends App_Controller
         AuthorizationModel::mustAuthorized(PERMISSION_LOGBOOK_EDIT);
 
         $logbook = $this->logbook->getById($id);
-        $users = $this->user->getUnattachedUsers($logbook['id_user']);
+        $civitasLoggedIn = UserModel::loginData('id_civitas', '-1');
+        $civitasType = UserModel::loginData('civitas_type', 'Admin');
+        $filters = ['status' => SkripsiModel::STATUS_ACTIVE];
+		if($civitasType == "DOSEN"){
+            $filters['dosen'] = $civitasLoggedIn;
+        }else if($civitasType == "MAHASISWA"){
+            $filters['mahasiswa'] = $civitasLoggedIn;
+        }
+        $skripsis = $this->skripsi->getAll($filters);
 
-        $this->render('logbook/edit', compact('users', 'logbook'));
+        $this->render('logbook/edit', compact('skripsis', 'logbook'));
     }
 
     /**
@@ -126,26 +185,22 @@ class Logbook extends App_Controller
         AuthorizationModel::mustAuthorized(PERMISSION_LOGBOOK_EDIT);
 
         if ($this->validate($this->_validation_rules($id))) {
-            $logbookNo = $this->input->post('no_logbook');
-            $name = $this->input->post('name');
-            $status = $this->input->post('status');
-            $position = $this->input->post('position');
-            $user = $this->input->post('user');
+            $skripsi = $this->input->post('skripsi');
+            $tanggal = $this->input->post('tanggal');
+            $konsultasi = $this->input->post('konsultasi');
             $description = $this->input->post('description');
 
             $logbook = $this->logbook->getById($id);
 
             $save = $this->logbook->update([
-                'id_user' => if_empty($user, null),
-                'name' => $name,
-                'no_logbook' => $logbookNo,
-                'position' => $position,
+                'id_skripsi' => $skripsi,
+                'tanggal' => format_date($tanggal),
+                'konsultasi' => $konsultasi,
                 'description' => $description,
-                'status' => $status,
             ], $id);
 
             if ($save) {
-                flash('success', "User {$name} successfully updated", 'master/logbook');
+                flash('success', "User {$konsultasi} successfully updated", 'skripsi/logbook');
             } else {
                 flash('danger', "Update Logbook failed, try again of contact administrator");
             }
@@ -165,11 +220,58 @@ class Logbook extends App_Controller
         $logbook = $this->logbook->getById($id);
 
         if ($this->logbook->delete($id, true)) {
-            flash('warning', "Logbook {$logbook['name']} successfully deleted");
+            flash('warning', "Logbook {$logbook['konsultasi']} successfully deleted");
         } else {
             flash('danger', "Delete Logbook failed, try again or contact administrator");
         }
-        redirect('master/logbook');
+        redirect('skripsi/logbook');
+    }
+
+    /**
+     * Validate logbook data.
+     *
+     * @param null $id
+     */
+    public function validate_logbook($id = null)
+    {
+		if ($this->validate(['status' => 'trim|required'])) {
+			$id = if_empty($this->input->post('id'), $id);
+			$status = $this->input->post('status');
+			$description = $this->input->post('description');
+
+			$this->db->trans_start();
+
+            $logbook = $this->logbook->getById($id);
+
+            // push any status absent to history
+            $this->statusHistory->create([
+                'type' => StatusHistoryModel::TYPE_LOGBOOK,
+                'id_reference' => $id,
+                'status' => $status,
+                'description' => $description,
+                'data' => json_encode($logbook)
+            ]);
+
+            $this->logbook->update([
+                'status' => $status
+            ], $id);
+
+            $this->db->trans_complete();
+
+            if ($this->db->trans_status()) {
+                $statusClass = 'warning';
+                if ($status != LogbookModel::STATUS_REJECTED) {
+                    $statusClass = 'success';
+                }
+
+                $message = "Logbook <strong>{$logbook['nama_mahasiswa']}</strong> successfully <strong>{$status}</strong>";
+
+                flash($statusClass, $message);
+            } else {
+                flash('danger', "Validating logbook <strong>{$logbook['requisite']}</strong> failed, try again or contact administrator");
+            }
+		}
+		redirect(get_url_param('redirect', 'skripsi/logbook'));
     }
 
     /**
@@ -182,18 +284,10 @@ class Logbook extends App_Controller
     {
         $id = isset($params[0]) ? $params[0] : 0;
         return [
-            'no_logbook' => [
-                'trim', 'required', 'max_length[100]', ['no_logbook_exists', function ($no) use ($id) {
-                    $this->form_validation->set_message('no_logbook_exists', 'The %s has been registered before, try another');
-                    return empty($this->logbook->getBy([
-                    	'ref_logbooks.no_logbook' => $no,
-						'ref_logbooks.id!=' => $id
-					]));
-                }]
-            ],
-            'name' => 'trim|required|max_length[50]',
-            'position' => 'trim|required|max_length[50]',
-            'status' => 'trim|required|max_length[50]',
+            'skripsi' => 'trim|required|max_length[50]',
+            'tanggal' => 'trim|required|max_length[50]',
+            'konsultasi' => 'trim|required|max_length[50]',
+            'description' => 'trim|required|max_length[500]',
         ];
     }
 

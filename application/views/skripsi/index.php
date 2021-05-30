@@ -37,7 +37,7 @@
                 $statuses = [
                     SkripsiModel::STATUS_ACTIVE => 'success',
                     SkripsiModel::STATUS_REJECTED => 'danger',
-                    SkripsiModel::STATUS_PENDING => 'default',
+                    SkripsiModel::STATUS_PENDING => 'secondary',
                 ]
                 ?>
                 <?php $no = isset($skripsis) ? ($skripsis['current_page'] - 1) * $skripsis['per_page'] : 0 ?>
@@ -61,23 +61,35 @@
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right row-skripsi"
                                      data-id="<?= $skripsi['id'] ?>"
-                                     data-label="<?= $skripsi['name'] ?>">
+                                     data-label="<?= $skripsi['judul'] ?>">
                                     <?php if(AuthorizationModel::isAuthorized(PERMISSION_SKRIPSI_VIEW)): ?>
-                                        <a class="dropdown-item" href="<?= site_url('master/skripsi/view/' . $skripsi['id']) ?>">
+                                        <a class="dropdown-item" href="<?= site_url('skripsi/view/' . $skripsi['id']) ?>">
                                             <i class="mdi mdi-eye-outline mr-2"></i> View
                                         </a>
                                     <?php endif; ?>
                                     <?php if(!$this->config->item('sso_enable')): ?>
                                         <?php if(AuthorizationModel::isAuthorized(PERMISSION_SKRIPSI_EDIT)): ?>
-                                            <a class="dropdown-item" href="<?= site_url('master/skripsi/edit/' . $skripsi['id']) ?>">
+                                            <a class="dropdown-item" href="<?= site_url('skripsi/edit/' . $skripsi['id']) ?>">
                                                 <i class="mdi mdi-square-edit-outline mr-2"></i> Edit
                                             </a>
+                                        <?php endif; ?>
+                                        <?php if(AuthorizationModel::isAuthorized(PERMISSION_SKRIPSI_VALIDATE) && $skripsi['status'] != SkripsiModel::STATUS_ACTIVE): ?>
+                                            <a class="dropdown-item btn-validate" href="#modal-validate" data-toggle="modal"
+                                               data-id="<?= $skripsi['id'] ?>" data-label="<?= $skripsi['judul'] ?>" data-title="Validate Skripsi"
+                                               data-url="<?= site_url('skripsi/skripsi/validate-skripsi/' . $skripsi['id']) ?>" data-action="VALIDATED">
+                                                <i class="mdi mdi-check-outline mr-2"></i> Validate
+                                            </a>
+                                            <a class="dropdown-item btn-validate" data-action="REJECTED" data-id="<?= $skripsi['id'] ?>"
+											   data-label="<?= $skripsi['judul'] ?>" data-title="Reject Absent"
+											   href="<?= site_url('skripsi/skripsi/validate-skripsi/' . $skripsi['id']) ?>?redirect=<?= base_url(uri_string()) ?>">
+												<i class="mdi mdi-close mr-2"></i> Reject
+											</a>
                                         <?php endif; ?>
                                         <?php if(AuthorizationModel::isAuthorized(PERMISSION_SKRIPSI_DELETE)): ?>
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item btn-delete" href="#modal-delete" data-toggle="modal"
-                                               data-id="<?= $skripsi['id'] ?>" data-label="<?= $skripsi['name'] ?>" data-title="Skripsi"
-                                               data-url="<?= site_url('master/skripsi/delete/' . $skripsi['id']) ?>">
+                                               data-id="<?= $skripsi['id'] ?>" data-label="<?= $skripsi['judul'] ?>" data-title="Skripsi"
+                                               data-url="<?= site_url('skripsi/skripsi/delete/' . $skripsi['id']) ?>">
                                                 <i class="mdi mdi-trash-can-outline mr-2"></i> Delete
                                             </a>
                                         <?php endif; ?>
@@ -103,4 +115,7 @@
 
 <?php if(AuthorizationModel::isAuthorized(PERMISSION_SKRIPSI_DELETE)): ?>
     <?php $this->load->view('partials/modals/_delete') ?>
+<?php endif; ?>
+<?php if(AuthorizationModel::isAuthorized(PERMISSION_SKRIPSI_VALIDATE)): ?>
+    <?php $this->load->view('partials/modals/_validate') ?>
 <?php endif; ?>

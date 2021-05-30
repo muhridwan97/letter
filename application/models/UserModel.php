@@ -357,11 +357,13 @@ class UserModel extends App_Model
 		}
 		$result = $CI->db->select([
 			'prv_users.*',
-			'ref_employees.id AS id_employee',
-			'ref_employees.id_employee AS id_supervisor'
+			'IFNULL(ref_lecturers.id,ref_students.id) AS id_civitas',
+			'IFNULL(ref_students.id_pembimbing,null) AS id_pembimbing',
+			'IF(ref_lecturers.id IS NULL, IF(ref_students.id IS NULL,"ADMIN","MAHASISWA"),"DOSEN") AS civitas_type',
 		])
 			->from(UserModel::$tableUser)
-			->join(EmployeeModel::$tableEmployee, 'ref_employees.id_user = prv_users.id', 'left')
+			->join(LecturerModel::$tableLecturer, 'ref_lecturers.id_user = prv_users.id', 'left')
+			->join(StudentModel::$tableStudent, 'ref_students.id_user = prv_users.id', 'left')
 			->where('prv_users.id', $id)
 			->get();
 		$userData = $result->row_array();

@@ -1,71 +1,40 @@
-<form action="<?= site_url('master/lecturer/update/' . $lecturer['id']) ?>" method="POST" enctype="multipart/form-data" id="form-lecturer">
+<form action="<?= site_url('skripsi/update/' . $skripsi['id']) ?>" method="POST" enctype="multipart/form-data" id="form-skripsi">
     <?= _csrf() ?>
     <div class="card mb-3">
         <div class="card-body">
-            <h5 class="card-title">Edit Lecturer</h5>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required maxlength="50"
-                               value="<?= set_value('name', $lecturer['name']) ?>" placeholder="Lecturer name">
-                        <?= form_error('name') ?>
-                    </div>
+            <h5 class="card-title">Edit Skripsi</h5>
+            <?php if(AuthorizationModel::isAuthorized(PERMISSION_ALL_ACCESS)!=true && !AuthorizationModel::isAuthorized(PERMISSION_SKRIPSI_VALIDATE)): ?>
+                <input type="hidden" name="student" id="student" value="<?= $skripsi['id_student'] ?>">
+            <?php else: ?>
+                <div class="form-group">
+                    <label for="student">Mahasiswa</label>
+                    <select class="form-control select2" name="student" id="student" required data-placeholder="Select student">
+                        <option value="">-- Select student --</option>
+                        <?php foreach ($students as $student): ?>
+                            <option value="<?= $student['id'] ?>"<?= set_select('student', $student['id'], $student['id'] == $skripsi['id_student']) ?>>
+                                <?= $student['no_student'] ?> - <?= $student['name'] ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <?= form_error('student') ?>
                 </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label for="no_lecturer">NO NIP</label>
-                        <input type="text" class="form-control" id="no_lecturer" name="no_lecturer" required maxlength="100"
-                               value="<?= set_value('no_lecturer', $lecturer['no_lecturer']) ?>" placeholder="Lecturer unique ID">
-                        <?= form_error('no_lecturer') ?>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label for="position">Position</label>
-                        <select class="custom-select" id="position" name="position" required>
-                            <option value="">-- position --</option>
-                            <option value="KAPRODI"<?= set_select('position', 'KAPRODI', $lecturer['position']=='KAPRODI') ?>>KAPRODI</option>
-                            <option value="DOSEN"<?= set_select('position', 'DOSEN', $lecturer['position']=='DOSEN') ?>>DOSEN</option>
-                        </select>
-                        <?= form_error('position') ?>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label for="status">Status</label>
-                        <select class="custom-select" id="status" name="status" required>
-                            <option value="">-- Status --</option>
-                            <option value="ACTIVE"<?= set_select('status', 'ACTIVE', $lecturer['status'] == 'ACTIVE') ?>>ACTIVE</option>
-                            <option value="INACTIVE"<?= set_select('status', 'INACTIVE', $lecturer['status'] == 'INACTIVE') ?>>INACTIVE</option>
-                        </select>
-                        <?= form_error('status') ?>
-                    </div>
-                </div>
+            <?php endif; ?>
+            <div class="form-group">
+                <label for="pembimbing">Pembimbing</label>
+                <input type="hidden" id="id_pembimbing" name="id_pembimbing" value="<?= set_value('id_pembimbing', $skripsi['id_lecturer']) ?>">
+                <input type="text" class="form-control" id="pembimbing" name="pembimbing" readonly maxlength="50"
+                        value="<?= set_value('pembimbing', $skripsi['nama_pembimbing']) ?>" placeholder="Nama pembimbing">
+                <?= form_error('pembimbing') ?>
             </div>
             <div class="form-group">
-                <label for="user">Related User Account</label>
-                <select class="custom-select" id="user" name="user">
-                    <option value="">-- User --</option>
-                    <?php foreach ($users as $user): ?>
-                        <option value="<?= $user['id'] ?>"<?= set_select('user', $user['id'], $user['id'] == $lecturer['id_user']) ?>>
-                            <?= $user['name'] ?> (<?= $user['email'] ?>)
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-                <?= form_error('user') ?>
-            </div>
-            <div class="form-group">
-                <label for="description">Description</label>
-                <textarea class="form-control" id="description" name="description" maxlength="500"
-                          placeholder="Enter lecturer description"><?= set_value('description', $lecturer['description']) ?></textarea>
-                <?= form_error('description') ?>
+                <label for="judul">Judul</label>
+                <textarea class="form-control" id="judul" name="judul" maxlength="500" required
+                          placeholder="Enter skripsi judul"><?= set_value('judul', $skripsi['judul']) ?></textarea>
+                <?= form_error('judul') ?>
             </div>
             <div class="d-flex justify-content-between mt-3">
                 <button onclick="history.back()" type="button" class="btn btn-light">Back</button>
-                <button type="submit" class="btn btn-primary" data-toggle="one-touch" data-touch-message="Updating...">Update Lecturer</button>
+                <button type="submit" class="btn btn-primary" data-toggle="one-touch" data-touch-message="Updating...">Update Skripsi</button>
             </div>
         </div>
     </div>

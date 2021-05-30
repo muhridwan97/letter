@@ -1,39 +1,7 @@
-<style>
-    ul.timeline {
-    list-style-type: none;
-    position: relative;
-}
-ul.timeline:before {
-    content: ' ';
-    background: #d4d9df;
-    display: inline-block;
-    position: absolute;
-    left: 29px;
-    width: 2px;
-    height: 100%;
-    z-index: 400;
-}
-ul.timeline > li {
-    margin: 20px 0;
-    padding-left: 20px;
-}
-ul.timeline > li:before {
-    content: ' ';
-    background: white;
-    display: inline-block;
-    position: absolute;
-    border-radius: 50%;
-    border: 3px solid #22c0e8;
-    left: 20px;
-    width: 20px;
-    height: 20px;
-    z-index: 400;
-}
-</style>
 <div class="card mb-3">
     <div class="card-body">
         <div class="d-sm-flex justify-content-between">
-            <h5 class="card-title mb-sm-0">Data Logbooks</h5>
+            <h5 class="card-title mb-sm-0">Data Logbook</h5>
             <div>
                 <a href="#modal-filter" data-toggle="modal" class="btn btn-info btn-sm pr-2 pl-2">
                     <i class="mdi mdi-filter-variant"></i>
@@ -43,45 +11,113 @@ ul.timeline > li:before {
                 </a>
                 <?php if(!$this->config->item('sso_enable')): ?>
                     <?php if(AuthorizationModel::isAuthorized(PERMISSION_LOGBOOK_CREATE)): ?>
-                        <a href="<?= site_url('master/logbook/create') ?>" class="btn btn-sm btn-primary">
+                        <a href="<?= site_url('skripsi/logbook/create') ?>" class="btn btn-sm btn-primary">
                             <i class="mdi mdi-plus-box-outline mr-2"></i>CREATE
                         </a>
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
         </div>
-    </div>
-</div>
-<div class="card">
-    <div class="card-body">
-        <div class="container mt-5 mb-5">
-            <div class="row">
-                <div class="col-md-8 offset-md-2">
-                    <h4>Latest News</h4>
-                    <ul class="timeline">
-                        <li>
-                            <a target="_blank" href="https://www.totoprayogo.com/#">New Web Design</a>
-                            <a href="#" class="float-right">21 March, 2014</a>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque scelerisque diam non nisi semper, et elementum lorem ornare. Maecenas placerat facilisis mollis. Duis sagittis ligula in sodales vehicula....</p>
-                        </li>
-                        <li>
-                            <a href="#">21 000 Job Seekers</a>
-                            <a href="#" class="float-right">4 March, 2014</a>
-                            <p>Curabitur purus sem, malesuada eu luctus eget, suscipit sed turpis. Nam pellentesque felis vitae justo accumsan, sed semper nisi sollicitudin...</p>
-                        </li>
-                        <li>
-                            <a href="#">Awesome Employers</a>
-                            <a href="#" class="float-right">1 April, 2014</a>
-                            <p>Fusce ullamcorper ligula sit amet quam accumsan aliquet. Sed nulla odio, tincidunt vitae nunc vitae, mollis pharetra velit. Sed nec tempor nibh...</p>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+        <div class="<?= $logbooks['total_data'] > 3 ? 'table-responsive' : '' ?>">
+            <table class="table table-hover table-sm mt-3 responsive" id="table-logbook">
+                <thead>
+                <tr>
+                    <th class="text-md-center" style="width: 60px">No</th>
+                    <th>Tanggal</th>
+                    <th>Judul</th>
+                    <th>Konsultasi</th>
+                    <th>Rincian</th>
+                    <th>Mahasiswa</th>
+                    <th>NIM</th>
+                    <th style="width: 20px">Status</th>
+                    <th style="min-width: 20px" class="text-md-right">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                $statuses = [
+                    LogbookModel::STATUS_VALIDATE => 'success',
+                    LogbookModel::STATUS_REJECTED => 'danger',
+                    LogbookModel::STATUS_PENDING => 'secondary',
+                ]
+                ?>
+                <?php $no = isset($logbooks) ? ($logbooks['current_page'] - 1) * $logbooks['per_page'] : 0 ?>
+                <?php foreach ($logbooks['data'] as $logbook): ?>
+                    <tr>
+                        <td class="text-md-center"><?= ++$no ?></td>
+                        <td><?= format_date($logbook['tanggal'], 'd F Y') ?></td>
+                        <td><?= $logbook['judul'] ?></td>
+                        <td><?= $logbook['konsultasi'] ?></td>
+                        <td><?= $logbook['description'] ?></td>
+                        <td><?= $logbook['nama_mahasiswa'] ?></td>
+                        <td><?= $logbook['no_student'] ?></td>
+                        <td>
+                            <label class="badge badge-<?= $statuses[$logbook['status']] ?>">
+                                <?= $logbook['status'] ?>
+                            </label>
+                        </td>
+                        <td class="text-md-right">
+                            <div class="dropdown">
+                                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="actionButton" data-toggle="dropdown">
+                                    Action
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right row-logbook"
+                                     data-id="<?= $logbook['id'] ?>"
+                                     data-label="<?= $logbook['konsultasi'] ?>">
+                                    <?php if(AuthorizationModel::isAuthorized(PERMISSION_LOGBOOK_VIEW)): ?>
+                                        <a class="dropdown-item" href="<?= site_url('skripsi/logbook/view/' . $logbook['id']) ?>">
+                                            <i class="mdi mdi-eye-outline mr-2"></i> View
+                                        </a>
+                                    <?php endif; ?>
+                                    <?php if(!$this->config->item('sso_enable')): ?>
+                                        <?php if(AuthorizationModel::isAuthorized(PERMISSION_LOGBOOK_EDIT)): ?>
+                                            <a class="dropdown-item" href="<?= site_url('skripsi/logbook/edit/' . $logbook['id']) ?>">
+                                                <i class="mdi mdi-square-edit-outline mr-2"></i> Edit
+                                            </a>
+                                        <?php endif; ?>
+                                        <?php if(AuthorizationModel::isAuthorized(PERMISSION_LOGBOOK_VALIDATE) && $logbook['status'] != LogbookModel::STATUS_VALIDATE): ?>
+                                            <a class="dropdown-item btn-validate" href="#modal-validate" data-toggle="modal"
+                                               data-id="<?= $logbook['id'] ?>" data-label="<?= $logbook['konsultasi'] ?>" data-title="Validate Logbook"
+                                               data-url="<?= site_url('skripsi/logbook/validate-logbook/' . $logbook['id']) ?>" data-action="VALIDATED">
+                                                <i class="mdi mdi-check-outline mr-2"></i> Validate
+                                            </a>
+                                            <a class="dropdown-item btn-validate" data-action="REJECTED" data-id="<?= $logbook['id'] ?>"
+											   data-label="<?= $logbook['konsultasi'] ?>" data-title="Reject Absent"
+											   href="<?= site_url('skripsi/logbook/validate-logbook/' . $logbook['id']) ?>?redirect=<?= base_url(uri_string()) ?>">
+												<i class="mdi mdi-close mr-2"></i> Reject
+											</a>
+                                        <?php endif; ?>
+                                        <?php if(AuthorizationModel::isAuthorized(PERMISSION_LOGBOOK_DELETE)): ?>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item btn-delete" href="#modal-delete" data-toggle="modal"
+                                               data-id="<?= $logbook['id'] ?>" data-label="<?= $logbook['konsultasi'] ?>" data-title="Logbook"
+                                               data-url="<?= site_url('skripsi/logbook/delete/' . $logbook['id']) ?>">
+                                                <i class="mdi mdi-trash-can-outline mr-2"></i> Delete
+                                            </a>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                <?php if(empty($logbooks['data'])): ?>
+                    <tr>
+                        <td colspan="8">No logbooks data available</td>
+                    </tr>
+                <?php endif; ?>
+                </tbody>
+            </table>
         </div>
+        <?php $this->load->view('partials/_pagination', ['pagination' => $logbooks]) ?>
     </div>
 </div>
+
 <?php $this->load->view('logbook/_modal_filter') ?>
 
 <?php if(AuthorizationModel::isAuthorized(PERMISSION_LOGBOOK_DELETE)): ?>
     <?php $this->load->view('partials/modals/_delete') ?>
+<?php endif; ?>
+<?php if(AuthorizationModel::isAuthorized(PERMISSION_LOGBOOK_VALIDATE)): ?>
+    <?php $this->load->view('partials/modals/_validate') ?>
 <?php endif; ?>

@@ -4,6 +4,7 @@
             <form action="#" method="post">
                 <?= _csrf() ?>
                 <?= _method('put') ?>
+				<input type="hidden" name="status" value="">
                 <div class="modal-header">
                     <h6 class="modal-title" id="modalValidate">
                         Validate <span class="validate-title"></span>

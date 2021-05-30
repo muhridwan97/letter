@@ -67,14 +67,14 @@
                         <label for="user_type">User Type</label>
                         <select class="form-control select2" name="user_type" id="user_type" style="width: 100%" required>
                             <option value="INTERNAL"<?= set_select('user_type', 'INTERNAL') ?>>
-                                INTERNAL (Employee or trusted member)
+                                INTERNAL (Lecturer or Stundent)
                             </option>
-                            <option value="CUSTOMER"<?= set_select('user_type', 'CUSTOMER') ?>>
+                            <!-- <option value="CUSTOMER"<?= set_select('user_type', 'CUSTOMER') ?>>
                                 CUSTOMER (User that need warehouse)
                             </option>
                             <option value="VENDOR"<?= set_select('user_type', 'VENDOR') ?>>
                                 VENDOR (User that provide warehouse)
-                            </option>
+                            </option> -->
                         </select>
                         <?= form_error('user_type'); ?>
                     </div>

@@ -3,8 +3,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Class Skripsi
+ * @property LogbookModel $logbook
  * @property SkripsiModel $skripsi
  * @property StudentModel $student
+ * @property StatusHistoryModel $statusHistory
  * @property DepartmentModel $department
  * @property UserModel $user
  * @property Exporter $exporter
@@ -17,13 +19,20 @@ class Skripsi extends App_Controller
     {
         parent::__construct();
         $this->load->model('SkripsiModel', 'skripsi');
+        $this->load->model('LogbookModel', 'logbook');
         $this->load->model('StudentModel', 'student');
+        $this->load->model('StatusHistoryModel', 'statusHistory');
+
 
         $this->load->model('DepartmentModel', 'department');
         $this->load->model('UserModel', 'user');
         $this->load->model('modules/Mailer', 'mailer');
         $this->load->model('modules/Exporter', 'exporter');
         $this->load->model('modules/Uploader', 'uploader');
+
+        $this->setFilterMethods([
+			'validate_skripsi' => 'POST|PUT',
+		]);
     }
 
     /**
@@ -38,6 +47,13 @@ class Skripsi extends App_Controller
         $export = $this->input->get('export');
         if ($export) unset($filters['page']);
 
+        $civitasLoggedIn = UserModel::loginData('id_civitas', '-1');
+        $civitasType = UserModel::loginData('civitas_type', 'Admin');
+		if($civitasType == "DOSEN"){
+            $filters['dosen'] = $civitasLoggedIn;
+        }else if($civitasType == "MAHASISWA"){
+            $filters['mahasiswa'] = $civitasLoggedIn;
+        }
         $skripsis = $this->skripsi->getAll($filters);
 
         if ($export) {
@@ -57,8 +73,9 @@ class Skripsi extends App_Controller
         AuthorizationModel::mustAuthorized(PERMISSION_SKRIPSI_VIEW);
 
         $skripsi = $this->skripsi->getById($id);
+        $logbooks = $this->logbook->getBySkripsiId($id);
 
-        $this->render('skripsi/view', compact('skripsi'));
+        $this->render('skripsi/view', compact('skripsi', 'logbooks'));
     }
 
     /**
@@ -67,10 +84,17 @@ class Skripsi extends App_Controller
     public function create()
     {
         AuthorizationModel::mustAuthorized(PERMISSION_SKRIPSI_CREATE);
-
+        $civitasLogin = UserModel::loginData();
+        $pembimbingId = '';
+        $pembimbing = '';
+        if($civitasLogin['civitas_type'] == 'MAHASISWA'){
+            $student = $this->student->getById($civitasLogin['id_civitas']);
+            $pembimbingId = $student['id_pembimbing'];
+            $pembimbing = $student['nama_pembimbing'];
+        }
         $students = $this->student->getAll(['status'=> StudentModel::STATUS_ACTIVE]);
 
-        $this->render('skripsi/create', compact('students'));
+        $this->render('skripsi/create', compact('students', 'pembimbingId', 'pembimbing'));
     }
 
     /**
@@ -81,24 +105,27 @@ class Skripsi extends App_Controller
         AuthorizationModel::mustAuthorized(PERMISSION_SKRIPSI_CREATE);
 
         if ($this->validate()) {
-            $skripsiNo = $this->input->post('no_skripsi');
-            $name = $this->input->post('name');
-            $status = $this->input->post('status');
-            $position = $this->input->post('position');
-            $user = $this->input->post('user');
-            $description = $this->input->post('description');
+            $studentId = $this->input->post('student');
+            $judul = $this->input->post('judul');
+            $pembimbingId = $this->input->post('id_pembimbing');
+            
+            $skripsi = $this->skripsi->getBy([
+                'skripsis.id_student' => $studentId,
+                'skripsis.status !=' => SkripsiModel::STATUS_REJECTED,
+            ]);
+            if(!empty($skripsi)){
+                flash('warning','You cant create skripsi before your skripsi validate','skripsi/create');
+            }
 
+            $student = $this->student->getById($studentId);
             $save = $this->skripsi->create([
-                'no_skripsi' => $skripsiNo,
-                'id_user' => if_empty($user, null),
-                'name' => $name,
-                'position' => $position,
-                'description' => $description,
-                'status' => $status,
+                'id_student' => $studentId,
+                'id_lecturer' => if_empty($pembimbingId, null),
+                'judul' => $judul,
             ]);
 
             if ($save) {
-                flash('success', "Skripsi {$name} successfully created", 'master/skripsi');
+                flash('success', "Skripsi {$student['name']} successfully created", 'skripsi');
             } else {
                 flash('danger', "Create Skripsi failed, try again of contact administrator");
             }
@@ -115,9 +142,9 @@ class Skripsi extends App_Controller
         AuthorizationModel::mustAuthorized(PERMISSION_SKRIPSI_EDIT);
 
         $skripsi = $this->skripsi->getById($id);
-        $users = $this->user->getUnattachedUsers($skripsi['id_user']);
+        $students = $this->student->getAll(['status'=> StudentModel::STATUS_ACTIVE]);
 
-        $this->render('skripsi/edit', compact('users', 'skripsi'));
+        $this->render('skripsi/edit', compact('students', 'skripsi'));
     }
 
     /**
@@ -129,26 +156,20 @@ class Skripsi extends App_Controller
         AuthorizationModel::mustAuthorized(PERMISSION_SKRIPSI_EDIT);
 
         if ($this->validate($this->_validation_rules($id))) {
-            $skripsiNo = $this->input->post('no_skripsi');
-            $name = $this->input->post('name');
-            $status = $this->input->post('status');
-            $position = $this->input->post('position');
-            $user = $this->input->post('user');
-            $description = $this->input->post('description');
+            $studentId = $this->input->post('student');
+            $judul = $this->input->post('judul');
+            $pembimbingId = $this->input->post('id_pembimbing');
 
             $skripsi = $this->skripsi->getById($id);
 
             $save = $this->skripsi->update([
-                'id_user' => if_empty($user, null),
-                'name' => $name,
-                'no_skripsi' => $skripsiNo,
-                'position' => $position,
-                'description' => $description,
-                'status' => $status,
+                'id_student' => $studentId,
+                'id_lecturer' => if_empty($pembimbingId, null),
+                'judul' => $judul,
             ], $id);
 
             if ($save) {
-                flash('success', "User {$name} successfully updated", 'master/skripsi');
+                flash('success', "Skripsi {$skripsi['nama_mahasiswa']} successfully updated", 'skripsi');
             } else {
                 flash('danger', "Update Skripsi failed, try again of contact administrator");
             }
@@ -166,13 +187,68 @@ class Skripsi extends App_Controller
         AuthorizationModel::mustAuthorized(PERMISSION_SKRIPSI_DELETE);
 
         $skripsi = $this->skripsi->getById($id);
+        // push any status absent to history
+        $this->statusHistory->create([
+            'type' => StatusHistoryModel::TYPE_SKRIPSI,
+            'id_reference' => $id,
+            'status' => $skripsi['status'],
+            'description' => "Skripsi is deleted",
+            'data' => json_encode($skripsi)
+        ]);
 
         if ($this->skripsi->delete($id, true)) {
-            flash('warning', "Skripsi {$skripsi['name']} successfully deleted");
+            flash('warning', "Skripsi {$skripsi['nama_mahasiswa']} successfully deleted");
         } else {
             flash('danger', "Delete Skripsi failed, try again or contact administrator");
         }
-        redirect('master/skripsi');
+        redirect('skripsi');
+    }
+
+    /**
+     * Validate absent data.
+     *
+     * @param null $id
+     */
+    public function validate_skripsi($id = null)
+    {
+		if ($this->validate(['status' => 'trim|required'])) {
+			$id = if_empty($this->input->post('id'), $id);
+			$status = $this->input->post('status');
+			$description = $this->input->post('description');
+
+			$this->db->trans_start();
+
+            $skripsi = $this->skripsi->getById($id);
+
+            // push any status absent to history
+            $this->statusHistory->create([
+                'type' => StatusHistoryModel::TYPE_SKRIPSI,
+                'id_reference' => $id,
+                'status' => $status=="VALIDATED" ? SkripsiModel::STATUS_ACTIVE : SkripsiModel::STATUS_REJECTED,
+                'description' => $description,
+                'data' => json_encode($skripsi)
+            ]);
+
+            $this->skripsi->update([
+                'status' => $status=="VALIDATED" ? SkripsiModel::STATUS_ACTIVE : SkripsiModel::STATUS_REJECTED
+            ], $id);
+
+            $this->db->trans_complete();
+
+            if ($this->db->trans_status()) {
+                $statusClass = 'warning';
+                if ($status != SkripsiModel::STATUS_REJECTED) {
+                    $statusClass = 'success';
+                }
+
+                $message = "Skripsi <strong>{$skripsi['nama_mahasiswa']}</strong> successfully <strong>{$status}</strong>";
+
+                flash($statusClass, $message);
+            } else {
+                flash('danger', "Validating skripsi <strong>{$skripsi['requisite']}</strong> failed, try again or contact administrator");
+            }
+		}
+		redirect(get_url_param('redirect', 'skripsi'));
     }
 
     /**
@@ -185,18 +261,8 @@ class Skripsi extends App_Controller
     {
         $id = isset($params[0]) ? $params[0] : 0;
         return [
-            'no_skripsi' => [
-                'trim', 'required', 'max_length[100]', ['no_skripsi_exists', function ($no) use ($id) {
-                    $this->form_validation->set_message('no_skripsi_exists', 'The %s has been registered before, try another');
-                    return empty($this->skripsi->getBy([
-                    	'ref_skripsis.no_skripsi' => $no,
-						'ref_skripsis.id!=' => $id
-					]));
-                }]
-            ],
-            'name' => 'trim|required|max_length[50]',
-            'position' => 'trim|required|max_length[50]',
-            'status' => 'trim|required|max_length[50]',
+            'student' => 'trim|required',
+            'judul' => 'trim|required',
         ];
     }
 

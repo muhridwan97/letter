@@ -1,24 +1,24 @@
 <div class="form-plaintext">
     <div class="card mb-3">
         <div class="card-body">
-            <h5 class="card-title">View Lecturer</h5>
+            <h5 class="card-title">View Logbook</h5>
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Name</label>
+                        <label class="col-sm-4 col-form-label">Judul</label>
                         <div class="col-sm-8">
                             <p class="form-control-plaintext">
-                                <?= if_empty($lecturer['name'], 'No name') ?>
+                                <?= if_empty($logbook['judul'], 'No judul') ?>
                             </p>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">NO NIP</label>
+                        <label class="col-sm-4 col-form-label">Tanggal</label>
                         <div class="col-sm-8">
                             <p class="form-control-plaintext">
-                                <?= if_empty($lecturer['no_lecturer'], '-') ?>
+                                <?= if_empty(format_date($logbook['tanggal'],'d F Y' ), '-') ?>
                             </p>
                         </div>
                     </div>
@@ -27,10 +27,10 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Position</label>
+                        <label class="col-sm-4 col-form-label">Konsultasi</label>
                         <div class="col-sm-8">
                             <p class="form-control-plaintext">
-                                <?= if_empty($lecturer['position'], 'position') ?>
+                                <?= if_empty($logbook['konsultasi'], 'no konsultasi') ?>
                             </p>
                         </div>
                     </div>
@@ -42,12 +42,13 @@
                             <p class="form-control-plaintext">
                                 <?php
                                 $statuses = [
-                                    LecturerModel::STATUS_ACTIVE => 'success',
-                                    LecturerModel::STATUS_INACTIVE => 'danger',
+                                    LogbookModel::STATUS_VALIDATE => 'success',
+                                    LogbookModel::STATUS_REJECTED => 'danger',
+                                    LogbookModel::STATUS_PENDING => 'secondary',
                                 ]
                                 ?>
-                                <label class="mb-0 small badge badge-<?= $statuses[$lecturer['status']] ?>">
-                                    <?= $lecturer['status'] ?>
+                                <label class="mb-0 small badge badge-<?= $statuses[$logbook['status']] ?>">
+                                    <?= $logbook['status'] ?>
                                 </label>
                             </p>
                         </div>
@@ -57,28 +58,10 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Related Account</label>
+                        <label class="col-sm-4 col-form-label">Rincian</label>
                         <div class="col-sm-8">
                             <p class="form-control-plaintext">
-                                <?php if(empty($lecturer['username'])): ?>
-                                    No account
-                                <?php else: ?>
-                                    <a href="<?= site_url('master/user/view/' . $lecturer['id_user']) ?>">
-                                        <?= $lecturer['username'] ?>
-                                    </a>
-                                <?php endif; ?>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Description</label>
-                        <div class="col-sm-8">
-                            <p class="form-control-plaintext">
-                                <?= if_empty($lecturer['description'], '-') ?>
+                                <?= if_empty($logbook['description'], '-') ?>
                             </p>
                         </div>
                     </div>
@@ -91,9 +74,9 @@
         <div class="card-body d-flex justify-content-between">
             <button onclick="history.back()" type="button" class="btn btn-light">Back</button>
             <?php if(!$this->config->item('sso_enable')): ?>
-                <?php if(AuthorizationModel::isAuthorized(PERMISSION_LECTURER_EDIT)): ?>
-                    <a href="<?= site_url('master/lecturer/edit/' . $lecturer['id']) ?>" class="btn btn-primary">
-                        Edit Lecturer
+                <?php if(AuthorizationModel::isAuthorized(PERMISSION_LOGBOOK_EDIT)): ?>
+                    <a href="<?= site_url('skripsi/logbook/edit/' . $logbook['id']) ?>" class="btn btn-primary">
+                        Edit Logbook
                     </a>
                 <?php endif; ?>
             <?php endif; ?>

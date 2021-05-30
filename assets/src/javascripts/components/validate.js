@@ -16,6 +16,7 @@ export default function () {
         modalValidate.find('.validate-title').text($(this).data('title'));
         modalValidate.find('.validate-label').text($(this).data('action') + ' data ' + $(this).data('label'));
         modalValidate.find('.validate-email').text($(this).data('email'));
+        modalValidate.find('input[name="status"]').val($(this).data('action'));
         modalValidate.find('button[type=submit]').text($(this).data('action').toUpperCase());
 
         modalValidate.find('button[type=submit]')

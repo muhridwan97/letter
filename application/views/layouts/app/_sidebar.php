@@ -1,6 +1,7 @@
 <?php
 $segment1 = $this->uri->segment(1);
 $segment2 = $this->uri->segment(2);
+$segment3 = $this->uri->segment(3);
 ?>
 <div class="bg-white d-flex flex-column" id="sidebar-wrapper">
     <div class="sidebar-heading bg-primary">
@@ -129,15 +130,25 @@ $segment2 = $this->uri->segment(2);
 				</a>
 				<div class="collapse<?= $segment1 == 'skripsi' && !in_array($segment2, ['role', 'user']) ? ' show' : '' ?>" id="skripsi">
 					<ul class="nav flex-column sub-menu">
-						<?php if(AuthorizationModel::isAuthorized(PERMISSION_DEPARTMENT_VIEW)): ?>
-							<li class="nav-item<?= $segment1 == 'skripsi' && $segment2 == 'skripsi' ? ' active' : '' ?>">
+						<?php if(AuthorizationModel::isAuthorized(PERMISSION_SKRIPSI_VIEW)): ?>
+							<li class="nav-item<?= $segment1 == 'skripsi' && ($segment2 == 'skripsi'||$segment2 == '' || $segment2 != 'logbook') ? ' active' : '' ?>">
 								<a class="nav-link" href="<?= site_url('skripsi/skripsi') ?>">
 									<i class="mdi mdi-folder-outline mr-2"></i>Skripsi
 								</a>
 							</li>
 						<?php endif; ?>
-						<?php if(AuthorizationModel::isAuthorized(PERMISSION_LECTURER_VIEW)): ?>
-							<li class="nav-item<?= $segment1 == 'skripsi' && $segment2 == 'logbook' ? ' active' : '' ?>">
+						<?php if(AuthorizationModel::isAuthorized(PERMISSION_LOGBOOK_VIEW)): ?>
+							<li class="nav-item<?= $segment1 == 'skripsi' && $segment2 == 'logbook' && $segment3 == 'outstanding' ? ' active' : '' ?>">
+								<a class="nav-link" href="<?= site_url('skripsi/logbook/outstanding') ?>">
+									<i class="mdi mdi-content-paste mr-2"></i>Outstanding
+									<?php if(LogbookModel::getCountUnvalidate()>1): ?>
+										<span class="badge badge-info badge-pill ml-auto">
+											<?= LogbookModel::getCountUnvalidate() ?>
+										</span>
+									<?php endif; ?>
+								</a>
+							</li>
+							<li class="nav-item<?= $segment1 == 'skripsi' && $segment2 == 'logbook' && $segment3 != 'outstanding'? ' active' : '' ?>">
 								<a class="nav-link" href="<?= site_url('skripsi/logbook') ?>">
 									<i class="mdi mdi-content-paste mr-2"></i>Logbook
 								</a>

@@ -8,6 +8,9 @@ class StatusHistoryModel extends App_Model
     const TYPE_TRAINING = 'training';
     const TYPE_EXAM = 'exam';
     const TYPE_EXAM_EXERCISE = 'exam-exercise';
+    
+    const TYPE_SKRIPSI = 'skripsi';
+    const TYPE_LOGBOOK = 'logbook';
 
     /**
      * Get base query of table.
