@@ -22,6 +22,6 @@ class StudentModel extends App_Model
                     'prv_users.email',
                     ])
                 ->join('ref_lecturers','ref_lecturers.id = ref_students.id_pembimbing','left')
-                ->join('prv_users','prv_users.id = ref_students.id_user');
+                ->join('prv_users','prv_users.id = ref_students.id_user','left');
     }
 }

@@ -20,6 +20,6 @@ class LecturerModel extends App_Model
                 ->select([
                     'prv_users.email',
                     ])
-                ->join('prv_users','prv_users.id = ref_lecturers.id_user');
+                ->join('prv_users','prv_users.id = ref_lecturers.id_user', 'left');
     }
 }
