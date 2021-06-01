@@ -16,6 +16,7 @@ class NotificationModel extends App_Model
 
     const SUBSCRIBE_SYLLABUS = 'syllabus';
     const SUBSCRIBE_TRAINING = 'training';
+    const SUBSCRIBE_SKRIPSI = 'skripsi';
 
     const EVENT_CURRICULUM_MUTATION = 'curriculum-mutation';
     const EVENT_COURSE_MUTATION = 'course-mutation';
@@ -23,6 +24,7 @@ class NotificationModel extends App_Model
     const EVENT_TRAINING_ASSIGNED = 'training-assigned';
     const EVENT_EXAM_ASSIGNED = 'exam-assigned';
     const EVENT_EXAM_FINISHED = 'exam-finished';
+    const EVENT_LOGBOOK_CREATED = 'logbook-created';
 
 	private $type = [Notify::WEB_PUSH];
 	private $users = [];
@@ -211,8 +213,7 @@ class NotificationModel extends App_Model
 				'is_read' => false,
 				'created_at>=DATE(NOW()) - INTERVAL 7 DAY' => null
 			])
-			->order_by('created_at', 'desc')
-			->limit(3);
+			->order_by('created_at', 'desc');
 
 		$notifications = $CI->db->get()->result_array();
 

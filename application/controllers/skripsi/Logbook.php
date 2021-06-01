@@ -7,9 +7,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property LecturerModel $lecturer
  * @property SkripsiModel $skripsi
  * @property StatusHistoryModel $statusHistory
+ * @property NotificationModel $notification
  * @property UserModel $user
  * @property Exporter $exporter
  * @property Mailer $mailer
+ * @property Uploader $uploader
  * @property Uploader $uploader
  */
 class Logbook extends App_Controller
@@ -21,6 +23,7 @@ class Logbook extends App_Controller
         $this->load->model('LecturerModel', 'lecturer');
         $this->load->model('SkripsiModel', 'skripsi');
         $this->load->model('StatusHistoryModel', 'statusHistory');
+        $this->load->model('NotificationModel', 'notification');
         $this->load->model('UserModel', 'user');
         $this->load->model('modules/Mailer', 'mailer');
         $this->load->model('modules/Exporter', 'exporter');
@@ -138,14 +141,33 @@ class Logbook extends App_Controller
             $konsultasi = $this->input->post('konsultasi');
             $description = $this->input->post('description');
 
-            $save = $this->logbook->create([
+			$this->db->trans_start();
+            $this->logbook->create([
                 'id_skripsi' => $skripsi,
                 'tanggal' => format_date($tanggal),
                 'konsultasi' => $konsultasi,
                 'description' => $description,
             ]);
+			$logbookId = $this->db->insert_id();
 
-            if ($save) {
+			$this->db->trans_complete();
+            if ($this->db->trans_status()) {
+		        $this->load->model('notifications/CreateLogbookNotification');
+                $this->load->model('notifications/ValidateLogbookNotification');
+                $logbook = $this->logbook->getById($logbookId);
+                $lecturer = $this->lecturer->getById($logbook['id_lecturer']);
+                $this->notification
+                    ->via([Notify::DATABASE_PUSH, Notify::WEB_PUSH, Notify::MAIL_PUSH])
+                    ->to(UserModel::loginData())
+                    ->send(new CreateLogbookNotification(
+                        $logbook
+                    ));
+                $this->notification
+                    ->via([Notify::DATABASE_PUSH, Notify::WEB_PUSH, Notify::MAIL_PUSH])
+                    ->to($this->user->getById($lecturer['id_user']))
+                    ->send(new ValidateLogbookNotification(
+                        $logbook
+                    ));
                 flash('success', "Logbook {$konsultasi} successfully created", 'skripsi/logbook');
             } else {
                 flash('danger', "Create Logbook failed, try again of contact administrator");

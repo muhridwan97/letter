@@ -20,7 +20,8 @@ class LogbookModel extends App_Model
                 ->select([
                     'ref_students.name AS nama_mahasiswa',
                     'ref_students.no_student',
-                    'skripsis.judul'
+                    'skripsis.judul',
+                    'skripsis.id_lecturer',
                     ])
                 ->join('skripsis','skripsis.id = logbooks.id_skripsi')
                 ->join('ref_students','ref_students.id = skripsis.id_student','left');
@@ -38,6 +39,7 @@ class LogbookModel extends App_Model
         $baseQuery = $this->getBaseQuery();
 
         $baseQuery->where($this->table . '.id_skripsi', $modelId);
+        $baseQuery->where($this->table . '.status', LogbookModel::STATUS_VALIDATE);
 
         if (!$withTrashed && $this->db->field_exists('is_deleted', $this->table)) {
             $baseQuery->where($this->table . '.is_deleted', false);

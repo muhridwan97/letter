@@ -4,6 +4,7 @@ export default function () {
 
 	const SUBSCRIBE_SYLLABUS = 'syllabus';
 	const SUBSCRIBE_TRAINING = 'training';
+    const SUBSCRIBE_SKRIPSI = 'skripsi';
 
 	const EVENT_CURRICULUM_MUTATION = 'curriculum-mutation';
 	const EVENT_COURSE_MUTATION = 'course-mutation';
@@ -11,6 +12,7 @@ export default function () {
 	const EVENT_TRAINING_ASSIGNED = 'training-assigned';
 	const EVENT_EXAM_ASSIGNED = 'exam-assigned';
 	const EVENT_EXAM_FINISHED = 'exam-finished';
+	const EVENT_LOGBOOK_CREATED = 'logbook-created';
 
     function displayNotification(title, message, url = variables.baseUrl) {
         let options = {
@@ -37,7 +39,7 @@ export default function () {
             } else {
                 //Pusher.logToConsole = true;
 
-                let pusher = new Pusher('26e6e8709320db34adbb', {
+                let pusher = new Pusher('517b8ca6efe35f00b2dd', {
                     cluster: 'ap1',
                     encrypted: true
                 });
@@ -62,6 +64,18 @@ export default function () {
                 });
 				channelTraining.bind(EVENT_EXAM_FINISHED, function (data) {
                     displayNotification('Exam Finished', data.message, data.url);
+                });
+
+                let channelSkripsi = pusher.subscribe(`${SUBSCRIBE_SKRIPSI}-${variables.userId}`);
+				channelSkripsi.bind(EVENT_LOGBOOK_CREATED, function (data) {
+                    $.ajax({
+                        method : "POST",
+                        url : variables.baseUrl + 'notification/ajax_list_notification',
+                        success : function (response) {
+                            $('.ajax-notification').html(response);
+                        }
+                    })
+                    displayNotification('Logbook', data.message, data.url);
                 });
             }
         } else {

@@ -15,6 +15,49 @@ body {
   flex: 1 0 auto;
 }
 
+.nav-item {
+	&:hover, &.active {
+	  background-color: lighten($primary, 46%);
+
+	  > .nav-link {
+		color: $primary;
+	  }
+	}
+
+	&.dropdown {  
+		.count-indicator {
+		  position: relative;
+		  text-align: center;
+  
+		  i {
+			font-size: 21px;
+			margin-right: 0;
+			vertical-align: middle;
+		  }
+  
+		  .count {
+			position: absolute;
+			left: 50%;
+			width: 1rem;
+			height: 1rem;
+			border-radius: 100%;
+			background: #FF0017;
+			color: $white;
+			font-size: 11px;
+			top: -1px;
+			font-weight: 600;
+			line-height: 1rem;
+			border: none;
+			text-align: center;
+		  }
+  
+		  &:after {
+			display: none;
+		  }
+		}
+	}
+  }
+
 #sidebar-wrapper {
   width: 240px;
   min-height: 100vh;

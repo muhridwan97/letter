@@ -18,7 +18,8 @@ class Notification extends App_Controller
 
         $this->setFilterMethods([
             'read_all' => 'GET|POST',
-            'read' => 'GET|POST|PUT|PATCH'
+            'read' => 'GET|POST|PUT|PATCH',
+            'ajax_list_notification' => 'POST',
         ]);
     }
 
@@ -72,5 +73,14 @@ class Notification extends App_Controller
         }
 
         redirect($redirect);
+    }
+
+    /**
+     * ajax notification.
+     *
+     * @param $id
+     */
+    public function ajax_list_notification(){
+        $this->load->view('notification/ajax_list_notification');
     }
 }

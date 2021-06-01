@@ -12,9 +12,14 @@
                 <i class="mdi mdi-magnify lead"></i>
             </a>
         </li>
-        <li class="nav-item dropdown navbar-notification mr-2">
-            <a class="nav-link text-white" href="#" id="notification-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <li class="nav-item dropdown navbar-notification mr-2 ajax-notification">
+			<?php $stickyNotifications = NotificationModel::getUnreadNotification() ?>
+            <?php $stickyUnread = count($stickyNotifications) ?>
+            <a class="nav-link count-indicator text-white" href="#" id="notification-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="mdi mdi-bell-outline lead"></i>
+                    <?php if($stickyUnread > 0): ?>
+                        <span class="count"><?= $stickyUnread > 9 ? '9+' : $stickyUnread ?></span>
+                    <?php endif; ?>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown-notification" aria-labelledby="notification-dropdown">
 				<?php
@@ -35,7 +40,7 @@
 					NotificationModel::EVENT_EXAM_FINISHED => 'success',
 				]
 				?>
-				<?php $stickyNotifications = NotificationModel::getUnreadNotification() ?>
+				<?php $notifyCount = 1 ?>
 				<?php foreach ($stickyNotifications as $notify): ?>
 					<a class="dropdown-item text-wrap d-flex flex-row mb-2" style="line-height: 1.2" href="<?= site_url('notification/read/' . $notify['id'] .'?redirect=' . $notify['data']['url']) ?>">
 						<h3 class="mdi <?= get_if_exist($notificationIcons, $notify['event'], 'mdi-information-outline') ?> text-<?= get_if_exist($notificationColors, $notify['event'], 'body') ?>" style="flex: 0 0 40px"></h3>
@@ -44,6 +49,7 @@
 							<small class="text-fade"><?= relative_time($notify['created_at']) ?></small>
 						</div>
 					</a>
+                    <?php if($notifyCount++ == 4) break; ?>
 				<?php endforeach; ?>
 				<?php if(empty($stickyNotifications)): ?>
 					<div class="dropdown-item">
