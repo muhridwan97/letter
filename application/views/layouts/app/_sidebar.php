@@ -138,6 +138,7 @@ $segment3 = $this->uri->segment(3);
 							</li>
 						<?php endif; ?>
 						<?php if(AuthorizationModel::isAuthorized(PERMISSION_LOGBOOK_VIEW)): ?>
+							<?php if(AuthorizationModel::hasRole('lecturer') || AuthorizationModel::isAuthorized(PERMISSION_ALL_ACCESS)): ?>
 							<li class="nav-item<?= $segment1 == 'skripsi' && $segment2 == 'logbook' && $segment3 == 'outstanding' ? ' active' : '' ?>">
 								<a class="nav-link" href="<?= site_url('skripsi/logbook/outstanding') ?>">
 									<i class="mdi mdi-content-paste mr-2"></i>Outstanding
@@ -148,6 +149,7 @@ $segment3 = $this->uri->segment(3);
 									<?php endif; ?>
 								</a>
 							</li>
+							<?php endif; ?>
 							<li class="nav-item<?= $segment1 == 'skripsi' && $segment2 == 'logbook' && $segment3 != 'outstanding'? ' active' : '' ?>">
 								<a class="nav-link" href="<?= site_url('skripsi/logbook') ?>">
 									<i class="mdi mdi-content-paste mr-2"></i>Logbook
