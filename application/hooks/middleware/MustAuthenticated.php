@@ -24,7 +24,7 @@ class MustAuthenticated
         Migrate::class, Automate::class, Landing::class, Legal::class,
         Research_permit::class, Assignment_letter::class, Interview_permit::class,
         Application_letter::class, Course_elimination::class, College_permit::class, Recommendation_letter::class,
-        Appointment_lecturer::class, Another_letter::class
+        Appointment_lecturer::class, Another_letter::class, Signature::class
     ];
 
     public function __construct()
