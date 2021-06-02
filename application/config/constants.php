@@ -140,6 +140,12 @@ defined('PERMISSION_LOGBOOK_EDIT') OR define('PERMISSION_LOGBOOK_EDIT', 'logbook
 defined('PERMISSION_LOGBOOK_DELETE') OR define('PERMISSION_LOGBOOK_DELETE', 'logbook-delete');
 defined('PERMISSION_LOGBOOK_VALIDATE') OR define('PERMISSION_LOGBOOK_VALIDATE', 'logbook-validate');
 
+// Repository  permission
+defined('PERMISSION_REPOSITORY_VIEW') OR define('PERMISSION_REPOSITORY_VIEW', 'repository-view');
+defined('PERMISSION_REPOSITORY_CREATE') OR define('PERMISSION_REPOSITORY_CREATE', 'repository-create');
+defined('PERMISSION_REPOSITORY_EDIT') OR define('PERMISSION_REPOSITORY_EDIT', 'repository-edit');
+defined('PERMISSION_REPOSITORY_DELETE') OR define('PERMISSION_REPOSITORY_DELETE', 'repository-delete');
+
 // Curriculum permission
 defined('PERMISSION_CURRICULUM_VIEW') OR define('PERMISSION_CURRICULUM_VIEW', 'curriculum-view');
 defined('PERMISSION_CURRICULUM_CREATE') OR define('PERMISSION_CURRICULUM_CREATE', 'curriculum-create');

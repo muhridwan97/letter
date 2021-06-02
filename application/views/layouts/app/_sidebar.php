@@ -160,6 +160,13 @@ $segment3 = $this->uri->segment(3);
 				</div>
 			</li>
 
+		<li class="nav-item<?= $segment1 == 'repository' ? ' active' : '' ?>">
+            <a class="nav-link" href="<?= base_url('repository') ?>">
+                <i class="mdi mdi-folder-download menu-icon"></i>
+                <span class="menu-title">Repository</span>
+            </a>
+        </li>
+
 		<?php if(AuthorizationModel::isAuthorized(PERMISSION_ACCOUNT_EDIT)): ?>
 			<li class="nav-title">ACCOUNT & SETTING <i class="mdi mdi-arrow-right ml-auto"></i></li>
 			<li class="nav-item<?= $segment1 == 'account' ? ' active' : '' ?>">
