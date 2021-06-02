@@ -66,6 +66,9 @@
                                         <a class="dropdown-item" href="<?= site_url('skripsi/view/' . $skripsi['id']) ?>">
                                             <i class="mdi mdi-eye-outline mr-2"></i> View
                                         </a>
+                                        <a class="dropdown-item" href="<?= site_url('skripsi/skripsi/print_logbook/' . $skripsi['id']) ?>">
+                                            <i class="mdi mdi-printer mr-2"></i> Print
+                                        </a>
                                     <?php endif; ?>
                                     <?php if(!$this->config->item('sso_enable')): ?>
                                         <?php if(AuthorizationModel::isAuthorized(PERMISSION_SKRIPSI_EDIT)): ?>

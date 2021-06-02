@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+use Carbon\Carbon;
 /**
  * Class Skripsi
  * @property LogbookModel $logbook
@@ -32,6 +33,7 @@ class Skripsi extends App_Controller
 
         $this->setFilterMethods([
 			'validate_skripsi' => 'POST|PUT',
+			'print_logbook' => 'POST|GET',
 		]);
     }
 
@@ -249,6 +251,25 @@ class Skripsi extends App_Controller
             }
 		}
 		redirect(get_url_param('redirect', 'skripsi'));
+    }
+
+    /**
+     * print logbook skripsi data.
+     *
+     * @param null $id
+     */
+    public function print_logbook($id){
+        $dateNow = Carbon::now()->locale('id');
+        $tanggalSekarang = $dateNow->isoFormat('D MMMM YYYY');
+        $skripsi = $this->skripsi->getById($id);
+        $logbooks = $this->logbook->getBySkripsiId($id);
+        $options = [
+            'buffer' => false,
+            'view' => 'logbook/print',
+            'data' => compact('skripsi', 'logbooks', 'tanggalSekarang'),
+        ];
+        // $this->load->view($options['view'], $options['data']);
+        $output = $this->exporter->exportToPdf("Bukti bimbingan ".$skripsi['nama_mahasiswa'].".pdf", null, $options);
     }
 
     /**
