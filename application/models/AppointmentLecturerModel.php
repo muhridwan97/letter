@@ -12,7 +12,9 @@ class AppointmentLecturerModel extends App_Model
      */
     public function getBaseQuery()
     {
-        return parent::getBaseQuery();
+        return parent::getBaseQuery()
+            ->select('letter_numbers.no_letter')
+            ->join('letter_numbers','letter_numbers.id = appointment_lecturers.id_letter_number','left');
     }
 
 }

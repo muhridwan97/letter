@@ -2,12 +2,14 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 use Carbon\Carbon;
+use Milon\Barcode\DNS2D;
 /**
  * Class Course
  * @property LecturerModel $lecturer
  * @property CourseEliminationModel $courseElimination
  * @property CourseEliminationCourseModel $courseEliminationCourse
  * @property CourseModel $course
+ * @property SignatureModel $signature
  * @property LessonModel $lesson
  * @property CurriculumModel $curriculum
  * @property NotificationModel $notification
@@ -27,11 +29,11 @@ class Course_elimination extends App_Controller
 		$this->load->model('LecturerModel', 'lecturer');
 		$this->load->model('CourseEliminationModel', 'courseElimination');
 		$this->load->model('CourseEliminationCourseModel', 'courseEliminationCourse');
+		$this->load->model('SignatureModel', 'signature');
 		$this->load->model('NotificationModel', 'notification');
 		$this->load->model('modules/Exporter', 'exporter');
 		$this->load->model('modules/Uploader', 'uploader');
 		$this->load->model('modules/Mailer', 'mailer');
-		$this->load->model('notifications/CreateCourseNotification');
 
 		$this->setFilterMethods([
 			'sort' => 'GET|PUT'
@@ -84,11 +86,36 @@ class Course_elimination extends App_Controller
 
 			foreach($courses as $course){
 				$this->courseEliminationCourse->create([
+					'id_course_elimination' => $courseEliminationId,
 					'mata_kuliah' => $course['nama'],
 					'sks' => $course['sks'],
 					'nilai' => $course['nilai'],
 				]);
 			}
+			
+
+			$code = $this->signature->generateCode();
+			$barcodeKaprodi = base_url().'guest/signature?code='.$code;
+			$this->signature->create([
+				'code' => $code,
+				'id_reference' => $courseEliminationId,
+				'id_lecturer' => $kaprodiId,
+				'type' => SignatureModel::TYPE_COURSE_ELIMINATION,
+			]);
+
+			$code = $this->signature->generateCode();
+			$barcodePembimbing = base_url().'guest/signature?code='.$code;
+			$this->signature->create([
+				'code' => $code,
+				'id_reference' => $courseEliminationId,
+				'id_lecturer' => $pembimbingId,
+				'type' => SignatureModel::TYPE_COURSE_ELIMINATION,
+			]);
+						
+            $barcode = new DNS2D();
+            $barcode->setStorPath(APPPATH . "cache/");
+			$qrCodeKaprodi = $barcode->getBarcodePNG($barcodeKaprodi, "QRCODE", 2, 2);
+			$qrCodePembimbing = $barcode->getBarcodePNG($barcodePembimbing, "QRCODE", 2, 2);
 			
 			$this->db->trans_complete();
 
@@ -97,7 +124,7 @@ class Course_elimination extends App_Controller
 					'buffer' => true,
 					'view' => 'course_elimination/print',
 					'data' => compact('tanggalSekarang', 'nama', 'nim', 'sks', 'sks_pilihan', 'courses',
-										'kaprodi', 'pembimbing'),
+										'kaprodi', 'pembimbing', 'qrCodeKaprodi', 'qrCodePembimbing'),
 				];
 				$output = $this->exporter->exportToPdf("Laporan Surat Hapus Matkul.pdf", null, $options);
 				$this->uploader->makeFolder('course_elimination');

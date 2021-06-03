@@ -127,31 +127,24 @@
     Bermaksud mengajukan Surat Keterangan Habis Teori kepada Dekan Fakultas Sains dan Teknologi
     untuk keperluan persyaratan akademik.
 </p>
-<table style="margin-left:20px;font-size: 14px; margin-top: 60px; margin-bottom: 10px; width: 100%">
+<table style="font-size: 14px; margin-top: 60px; margin-bottom: 10px;table-layout: fixed; width: 100%">
     <tbody>
     <tr>
         <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">Mengetahui,</p>
             <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">Kaprodi Pendidikan Fisika</p>
             </th>
-        <th style="width: 100px;"></th>
         <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">Yogyakarta, <?= $tanggalSekarang?></p>
             <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">Yang mengajukan</p>
         </th>
     </tr>
     <tr>
-        <th colspan="3">&nbsp;</th>
-    </tr>
-    <tr>
-        <th colspan="3">&nbsp;</th>
-    </tr>
-    <tr>
-        <th colspan="3">&nbsp;</th>
+        <th style="text-align: center;"><img src="data:image/png;base64,<?= $qrCodeKaprodi ?>"></th>
+        <th style="width: 100px;"></th>
     </tr>
     <tr>
         <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"><?= $kaprodi['name'] ?></p>
             <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">NIP. <?= $kaprodi['no_lecturer'] ?></p>
             </th>
-        <th style="width: 100px;"></th>
         <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"><?= $nama ?></p>
         <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">NIM. <?= $nim ?></p></th>
     </tr>

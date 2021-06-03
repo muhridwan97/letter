@@ -7,6 +7,13 @@ class SignatureModel extends App_Model
     
     const TYPE_RESEARCH_PERMIT = 'research-permit';
     const TYPE_ASSIGNMENT_LETTER = 'assignment-letter';
+    const TYPE_INTERVIEW_PERMIT = 'interview-permit';
+    const TYPE_APPLICATION_LETTER = 'application-letter';
+    const TYPE_COURSE_ELIMINATION = 'course-elimination';
+    const TYPE_COLLEGE_PERMIT = 'college-permit';
+    const TYPE_RECOMMENDATION_LETTER = 'recommendation-letter';
+    const TYPE_APPOINTMENT_LECTURER = 'appointment-lecturer';
+
 
     /**
      * Get base query of table.

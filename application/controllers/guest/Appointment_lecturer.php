@@ -2,12 +2,14 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 use Carbon\Carbon;
+use Milon\Barcode\DNS2D;
 
 /**
  * Class Course
  * @property LecturerModel $lecturer
  * @property AppointmentLecturerModel $appointmentLecturer
  * @property LetterNumberModel $letterNumber
+ * @property SignatureModel $signature
  * @property NotificationModel $notification
  * @property Exporter $exporter
  * @property Uploader $uploader
@@ -25,11 +27,11 @@ class Appointment_lecturer extends App_Controller
 		$this->load->model('LecturerModel', 'lecturer');
 		$this->load->model('AppointmentLecturerModel', 'appointmentLecturer');
 		$this->load->model('LetterNumberModel', 'letterNumber');
+		$this->load->model('SignatureModel', 'signature');
 		$this->load->model('NotificationModel', 'notification');
 		$this->load->model('modules/Exporter', 'exporter');
 		$this->load->model('modules/Uploader', 'uploader');
 		$this->load->model('modules/Mailer', 'mailer');
-		$this->load->model('notifications/CreateCourseNotification');
 
 		$this->setFilterMethods([
 			'sort' => 'GET|PUT'
@@ -84,6 +86,20 @@ class Appointment_lecturer extends App_Controller
 				'judul' => $judul,
 				'tanggal' => $tanggal,
 			]);
+			$appointmentLecturerId = $this->db->insert_id();
+
+			$code = $this->signature->generateCode();
+			$barcodeKaprodi = base_url().'guest/signature?code='.$code;
+			$this->signature->create([
+				'code' => $code,
+				'id_reference' => $appointmentLecturerId,
+				'id_lecturer' => $kaprodiId,
+				'type' => SignatureModel::TYPE_APPOINTMENT_LECTURER,
+			]);
+						
+            $barcode = new DNS2D();
+            $barcode->setStorPath(APPPATH . "cache/");
+			$qrCodeKaprodi = $barcode->getBarcodePNG($barcodeKaprodi, "QRCODE", 2, 2);
 			
 			$this->db->trans_complete();
 
@@ -93,7 +109,7 @@ class Appointment_lecturer extends App_Controller
 				$options = [
 					'buffer' => true,
 					'view' => 'appointment_lecturer/print',
-					'data' => compact('tanggalSekarang', 'semester', 'judul', 'nama', 'nim',
+					'data' => compact('tanggalSekarang', 'semester', 'judul', 'nama', 'nim', 'qrCodeKaprodi',
 										'tanggal', 'kaprodi', 'pembimbing', 'no_letter'),
 				];
 				$output = $this->exporter->exportToPdf("Penunjukan Pembimbing.pdf", null, $options);
@@ -125,20 +141,11 @@ class Appointment_lecturer extends App_Controller
 				
 				// Process download
 				if(file_exists($filepath)) {
-					header('Content-Description: File Transfer');
-					header('Content-Type: application/octet-stream');
-					header('Content-Disposition: attachment; filename="'.basename($filepath).'"');
-					header('Expires: 0');
-					header('Cache-Control: must-revalidate');
-					header('Pragma: public');
-					header('Content-Length: ' . filesize($filepath));
-					flush(); // Flush system output buffer
-					readfile($filepath);
-					die();
+					$this->load->helper('download');
+					force_download($filepath, NULL);
 				} else {
 					flash('warning', "Generate successfully but download fail, please check your email");
 				}
-				redirect('guest/appointment_lecturer/create');
 			}
 		}
 		$this->create();

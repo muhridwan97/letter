@@ -2,12 +2,14 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 use Carbon\Carbon;
+use Milon\Barcode\DNS2D;
 /**
  * Class Course
  * @property LecturerModel $lecturer
  * @property LetterNumberModel $letterNumber
  * @property InterviewPermitModel $interviewPermit
  * @property InterviewPermitStudentModel $interviewPermitStudent
+ * @property SignatureModel $signature
  * @property NotificationModel $notification
  * @property Exporter $exporter
  * @property Uploader $uploader
@@ -26,6 +28,7 @@ class Interview_permit extends App_Controller
 		$this->load->model('LetterNumberModel', 'letterNumber');
 		$this->load->model('InterviewPermitModel', 'interviewPermit');
 		$this->load->model('InterviewPermitStudentModel', 'interviewPermitStudent');
+		$this->load->model('SignatureModel', 'signature');
 		$this->load->model('NotificationModel', 'notification');
 		$this->load->model('modules/Exporter', 'exporter');
 		$this->load->model('modules/Uploader', 'uploader');
@@ -89,10 +92,34 @@ class Interview_permit extends App_Controller
 
 			foreach($students as $student){
 				$this->interviewPermitStudent->create([
+					'id_interview_permit' => $interviewPermitId,
 					'name' => $student['nama'],
 					'nim' => $student['nim'],
 				]);
 			}
+
+			$code = $this->signature->generateCode();
+			$barcodeKaprodi = base_url().'guest/signature?code='.$code;
+			$this->signature->create([
+				'code' => $code,
+				'id_reference' => $interviewPermitId,
+				'id_lecturer' => $kaprodiId,
+				'type' => SignatureModel::TYPE_INTERVIEW_PERMIT,
+			]);
+
+			$code = $this->signature->generateCode();
+			$barcodePembimbing = base_url().'guest/signature?code='.$code;
+			$this->signature->create([
+				'code' => $code,
+				'id_reference' => $interviewPermitId,
+				'id_lecturer' => $pembimbingId,
+				'type' => SignatureModel::TYPE_INTERVIEW_PERMIT,
+			]);
+						
+            $barcode = new DNS2D();
+            $barcode->setStorPath(APPPATH . "cache/");
+			$qrCodeKaprodi = $barcode->getBarcodePNG($barcodeKaprodi, "QRCODE", 2, 2);
+			$qrCodePembimbing = $barcode->getBarcodePNG($barcodePembimbing, "QRCODE", 2, 2);
 			
 			$this->db->trans_complete();
 
@@ -100,7 +127,7 @@ class Interview_permit extends App_Controller
 				$options = [
 					'buffer' => true,
 					'view' => 'interview_permit/print',
-					'data' => compact('tanggalSekarang', 'judul', 'terhormat', 'students',
+					'data' => compact('tanggalSekarang', 'judul', 'terhormat', 'students', 'qrCodeKaprodi', 'qrCodePembimbing',
 										'wawancara', 'metode', 'kaprodi', 'pembimbing', 'no_letter'),
 				];
 				$output = $this->exporter->exportToPdf("Laporan Surat Izin Wawancara.pdf", null, $options);

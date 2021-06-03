@@ -2,11 +2,13 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 use Carbon\Carbon;
+use Milon\Barcode\DNS2D;
 /**
  * Class Course
  * @property LecturerModel $lecturer
  * @property LetterNumberModel $letterNumber
  * @property RecommendationLetterModel $recommendationLetter
+ * @property SignatureModel $signature
  * @property NotificationModel $notification
  * @property Exporter $exporter
  * @property Uploader $uploader
@@ -24,6 +26,7 @@ class Recommendation_letter extends App_Controller
 		$this->load->model('LecturerModel', 'lecturer');
 		$this->load->model('LetterNumberModel', 'letterNumber');
 		$this->load->model('RecommendationLetterModel', 'recommendationLetter');
+		$this->load->model('SignatureModel', 'signature');
 		$this->load->model('NotificationModel', 'notification');
 		$this->load->model('modules/Exporter', 'exporter');
 		$this->load->model('modules/Uploader', 'uploader');
@@ -83,7 +86,20 @@ class Recommendation_letter extends App_Controller
 				'rekomendasi' => $rekomendasi,
 				'date' => date('Y-m-d'),
 			]);
-			
+			$recommendationLetterId = $this->db->insert_id();		
+
+			$code = $this->signature->generateCode();
+			$barcodeKaprodi = base_url().'guest/signature?code='.$code;
+			$this->signature->create([
+				'code' => $code,
+				'id_reference' => $recommendationLetterId,
+				'id_lecturer' => $kaprodiId,
+				'type' => SignatureModel::TYPE_RECOMMENDATION_LETTER,
+			]);
+						
+            $barcode = new DNS2D();
+            $barcode->setStorPath(APPPATH . "cache/");
+			$qrCodeKaprodi = $barcode->getBarcodePNG($barcodeKaprodi, "QRCODE", 2, 2);
 			$this->db->trans_complete();
 
 			if ($this->db->trans_status()) {
@@ -91,7 +107,7 @@ class Recommendation_letter extends App_Controller
 					'buffer' => true,
 					'view' => 'recommendation_letter/print',
 					'data' => compact('tanggalSekarang', 'namaDosen', 'jabatan', 'namaMahasiswa', 'nim',
-										'rekomendasi', 'kaprodi', 'no_letter', 'prodi'),
+										'rekomendasi', 'kaprodi', 'no_letter', 'prodi', 'qrCodeKaprodi'),
 				];
 				$output = $this->exporter->exportToPdf("Surat Rekomendasi.pdf", null, $options);
 				$this->uploader->makeFolder('recommendation_letter');

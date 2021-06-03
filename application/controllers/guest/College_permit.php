@@ -2,12 +2,14 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 use Carbon\Carbon;
+use Milon\Barcode\DNS2D;
 /**
  * Class Course
  * @property LecturerModel $lecturer
  * @property LetterNumberModel $letterNumber
  * @property CollegePermitModel $collegePermit
  * @property CollegePermitStudentModel $collegePermitStudent
+ * @property SignatureModel $signature
  * @property NotificationModel $notification
  * @property Exporter $exporter
  * @property Uploader $uploader
@@ -26,6 +28,7 @@ class College_permit extends App_Controller
 		$this->load->model('LetterNumberModel', 'letterNumber');
 		$this->load->model('CollegePermitModel', 'collegePermit');
 		$this->load->model('CollegePermitStudentModel', 'collegePermitStudent');
+		$this->load->model('SignatureModel', 'signature');
 		$this->load->model('NotificationModel', 'notification');
 		$this->load->model('modules/Exporter', 'exporter');
 		$this->load->model('modules/Uploader', 'uploader');
@@ -87,7 +90,20 @@ class College_permit extends App_Controller
 					'name' => $student['nama'],
 					'nim' => $student['nim'],
 				]);
-			}
+			}			
+
+			$code = $this->signature->generateCode();
+			$barcodeKaprodi = base_url().'guest/signature?code='.$code;
+			$this->signature->create([
+				'code' => $code,
+				'id_reference' => $collegePermitId,
+				'id_lecturer' => $kaprodiId,
+				'type' => SignatureModel::TYPE_COLLEGE_PERMIT,
+			]);
+						
+            $barcode = new DNS2D();
+            $barcode->setStorPath(APPPATH . "cache/");
+			$qrCodeKaprodi = $barcode->getBarcodePNG($barcodeKaprodi, "QRCODE", 2, 2);
 			
 			$this->db->trans_complete();
 
@@ -96,7 +112,7 @@ class College_permit extends App_Controller
 					'buffer' => true,
 					'view' => 'college_permit/print',
 					'data' => compact('tanggalSekarang', 'alasan', 'mataKuliah', 'students',
-										'tanggal', 'kaprodi', 'no_letter'),
+										'tanggal', 'kaprodi', 'no_letter', 'qrCodeKaprodi'),
 				];
 				$output = $this->exporter->exportToPdf("Laporan Izin Kuliah.pdf", null, $options);
 				$this->uploader->makeFolder('college_permit');

@@ -149,7 +149,7 @@
 <p style="margin-left: 10px;margin-bottom: 5px; line-height: 1.3; font-size: 14px">
     <i>Wassalamu'alaikum Wr.Wb</i>
 </p>
-<table style="margin-left:20px;font-size: 14px; margin-top: 40px; margin-bottom: 10px; width: 100%">
+<table style="font-size: 14px; margin-top: 40px; margin-bottom: 10px;table-layout: fixed; width: 100%">
     <tbody>
     <tr>
         <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">Menyetujui,</p>
@@ -163,20 +163,16 @@
             </th>
     </tr>
     <tr>
-        <th colspan="3">&nbsp;</th>
-    </tr>
-    <tr>
-        <th colspan="3">&nbsp;</th>
-    </tr>
-    <tr>
-        <th colspan="3">&nbsp;</th>
+        <th style="text-align: center;"><img src="data:image/png;base64,<?= $qrCodeKaprodi ?>"></th>
+        <th style="text-align: center;"><img src="data:image/png;base64,<?= $qrCodePembimbing ?>"></th>
+        <th style="width: 100px;"></th>
     </tr>
     <tr>
         <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"><?= $kaprodi['name'] ?></p>
             <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">NIP. <?= $kaprodi['no_lecturer'] ?></p>
             </th>
-        <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"><?= $kaprodi['name'] ?></p>
-            <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">NIP. <?= $kaprodi['no_lecturer'] ?></p></th>
+        <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"><?= $pembimbing['name'] ?></p>
+            <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">NIP. <?= $pembimbing['no_lecturer'] ?></p></th>
         <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"><?= $nama ?></p>
         <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">NIM. <?= $nim ?></p></th>
     </tr>
