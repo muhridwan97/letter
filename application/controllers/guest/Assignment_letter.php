@@ -2,12 +2,14 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 use Carbon\Carbon;
+use Milon\Barcode\DNS2D;
 /**
  * Class Course
  * @property LecturerModel $lecturer
  * @property AssignmentLetterModel $assignmentLetter
  * @property AssignmentLetterStudentModel $assignmentLetterStudent
  * @property LetterNumberModel $letterNumber
+ * @property SignatureModel $signature
  * @property CourseModel $course
  * @property LessonModel $lesson
  * @property CurriculumModel $curriculum
@@ -29,6 +31,7 @@ class Assignment_letter extends App_Controller
 		$this->load->model('AssignmentLetterModel', 'assignmentLetter');
 		$this->load->model('AssignmentLetterStudentModel', 'assignmentLetterStudent');
 		$this->load->model('LetterNumberModel', 'letterNumber');
+		$this->load->model('SignatureModel', 'signature');
 		$this->load->model('NotificationModel', 'notification');
 		$this->load->model('modules/Exporter', 'exporter');
 		$this->load->model('modules/Uploader', 'uploader');
@@ -97,7 +100,19 @@ class Assignment_letter extends App_Controller
 					'jabatan' => $student['jabatan'],
 				]);
 			}
-			
+			$code = $this->signature->generateCode();
+			$barcodeKaprodi = base_url().'guest/signature?code='.$code;
+			$this->signature->create([
+				'code' => $code,
+				'id_reference' => $assignmentLetterId,
+				'id_lecturer' => $kaprodiId,
+				'type' => SignatureModel::TYPE_ASSIGNMENT_LETTER,
+			]);
+						
+            $barcode = new DNS2D();
+            $barcode->setStorPath(APPPATH . "cache/");
+			$qrCodeKaprodi = $barcode->getBarcodePNG($barcodeKaprodi, "QRCODE", 2, 2);
+
 			$this->db->trans_complete();
 			$tanggal_pelaksana = '';
 			if($tanggal_mulai == $tanggal_selesai){
@@ -129,7 +144,7 @@ class Assignment_letter extends App_Controller
 					'buffer' => true,
 					'view' => 'assignment_letter/print',
 					'data' => compact('tanggalSekarang', 'judul', 'students', 'tujuan', 'penyelenggara',
-										'kaprodi', 'no_letter', 'tanggal_pelaksana', 'tempat'),
+										'kaprodi', 'no_letter', 'tanggal_pelaksana', 'tempat', 'qrCodeKaprodi'),
 				];
 				$output = $this->exporter->exportToPdf("Surat Permohonan Tugas.pdf", null, $options);
 				$this->uploader->makeFolder('assignment_letter');

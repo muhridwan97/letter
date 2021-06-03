@@ -6,6 +6,7 @@ class SignatureModel extends App_Model
     protected $table = 'signatures';
     
     const TYPE_RESEARCH_PERMIT = 'research-permit';
+    const TYPE_ASSIGNMENT_LETTER = 'assignment-letter';
 
     /**
      * Get base query of table.

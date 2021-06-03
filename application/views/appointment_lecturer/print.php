@@ -27,7 +27,7 @@
 <div style="margin-right: 50px;" >
     <div style="display: inline-block">
         <p style="font-family:Likhan; font-size: 12px; margin-bottom: 0; line-height: 1.1; text-align:left;">  
-        <img src="<?= FCPATH . 'assets/dist/img/uin2.png' ?>" width="20" height="25" ><strong>Universitas Islam Negeri Sunan Kalijaga</strong>
+        <img src="<?= FCPATH . 'assets/dist/img/uin.png' ?>" width="20" height="25" ><strong>Universitas Islam Negeri Sunan Kalijaga</strong>
         </p>
     </div>
 </div>

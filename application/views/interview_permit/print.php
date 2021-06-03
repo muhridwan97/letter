@@ -27,7 +27,7 @@
 
 <div style="margin-right: 50px;" >
     <div style="display: inline-block">
-        <img src="<?= FCPATH . 'assets/dist/img/uin2.png' ?>" width="60" height="80" >
+        <img src="<?= FCPATH . 'assets/dist/img/uin.png' ?>" width="60" height="80" >
     </div>
     <div style="display: inline-block;">
         <p style="font-family:Likhan; font-size: 18px; margin-bottom: 0; line-height: 1.1; text-align:center;">
