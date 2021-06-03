@@ -12,6 +12,7 @@ class Migration_Create_table_signatures extends CI_Migration
         $this->dbforge->add_field([
             'id' => ['type' => 'INT', 'unsigned' => TRUE, 'constraint' => 11, 'auto_increment' => TRUE],
             'id_reference' => ['type' => 'INT', 'unsigned' => TRUE, 'constraint' => 11],
+            'id_lecturer' => ['type' => 'INT', 'unsigned' => TRUE, 'constraint' => 11],
             'type' => ['type' => 'VARCHAR', 'constraint' => '100', 'null' => TRUE],
             'code' => ['type' => 'VARCHAR', 'constraint' => '100', 'null' => TRUE],
             'created_at' => ['type' => 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP'],

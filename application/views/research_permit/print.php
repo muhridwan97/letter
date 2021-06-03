@@ -27,7 +27,7 @@
 
 <div style="margin-right: 50px;" >
     <div style="display: inline-block">
-        <img src="<?= FCPATH . 'assets/dist/img/uin2.png' ?>" width="60" height="80" >
+        <img src="<?= FCPATH . 'assets/dist/img/uin.png' ?>" width="60" height="80" >
     </div>
     <div style="display: inline-block;">
         <p style="font-family:Likhan; font-size: 18px; margin-bottom: 0; line-height: 1.1; text-align:center;">
@@ -182,13 +182,9 @@
         <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">Dosen Pembimbing Akademik</p></th>
     </tr>
     <tr>
-        <th colspan="3">&nbsp;</th>
-    </tr>
-    <tr>
-        <th colspan="3">&nbsp;</th>
-    </tr>
-    <tr>
-        <th colspan="3">&nbsp;</th>
+        <th style="text-align: center;"><img src="data:image/png;base64,<?= $qrCodeKaprodi ?>"></th>
+        <th style="width: 100px;"></th>
+        <th style="text-align: center;"><img src="data:image/png;base64,<?= $qrCodePembimbing ?>"></th>
     </tr>
     <tr>
         <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"><?= $kaprodi['name'] ?></p>

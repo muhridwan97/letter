@@ -26,7 +26,7 @@ class SignatureModel extends App_Model
     {
         $this->load->helper('string');
 
-        $code = strtoupper(random_string('alnum', 10));
+        $code = strtoupper(random_string('alnum', 50));
 
         if (!empty($this->getBy(['signatures.code' => $code]))) {
             if ($maxTrial > 0) {
