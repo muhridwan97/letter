@@ -165,14 +165,14 @@
             </p>
         </td>
         <td style="text-align: center;border: 1px solid black;"><p style="margin-bottom: 5px; line-height: 1.3; font-size: 14px;font-weight: normal;">
-            Validate
+            <img src="data:image/png;base64,<?= $qrCodePembimbing ?>" style="width: 20px; height: 20px;">
             </p>
         </td>
     </tr>
     <?php endforeach; ?>
     </tbody>
 </table>
-<table style="margin-left:200px;font-size: 14px; margin-top: 40px; margin-bottom: 10px; width: 100%">
+<table style="margin-left:160px;font-size: 14px; margin-top: 40px; margin-bottom: 10px; width: 100%">
     <tbody>
     <tr>
         <th style="width: 100px;"></th>
@@ -182,13 +182,9 @@
             </th>
     </tr>
     <tr>
-        <th colspan="3">&nbsp;</th>
-    </tr>
-    <tr>
-        <th colspan="3">&nbsp;</th>
-    </tr>
-    <tr>
-        <th colspan="3">&nbsp;</th>
+        <th style="width: 100px;"></th>
+        <th style="width: 100px;"></th>
+        <th style="text-align: left;"><img src="data:image/png;base64,<?= $qrCodePembimbing ?>"></th>
     </tr>
     <tr>
         

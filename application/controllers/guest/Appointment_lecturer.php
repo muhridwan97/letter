@@ -151,6 +151,10 @@ class Appointment_lecturer extends App_Controller
 		$this->create();
 	}
 
+	private function download($path){
+
+	}
+
 	/**
 	 * Return general validation rules.
 	 *

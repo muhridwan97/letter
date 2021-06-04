@@ -14,6 +14,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @property CollegePermitModel $collegePermit
  * @property RecommendationLetterModel $recommendationLetter
  * @property AppointmentLecturerModel $appointmentLecturer
+ * @property SkripsiModel $skripsi
  * @property Exporter $exporter
  * @property Uploader $uploader
  * @property Mailer $mailer
@@ -42,6 +43,7 @@ class Signature extends App_Controller
 		$this->load->model('CollegePermitModel', 'collegePermit');
 		$this->load->model('RecommendationLetterModel', 'recommendationLetter');
 		$this->load->model('AppointmentLecturerModel', 'appointmentLecturer');
+		$this->load->model('SkripsiModel', 'skripsi');
 
 		$this->setFilterMethods([
 		]);
@@ -118,6 +120,18 @@ class Signature extends App_Controller
 				$data['tujuan']='Surat : Surat Penunjukan Pembimbing Skripsi <br>';
 				$data['tujuan'].='No Surat : '.$appointmentLecturer['no_letter'].'<br>';
 				$data['signature_by'] = $lecturer['name'];
+				break;		
+			case SignatureModel::TYPE_LOGBOOK_SKRIPSI:
+				$skripsi = $this->skripsi->getBy([
+					'skripsis.id' => $signatures['id_reference'],
+					'logbooks.status' => LogbookModel::STATUS_VALIDATE,
+					]);
+				$skripsi = reset($skripsi);
+				$data['tujuan']='Kartu Bimbingan Skripsi <br>';
+				$data['tujuan'].='Nama : '.$skripsi['nama_mahasiswa'].'<br>';
+				$data['tujuan'].='NIM : '.$skripsi['no_student'].'<br>';
+				$data['tujuan'].='Total bimbingan : '.$skripsi['total_logbook'].'<br>';
+				$data['signature_by'] = $skripsi['nama_pembimbing'];
 				break;
 			default:
 				# code...

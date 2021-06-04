@@ -13,6 +13,7 @@ class SignatureModel extends App_Model
     const TYPE_COLLEGE_PERMIT = 'college-permit';
     const TYPE_RECOMMENDATION_LETTER = 'recommendation-letter';
     const TYPE_APPOINTMENT_LECTURER = 'appointment-lecturer';
+    const TYPE_LOGBOOK_SKRIPSI = 'logbook-skripsi';
 
 
     /**

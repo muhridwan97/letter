@@ -2,11 +2,13 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 use Carbon\Carbon;
+use Milon\Barcode\DNS2D;
 /**
  * Class Skripsi
  * @property LogbookModel $logbook
  * @property SkripsiModel $skripsi
  * @property StudentModel $student
+ * @property SignatureModel $signature
  * @property StatusHistoryModel $statusHistory
  * @property DepartmentModel $department
  * @property UserModel $user
@@ -23,7 +25,7 @@ class Skripsi extends App_Controller
         $this->load->model('LogbookModel', 'logbook');
         $this->load->model('StudentModel', 'student');
         $this->load->model('StatusHistoryModel', 'statusHistory');
-
+		$this->load->model('SignatureModel', 'signature');
 
         $this->load->model('DepartmentModel', 'department');
         $this->load->model('UserModel', 'user');
@@ -263,10 +265,22 @@ class Skripsi extends App_Controller
         $tanggalSekarang = $dateNow->isoFormat('D MMMM YYYY');
         $skripsi = $this->skripsi->getById($id);
         $logbooks = $this->logbook->getBySkripsiId($id);
+        $code = $this->signature->generateCode();
+        $barcodePembimbing = base_url().'guest/signature?code='.$code;
+        $this->signature->create([
+            'code' => $code,
+            'id_reference' => $id,
+            'id_lecturer' => $skripsi['id_lecturer'],
+            'type' => SignatureModel::TYPE_LOGBOOK_SKRIPSI,
+        ]);
+                    
+        $barcode = new DNS2D();
+        $barcode->setStorPath(APPPATH . "cache/");
+        $qrCodePembimbing = $barcode->getBarcodePNG($barcodePembimbing, "QRCODE", 2, 2);
         $options = [
             'buffer' => false,
             'view' => 'logbook/print',
-            'data' => compact('skripsi', 'logbooks', 'tanggalSekarang'),
+            'data' => compact('skripsi', 'logbooks', 'tanggalSekarang', 'qrCodePembimbing'),
         ];
         // $this->load->view($options['view'], $options['data']);
         $output = $this->exporter->exportToPdf("Bukti bimbingan ".$skripsi['nama_mahasiswa'].".pdf", null, $options);
