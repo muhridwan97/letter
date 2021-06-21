@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * @property LecturerModel $lecturer
  * @property StudentModel $student
- * @property LessonModel $lesson
+ * @property SkripsiModel $skripsi
  * @property LetterNumberModel $letterNumber
  * @property ExamExerciseModel $examExercise
  * Class Dashboard
@@ -19,7 +19,7 @@ class Dashboard extends App_Controller
 		parent::__construct();
 		$this->load->model('LecturerModel', 'lecturer');
 		$this->load->model('StudentModel', 'student');
-		$this->load->model('LessonModel', 'lesson');
+		$this->load->model('SkripsiModel', 'skripsi');
 		$this->load->model('LetterNumberModel', 'letterNumber');
 		$this->load->model('ExamExerciseModel', 'examExercise');
 		$this->load->model('TrainingModel', 'training');
@@ -33,7 +33,7 @@ class Dashboard extends App_Controller
 		$data = [
 			'totalLecturer' => $this->lecturer->getBy([], 'COUNT'),
 			'totalStudent' => $this->student->getBy([], 'COUNT'),
-			'totalLesson' => $this->lesson->getBy([], 'COUNT'),
+			'totalSkripsi' => $this->skripsi->getBy([], 'COUNT'),
 			'totalLetterNumber' => $this->letterNumber->getBy([], 'COUNT'),
 		];
 
