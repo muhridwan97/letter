@@ -6,7 +6,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property StudentModel $student
  * @property SkripsiModel $skripsi
  * @property LetterNumberModel $letterNumber
- * @property ExamExerciseModel $examExercise
  * Class Dashboard
  */
 class Dashboard extends App_Controller
@@ -21,8 +20,6 @@ class Dashboard extends App_Controller
 		$this->load->model('StudentModel', 'student');
 		$this->load->model('SkripsiModel', 'skripsi');
 		$this->load->model('LetterNumberModel', 'letterNumber');
-		$this->load->model('ExamExerciseModel', 'examExercise');
-		$this->load->model('TrainingModel', 'training');
 	}
 
     /**
@@ -36,16 +33,6 @@ class Dashboard extends App_Controller
 			'totalSkripsi' => $this->skripsi->getBy([], 'COUNT'),
 			'totalLetterNumber' => $this->letterNumber->getBy([], 'COUNT'),
 		];
-
-		$data['latestExams'] = $this->examExercise->getAll([
-			'employee' => AuthorizationModel::hasPermission(PERMISSION_EXAM_MANAGE)
-				? 0 : UserModel::loginData('id_employee', -1),
-			'limit' => 10,
-		]);
-		$data['activeTrainings'] = $this->training->getAll([
-			'employee' => UserModel::loginData('id_employee', -1),
-			'status' => TrainingModel::STATUS_ACTIVE,
-		]);
 
         $this->render('dashboard/index', $data);
     }
