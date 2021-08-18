@@ -92,18 +92,18 @@ class College_permit extends App_Controller
 				]);
 			}			
 
-			$code = $this->signature->generateCode();
-			$barcodeKaprodi = base_url().'guest/signature?code='.$code;
-			$this->signature->create([
-				'code' => $code,
-				'id_reference' => $collegePermitId,
-				'id_lecturer' => $kaprodiId,
-				'type' => SignatureModel::TYPE_COLLEGE_PERMIT,
-			]);
+			// $code = $this->signature->generateCode();
+			// $barcodeKaprodi = base_url().'guest/signature?code='.$code;
+			// $this->signature->create([
+			// 	'code' => $code,
+			// 	'id_reference' => $collegePermitId,
+			// 	'id_lecturer' => $kaprodiId,
+			// 	'type' => SignatureModel::TYPE_COLLEGE_PERMIT,
+			// ]);
 						
-            $barcode = new DNS2D();
-            $barcode->setStorPath(APPPATH . "cache/");
-			$qrCodeKaprodi = $barcode->getBarcodePNG($barcodeKaprodi, "QRCODE", 2, 2);
+            // $barcode = new DNS2D();
+            // $barcode->setStorPath(APPPATH . "cache/");
+			// $qrCodeKaprodi = $barcode->getBarcodePNG($barcodeKaprodi, "QRCODE", 2, 2);
 			
 			$this->db->trans_complete();
 
@@ -111,8 +111,8 @@ class College_permit extends App_Controller
 				$options = [
 					'buffer' => true,
 					'view' => 'college_permit/print',
-					'data' => compact('tanggalSekarang', 'alasan', 'mataKuliah', 'students',
-										'tanggal', 'kaprodi', 'no_letter', 'qrCodeKaprodi'),
+					'data' => compact('tanggalSekarang', 'alasan', 'mataKuliah', 'students',// 'qrCodeKaprodi'
+										'tanggal', 'kaprodi', 'no_letter'),
 				];
 				$output = $this->exporter->exportToPdf("Laporan Izin Kuliah.pdf", null, $options);
 				$this->uploader->makeFolder('college_permit');

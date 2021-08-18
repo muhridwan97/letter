@@ -88,18 +88,18 @@ class Appointment_lecturer extends App_Controller
 			]);
 			$appointmentLecturerId = $this->db->insert_id();
 
-			$code = $this->signature->generateCode();
-			$barcodeKaprodi = base_url().'guest/signature?code='.$code;
-			$this->signature->create([
-				'code' => $code,
-				'id_reference' => $appointmentLecturerId,
-				'id_lecturer' => $kaprodiId,
-				'type' => SignatureModel::TYPE_APPOINTMENT_LECTURER,
-			]);
+			// $code = $this->signature->generateCode();
+			// $barcodeKaprodi = base_url().'guest/signature?code='.$code;
+			// $this->signature->create([
+			// 	'code' => $code,
+			// 	'id_reference' => $appointmentLecturerId,
+			// 	'id_lecturer' => $kaprodiId,
+			// 	'type' => SignatureModel::TYPE_APPOINTMENT_LECTURER,
+			// ]);
 						
-            $barcode = new DNS2D();
-            $barcode->setStorPath(APPPATH . "cache/");
-			$qrCodeKaprodi = $barcode->getBarcodePNG($barcodeKaprodi, "QRCODE", 2, 2);
+            // $barcode = new DNS2D();
+            // $barcode->setStorPath(APPPATH . "cache/");
+			// $qrCodeKaprodi = $barcode->getBarcodePNG($barcodeKaprodi, "QRCODE", 2, 2);
 			
 			$this->db->trans_complete();
 
@@ -109,7 +109,7 @@ class Appointment_lecturer extends App_Controller
 				$options = [
 					'buffer' => true,
 					'view' => 'appointment_lecturer/print',
-					'data' => compact('tanggalSekarang', 'semester', 'judul', 'nama', 'nim', 'qrCodeKaprodi',
+					'data' => compact('tanggalSekarang', 'semester', 'judul', 'nama', 'nim',// 'qrCodeKaprodi',
 										'tanggal', 'kaprodi', 'pembimbing', 'no_letter'),
 				];
 				$output = $this->exporter->exportToPdf("Penunjukan Pembimbing.pdf", null, $options);

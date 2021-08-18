@@ -88,26 +88,26 @@ class Recommendation_letter extends App_Controller
 			]);
 			$recommendationLetterId = $this->db->insert_id();		
 
-			$code = $this->signature->generateCode();
-			$barcodeKaprodi = base_url().'guest/signature?code='.$code;
-			$this->signature->create([
-				'code' => $code,
-				'id_reference' => $recommendationLetterId,
-				'id_lecturer' => $kaprodiId,
-				'type' => SignatureModel::TYPE_RECOMMENDATION_LETTER,
-			]);
+			// $code = $this->signature->generateCode();
+			// $barcodeKaprodi = base_url().'guest/signature?code='.$code;
+			// $this->signature->create([
+			// 	'code' => $code,
+			// 	'id_reference' => $recommendationLetterId,
+			// 	'id_lecturer' => $kaprodiId,
+			// 	'type' => SignatureModel::TYPE_RECOMMENDATION_LETTER,
+			// ]);
 						
-            $barcode = new DNS2D();
-            $barcode->setStorPath(APPPATH . "cache/");
-			$qrCodeKaprodi = $barcode->getBarcodePNG($barcodeKaprodi, "QRCODE", 2, 2);
+            // $barcode = new DNS2D();
+            // $barcode->setStorPath(APPPATH . "cache/");
+			// $qrCodeKaprodi = $barcode->getBarcodePNG($barcodeKaprodi, "QRCODE", 2, 2);
 			$this->db->trans_complete();
 
 			if ($this->db->trans_status()) {
 				$options = [
 					'buffer' => true,
 					'view' => 'recommendation_letter/print',
-					'data' => compact('tanggalSekarang', 'namaDosen', 'jabatan', 'namaMahasiswa', 'nim',
-										'rekomendasi', 'kaprodi', 'no_letter', 'prodi', 'qrCodeKaprodi'),
+					'data' => compact('tanggalSekarang', 'namaDosen', 'jabatan', 'namaMahasiswa', 'nim',// 'qrCodeKaprodi'
+										'rekomendasi', 'kaprodi', 'no_letter', 'prodi'),
 				];
 				$output = $this->exporter->exportToPdf("Surat Rekomendasi.pdf", null, $options);
 				$this->uploader->makeFolder('recommendation_letter');

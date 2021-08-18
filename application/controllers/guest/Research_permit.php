@@ -100,28 +100,29 @@ class Research_permit extends App_Controller
 			]);
 			$researchPermitId = $this->db->insert_id();
 
-			$code = $this->signature->generateCode();
-			$barcodeKaprodi = base_url().'guest/signature?code='.$code;
-			$this->signature->create([
-				'code' => $code,
-				'id_reference' => $researchPermitId,
-				'id_lecturer' => $kaprodiId,
-				'type' => SignatureModel::TYPE_RESEARCH_PERMIT,
-			]);
+			//comment untuk sementara gak pake barcode agar bisa di kontrol
+			// $code = $this->signature->generateCode();
+			// $barcodeKaprodi = base_url().'guest/signature?code='.$code;
+			// $this->signature->create([
+			// 	'code' => $code,
+			// 	'id_reference' => $researchPermitId,
+			// 	'id_lecturer' => $kaprodiId,
+			// 	'type' => SignatureModel::TYPE_RESEARCH_PERMIT,
+			// ]);
 
-			$code = $this->signature->generateCode();
-			$barcodePembimbing = base_url().'guest/signature?code='.$code;
-			$this->signature->create([
-				'code' => $code,
-				'id_reference' => $researchPermitId,
-				'id_lecturer' => $pembimbingId,
-				'type' => SignatureModel::TYPE_RESEARCH_PERMIT,
-			]);
+			// $code = $this->signature->generateCode();
+			// $barcodePembimbing = base_url().'guest/signature?code='.$code;
+			// $this->signature->create([
+			// 	'code' => $code,
+			// 	'id_reference' => $researchPermitId,
+			// 	'id_lecturer' => $pembimbingId,
+			// 	'type' => SignatureModel::TYPE_RESEARCH_PERMIT,
+			// ]);
 						
-            $barcode = new DNS2D();
-            $barcode->setStorPath(APPPATH . "cache/");
-			$qrCodeKaprodi = $barcode->getBarcodePNG($barcodeKaprodi, "QRCODE", 2, 2);
-			$qrCodePembimbing = $barcode->getBarcodePNG($barcodePembimbing, "QRCODE", 2, 2);
+            // $barcode = new DNS2D();
+            // $barcode->setStorPath(APPPATH . "cache/");
+			// $qrCodeKaprodi = $barcode->getBarcodePNG($barcodeKaprodi, "QRCODE", 2, 2);
+			// $qrCodePembimbing = $barcode->getBarcodePNG($barcodePembimbing, "QRCODE", 2, 2);
 
 			$this->db->trans_complete();
 
@@ -129,7 +130,7 @@ class Research_permit extends App_Controller
 				$options = [
 					'buffer' => true,
 					'view' => 'research_permit/print',
-					'data' => compact('tanggalSekarang', 'terhormat', 'judul', 'nama', 'nim', 'qrCodeKaprodi', 'qrCodePembimbing',
+					'data' => compact('tanggalSekarang', 'terhormat', 'judul', 'nama', 'nim', //'qrCodeKaprodi', 'qrCodePembimbing',
 										'pengambilan_data', 'metode', 'kaprodi', 'pembimbing', 'no_letter'),
 				];
 				$output = $this->exporter->exportToPdf("Surat Izin Penelitian.pdf", null, $options);

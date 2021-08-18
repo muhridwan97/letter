@@ -79,26 +79,26 @@ class Application_letter extends App_Controller
 			]);
 			$applicationLetterId = $this->db->insert_id();
 
-			$code = $this->signature->generateCode();
-			$barcodeKaprodi = base_url().'guest/signature?code='.$code;
-			$this->signature->create([
-				'code' => $code,
-				'id_reference' => $applicationLetterId,
-				'id_lecturer' => $kaprodiId,
-				'type' => SignatureModel::TYPE_APPLICATION_LETTER,
-			]);
+			// $code = $this->signature->generateCode();
+			// $barcodeKaprodi = base_url().'guest/signature?code='.$code;
+			// $this->signature->create([
+			// 	'code' => $code,
+			// 	'id_reference' => $applicationLetterId,
+			// 	'id_lecturer' => $kaprodiId,
+			// 	'type' => SignatureModel::TYPE_APPLICATION_LETTER,
+			// ]);
 						
-            $barcode = new DNS2D();
-            $barcode->setStorPath(APPPATH . "cache/");
-			$qrCodeKaprodi = $barcode->getBarcodePNG($barcodeKaprodi, "QRCODE", 2, 2);
+            // $barcode = new DNS2D();
+            // $barcode->setStorPath(APPPATH . "cache/");
+			// $qrCodeKaprodi = $barcode->getBarcodePNG($barcodeKaprodi, "QRCODE", 2, 2);
 			$this->db->trans_complete();
 
 			if ($this->db->trans_status()) {
 				$options = [
 					'buffer' => true,
 					'view' => 'application_letter/print',
-					'data' => compact('tanggalSekarang', 'semester', 'alamat', 'nama', 'nim',
-										'noTelepon', 'kaprodi', 'qrCodeKaprodi'),
+					'data' => compact('tanggalSekarang', 'semester', 'alamat', 'nama', 'nim',// 'qrCodeKaprodi'
+										'noTelepon', 'kaprodi'),
 				];
 				$output = $this->exporter->exportToPdf("Surat teori.pdf", null, $options);
 				$this->uploader->makeFolder('application_letter');

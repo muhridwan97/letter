@@ -100,18 +100,18 @@ class Assignment_letter extends App_Controller
 					'jabatan' => $student['jabatan'],
 				]);
 			}
-			$code = $this->signature->generateCode();
-			$barcodeKaprodi = base_url().'guest/signature?code='.$code;
-			$this->signature->create([
-				'code' => $code,
-				'id_reference' => $assignmentLetterId,
-				'id_lecturer' => $kaprodiId,
-				'type' => SignatureModel::TYPE_ASSIGNMENT_LETTER,
-			]);
+			// $code = $this->signature->generateCode();
+			// $barcodeKaprodi = base_url().'guest/signature?code='.$code;
+			// $this->signature->create([
+			// 	'code' => $code,
+			// 	'id_reference' => $assignmentLetterId,
+			// 	'id_lecturer' => $kaprodiId,
+			// 	'type' => SignatureModel::TYPE_ASSIGNMENT_LETTER,
+			// ]);
 						
-            $barcode = new DNS2D();
-            $barcode->setStorPath(APPPATH . "cache/");
-			$qrCodeKaprodi = $barcode->getBarcodePNG($barcodeKaprodi, "QRCODE", 2, 2);
+            // $barcode = new DNS2D();
+            // $barcode->setStorPath(APPPATH . "cache/");
+			// $qrCodeKaprodi = $barcode->getBarcodePNG($barcodeKaprodi, "QRCODE", 2, 2);
 
 			$this->db->trans_complete();
 			$tanggal_pelaksana = '';
@@ -143,8 +143,8 @@ class Assignment_letter extends App_Controller
 				$options = [
 					'buffer' => true,
 					'view' => 'assignment_letter/print',
-					'data' => compact('tanggalSekarang', 'judul', 'students', 'tujuan', 'penyelenggara',
-										'kaprodi', 'no_letter', 'tanggal_pelaksana', 'tempat', 'qrCodeKaprodi'),
+					'data' => compact('tanggalSekarang', 'judul', 'students', 'tujuan', 'penyelenggara',// 'qrCodeKaprodi'
+										'kaprodi', 'no_letter', 'tanggal_pelaksana', 'tempat'),
 				];
 				$output = $this->exporter->exportToPdf("Surat Permohonan Tugas.pdf", null, $options);
 				$this->uploader->makeFolder('assignment_letter');

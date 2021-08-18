@@ -151,7 +151,7 @@
 <p style="margin-left: 30px;margin-top: 15px;margin-bottom: 5px; line-height: 1.3; font-size: 14px;">
     <i>Wassalaamu’alaikum wr.wb.</i>
 </p>
-<table style="margin-left:160px;font-size: 14px; margin-top: 60px; margin-bottom: 10px; width: 100%">
+<table style="margin-left:60px;font-size: 14px; margin-top: 60px; margin-bottom: 10px; width: 100%">
     <tbody>
     <tr>
         <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"></p>
@@ -162,10 +162,19 @@
             <p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;">Kaprodi Pendidikan Fisika</p>
         </th>
     </tr>
-    <tr>
+    <!-- <tr>
         <th style="width: 100px;"></th>
         <th style="width: 100px;"></th>
         <th style="text-align: center;"><img src="data:image/png;base64,<?= $qrCodeKaprodi ?>"></th>
+    </tr> -->
+    <tr>
+        <th colspan="3">&nbsp;</th>
+    </tr>
+    <tr>
+        <th colspan="3">&nbsp;</th>
+    </tr>
+    <tr>
+        <th colspan="3">&nbsp;</th>
     </tr>
     <tr>
         <th style="text-align: center;"><p style="line-height: 1.3;margin-bottom: 5px;font-size: 14px;font-weight: normal;"></p>
