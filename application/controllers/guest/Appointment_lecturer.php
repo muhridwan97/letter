@@ -84,7 +84,7 @@ class Appointment_lecturer extends App_Controller
 				'semester' => $semester,
 				'date' => date('Y-m-d'),
 				'judul' => $judul,
-				'tanggal' => $tanggal,
+				'tanggal' => date('Y-m-d',strtotime($tanggal)),
 			]);
 			$appointmentLecturerId = $this->db->insert_id();
 
