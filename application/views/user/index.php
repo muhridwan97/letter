@@ -9,12 +9,10 @@
                 <a href="<?= base_url(uri_string()) ?>?<?= $_SERVER['QUERY_STRING'] ?>&export=true" class="btn btn-info btn-sm pr-2 pl-2">
                     <i class="mdi mdi-file-download-outline"></i>
                 </a>
-                <?php if(!$this->config->item('sso_enable')): ?>
-                    <?php if(AuthorizationModel::isAuthorized(PERMISSION_USER_CREATE)): ?>
-                        <a href="<?= site_url('master/user/create') ?>" class="btn btn-sm btn-success">
-                            <i class="mdi mdi-plus-box-outline mr-2"></i>CREATE
-                        </a>
-                    <?php endif; ?>
+                <?php if(AuthorizationModel::isAuthorized(PERMISSION_USER_CREATE)): ?>
+                    <a href="<?= site_url('master/user/create') ?>" class="btn btn-sm btn-success">
+                        <i class="mdi mdi-plus-box-outline mr-2"></i>CREATE
+                    </a>
                 <?php endif; ?>
             </div>
         </div>
@@ -69,15 +67,13 @@
                                         <i class="mdi mdi-square-edit-outline mr-2"></i> Edit
                                     </a>
                                 <?php endif; ?>
-                                <?php if(!$this->config->item('sso_enable')): ?>
-                                    <?php if(AuthorizationModel::isAuthorized(PERMISSION_USER_DELETE)): ?>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item btn-delete" href="#modal-delete" data-toggle="modal"
-                                           data-id="<?= $user['id'] ?>" data-label="<?= $user['name'] ?>" data-title="User"
-                                           data-url="<?= site_url('master/user/delete/' . $user['id']) ?>">
-                                            <i class="mdi mdi-trash-can-outline mr-2"></i> Delete
-                                        </a>
-                                    <?php endif; ?>
+                                <?php if(AuthorizationModel::isAuthorized(PERMISSION_USER_DELETE)): ?>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item btn-delete" href="#modal-delete" data-toggle="modal"
+                                        data-id="<?= $user['id'] ?>" data-label="<?= $user['name'] ?>" data-title="User"
+                                        data-url="<?= site_url('master/user/delete/' . $user['id']) ?>">
+                                        <i class="mdi mdi-trash-can-outline mr-2"></i> Delete
+                                    </a>
                                 <?php endif; ?>
                             </div>
                         </div>

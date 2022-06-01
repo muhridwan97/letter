@@ -114,13 +114,11 @@
     <div class="card mb-3">
         <div class="card-body d-flex justify-content-between">
             <button onclick="history.back()" type="button" class="btn btn-light">Back</button>
-            <?php if(!$this->config->item('sso_enable')): ?>
-                <?php if(AuthorizationModel::isAuthorized(PERMISSION_DEPARTMENT_EDIT)): ?>
-                    <a href="<?= site_url('master/department/edit/' . $department['id']) ?>" class="btn btn-primary">
-                        Edit Department
-                    </a>
-                <?php endif; ?>
-            <?php endif; ?>
+			<?php if(AuthorizationModel::isAuthorized(PERMISSION_DEPARTMENT_EDIT)): ?>
+				<a href="<?= site_url('master/department/edit/' . $department['id']) ?>" class="btn btn-primary">
+					Edit Department
+				</a>
+			<?php endif; ?>
         </div>
     </div>
 </form>

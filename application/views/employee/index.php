@@ -9,12 +9,10 @@
                 <a href="<?= base_url(uri_string()) ?>?<?= $_SERVER['QUERY_STRING'] ?>&export=true" class="btn btn-info btn-sm pr-2 pl-2">
                     <i class="mdi mdi-file-download-outline"></i>
                 </a>
-                <?php if(!$this->config->item('sso_enable')): ?>
-                    <?php if(AuthorizationModel::isAuthorized(PERMISSION_EMPLOYEE_CREATE)): ?>
-                        <a href="<?= site_url('master/employee/create') ?>" class="btn btn-sm btn-primary">
-                            <i class="mdi mdi-plus-box-outline mr-2"></i>CREATE
-                        </a>
-                    <?php endif; ?>
+                <?php if(AuthorizationModel::isAuthorized(PERMISSION_EMPLOYEE_CREATE)): ?>
+                    <a href="<?= site_url('master/employee/create') ?>" class="btn btn-sm btn-primary">
+                        <i class="mdi mdi-plus-box-outline mr-2"></i>CREATE
+                    </a>
                 <?php endif; ?>
             </div>
         </div>

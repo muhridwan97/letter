@@ -135,12 +135,10 @@ ul.timeline > li:before {
     <div class="card grid-margin">
         <div class="card-body d-flex justify-content-between">
             <button onclick="history.back()" type="button" class="btn btn-light">Back</button>
-            <?php if(!$this->config->item('sso_enable')): ?>
-                <?php if(AuthorizationModel::isAuthorized(PERMISSION_SKRIPSI_EDIT)): ?>
-                    <a href="<?= site_url('skripsi/skripsi/edit/' . $skripsi['id']) ?>" class="btn btn-primary">
-                        Edit Skripsi
-                    </a>
-                <?php endif; ?>
+            <?php if(AuthorizationModel::isAuthorized(PERMISSION_SKRIPSI_EDIT)): ?>
+                <a href="<?= site_url('skripsi/skripsi/edit/' . $skripsi['id']) ?>" class="btn btn-primary">
+                    Edit Skripsi
+                </a>
             <?php endif; ?>
         </div>
     </div>

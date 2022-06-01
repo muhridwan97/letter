@@ -90,12 +90,10 @@
     <div class="card grid-margin">
         <div class="card-body d-flex justify-content-between">
             <button onclick="history.back()" type="button" class="btn btn-light">Back</button>
-            <?php if(!$this->config->item('sso_enable')): ?>
-                <?php if(AuthorizationModel::isAuthorized(PERMISSION_LECTURER_EDIT)): ?>
-                    <a href="<?= site_url('master/lecturer/edit/' . $lecturer['id']) ?>" class="btn btn-primary">
-                        Edit Lecturer
-                    </a>
-                <?php endif; ?>
+            <?php if(AuthorizationModel::isAuthorized(PERMISSION_LECTURER_EDIT)): ?>
+                <a href="<?= site_url('master/lecturer/edit/' . $lecturer['id']) ?>" class="btn btn-primary">
+                    Edit Lecturer
+                </a>
             <?php endif; ?>
         </div>
     </div>

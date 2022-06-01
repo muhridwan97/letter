@@ -11,7 +11,6 @@ class UserModel extends App_Model
 
 	protected $filteredFields = [
 		'*',
-		'ref_employees.no_employee',
 		'prv_roles.role'
 	];
 
@@ -37,23 +36,17 @@ class UserModel extends App_Model
 	public function getBaseQuery()
 	{
 		$this->addFilteredField([
-			'ref_employees.no_employee',
-			'ref_employees.name'
 		]);
 
 		$baseQuery = $this->db->select([
 			$this->table . '.*',
 			'GROUP_CONCAT(DISTINCT prv_roles.role) AS roles',
-			'ref_employees.id AS id_employee',
-			'ref_employees.no_employee',
-			'ref_employees.name AS employee_name',
 		])
 			->distinct()
 			->from($this->table)
 			->join('prv_user_roles', 'prv_user_roles.id_user = ' . $this->table . '.id', 'left')
 			->join('prv_roles', 'prv_roles.id = prv_user_roles.id_role', 'left')
-			->join(EmployeeModel::$tableEmployee, 'ref_employees.id_user = prv_users.id', 'left')
-			->group_by([$this->table . '.id', 'ref_employees.id', 'ref_employees.no_employee'])
+			->group_by([$this->table . '.id'])
 			->order_by($this->id, 'desc');
 
 		if ($this->config->item('sso_enable')) {
@@ -251,8 +244,7 @@ class UserModel extends App_Model
 	public function getUnattachedUsers($exceptId = null)
 	{
 		$users = $this->getBaseQuery()
-			->where('prv_users.username!=', 'admin')
-			->where('ref_employees.id_user', null);
+			->where('prv_users.username!=', 'admin');
 
 		if (!empty($exceptId)) {
 			$users->or_where($this->table . '.id', $exceptId);

@@ -9,12 +9,10 @@
                 <a href="<?= base_url(uri_string()) ?>?<?= $_SERVER['QUERY_STRING'] ?>&export=true" class="btn btn-info btn-sm pr-2 pl-2">
                     <i class="mdi mdi-file-download-outline"></i>
                 </a>
-                <?php if(!$this->config->item('sso_enable')): ?>
-                    <?php if(AuthorizationModel::isAuthorized(PERMISSION_STUDENT_CREATE)): ?>
-                        <a href="<?= site_url('master/student/create') ?>" class="btn btn-sm btn-primary">
-                            <i class="mdi mdi-plus-box-outline mr-2"></i>CREATE
-                        </a>
-                    <?php endif; ?>
+                <?php if(AuthorizationModel::isAuthorized(PERMISSION_STUDENT_CREATE)): ?>
+                    <a href="<?= site_url('master/student/create') ?>" class="btn btn-sm btn-primary">
+                        <i class="mdi mdi-plus-box-outline mr-2"></i>CREATE
+                    </a>
                 <?php endif; ?>
             </div>
         </div>
@@ -62,20 +60,18 @@
                                             <i class="mdi mdi-eye-outline mr-2"></i> View
                                         </a>
                                     <?php endif; ?>
-                                    <?php if(!$this->config->item('sso_enable')): ?>
-                                        <?php if(AuthorizationModel::isAuthorized(PERMISSION_STUDENT_EDIT)): ?>
-                                            <a class="dropdown-item" href="<?= site_url('master/student/edit/' . $student['id']) ?>">
-                                                <i class="mdi mdi-square-edit-outline mr-2"></i> Edit
-                                            </a>
-                                        <?php endif; ?>
-                                        <?php if(AuthorizationModel::isAuthorized(PERMISSION_STUDENT_DELETE)): ?>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item btn-delete" href="#modal-delete" data-toggle="modal"
-                                               data-id="<?= $student['id'] ?>" data-label="<?= $student['name'] ?>" data-title="Student"
-                                               data-url="<?= site_url('master/student/delete/' . $student['id']) ?>">
-                                                <i class="mdi mdi-trash-can-outline mr-2"></i> Delete
-                                            </a>
-                                        <?php endif; ?>
+                                    <?php if(AuthorizationModel::isAuthorized(PERMISSION_STUDENT_EDIT)): ?>
+                                        <a class="dropdown-item" href="<?= site_url('master/student/edit/' . $student['id']) ?>">
+                                            <i class="mdi mdi-square-edit-outline mr-2"></i> Edit
+                                        </a>
+                                    <?php endif; ?>
+                                    <?php if(AuthorizationModel::isAuthorized(PERMISSION_STUDENT_DELETE)): ?>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item btn-delete" href="#modal-delete" data-toggle="modal"
+                                            data-id="<?= $student['id'] ?>" data-label="<?= $student['name'] ?>" data-title="Student"
+                                            data-url="<?= site_url('master/student/delete/' . $student['id']) ?>">
+                                            <i class="mdi mdi-trash-can-outline mr-2"></i> Delete
+                                        </a>
                                     <?php endif; ?>
                                 </div>
                             </div>

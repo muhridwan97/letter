@@ -9,13 +9,11 @@
                 <a href="<?= base_url(uri_string()) ?>?<?= $_SERVER['QUERY_STRING'] ?>&export=true" class="btn btn-info btn-sm pr-2 pl-2">
                     <i class="mdi mdi-file-download-outline"></i>
                 </a>
-                <?php if(!$this->config->item('sso_enable')): ?>
-                    <?php if(AuthorizationModel::isAuthorized(PERMISSION_DEPARTMENT_CREATE)): ?>
-                        <a href="<?= site_url('master/department/create') ?>" class="btn btn-sm btn-primary">
-                            <i class="mdi mdi-plus-box-outline mr-2"></i>CREATE
-                        </a>
-                    <?php endif; ?>
-                <?php endif; ?>
+				<?php if(AuthorizationModel::isAuthorized(PERMISSION_DEPARTMENT_CREATE)): ?>
+					<a href="<?= site_url('master/department/create') ?>" class="btn btn-sm btn-primary">
+						<i class="mdi mdi-plus-box-outline mr-2"></i>CREATE
+					</a>
+				<?php endif; ?>
             </div>
         </div>
 		<table class="table table-hover table-sm mt-3 responsive position-relative">
@@ -64,13 +62,11 @@
 										<i class="mdi mdi-eye-outline mr-2"></i> View
 									</a>
 								<?php endif; ?>
-								<?php if(!$this->config->item('sso_enable')): ?>
-									<?php if(AuthorizationModel::isAuthorized(PERMISSION_DEPARTMENT_EDIT)): ?>
-										<a class="dropdown-item"
-										   href="<?= site_url('master/department/edit/' . $department['id']) ?>">
-											<i class="mdi mdi-square-edit-outline mr-2"></i> Edit
-										</a>
-									<?php endif; ?>
+								<?php if(AuthorizationModel::isAuthorized(PERMISSION_DEPARTMENT_EDIT)): ?>
+									<a class="dropdown-item"
+										href="<?= site_url('master/department/edit/' . $department['id']) ?>">
+										<i class="mdi mdi-square-edit-outline mr-2"></i> Edit
+									</a>
 								<?php endif; ?>
 								<?php if(AuthorizationModel::isAuthorized(PERMISSION_CURRICULUM_CREATE)): ?>
 									<div class="dropdown-divider"></div>
@@ -85,15 +81,13 @@
 										<i class="mdi mdi-sort-variant mr-2"></i> Sort Curriculums
 									</a>
 								<?php endif; ?>
-								<?php if(!$this->config->item('sso_enable')): ?>
-									<?php if(AuthorizationModel::isAuthorized(PERMISSION_DEPARTMENT_DELETE)): ?>
-										<div class="dropdown-divider"></div>
-										<a class="dropdown-item btn-delete" href="#modal-delete" data-toggle="modal"
-										   data-id="<?= $department['id'] ?>" data-label="<?= $department['department'] ?>" data-title="Department"
-										   data-url="<?= site_url('master/department/delete/' . $department['id']) ?>">
-											<i class="mdi mdi-trash-can-outline mr-2"></i> Delete
-										</a>
-									<?php endif; ?>
+								<?php if(AuthorizationModel::isAuthorized(PERMISSION_DEPARTMENT_DELETE)): ?>
+									<div class="dropdown-divider"></div>
+									<a class="dropdown-item btn-delete" href="#modal-delete" data-toggle="modal"
+										data-id="<?= $department['id'] ?>" data-label="<?= $department['department'] ?>" data-title="Department"
+										data-url="<?= site_url('master/department/delete/' . $department['id']) ?>">
+										<i class="mdi mdi-trash-can-outline mr-2"></i> Delete
+									</a>
 								<?php endif; ?>
 							</div>
 						</div>

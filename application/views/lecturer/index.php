@@ -9,12 +9,10 @@
                 <a href="<?= base_url(uri_string()) ?>?<?= $_SERVER['QUERY_STRING'] ?>&export=true" class="btn btn-info btn-sm pr-2 pl-2">
                     <i class="mdi mdi-file-download-outline"></i>
                 </a>
-                <?php if(!$this->config->item('sso_enable')): ?>
-                    <?php if(AuthorizationModel::isAuthorized(PERMISSION_LECTURER_CREATE)): ?>
-                        <a href="<?= site_url('master/lecturer/create') ?>" class="btn btn-sm btn-primary">
-                            <i class="mdi mdi-plus-box-outline mr-2"></i>CREATE
-                        </a>
-                    <?php endif; ?>
+                <?php if(AuthorizationModel::isAuthorized(PERMISSION_LECTURER_CREATE)): ?>
+                    <a href="<?= site_url('master/lecturer/create') ?>" class="btn btn-sm btn-primary">
+                        <i class="mdi mdi-plus-box-outline mr-2"></i>CREATE
+                    </a>
                 <?php endif; ?>
             </div>
         </div>
@@ -62,20 +60,18 @@
                                             <i class="mdi mdi-eye-outline mr-2"></i> View
                                         </a>
                                     <?php endif; ?>
-                                    <?php if(!$this->config->item('sso_enable')): ?>
-                                        <?php if(AuthorizationModel::isAuthorized(PERMISSION_LECTURER_EDIT)): ?>
-                                            <a class="dropdown-item" href="<?= site_url('master/lecturer/edit/' . $lecturer['id']) ?>">
-                                                <i class="mdi mdi-square-edit-outline mr-2"></i> Edit
-                                            </a>
-                                        <?php endif; ?>
-                                        <?php if(AuthorizationModel::isAuthorized(PERMISSION_LECTURER_DELETE)): ?>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item btn-delete" href="#modal-delete" data-toggle="modal"
-                                               data-id="<?= $lecturer['id'] ?>" data-label="<?= $lecturer['name'] ?>" data-title="Lecturer"
-                                               data-url="<?= site_url('master/lecturer/delete/' . $lecturer['id']) ?>">
-                                                <i class="mdi mdi-trash-can-outline mr-2"></i> Delete
-                                            </a>
-                                        <?php endif; ?>
+                                    <?php if(AuthorizationModel::isAuthorized(PERMISSION_LECTURER_EDIT)): ?>
+                                        <a class="dropdown-item" href="<?= site_url('master/lecturer/edit/' . $lecturer['id']) ?>">
+                                            <i class="mdi mdi-square-edit-outline mr-2"></i> Edit
+                                        </a>
+                                    <?php endif; ?>
+                                    <?php if(AuthorizationModel::isAuthorized(PERMISSION_LECTURER_DELETE)): ?>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item btn-delete" href="#modal-delete" data-toggle="modal"
+                                            data-id="<?= $lecturer['id'] ?>" data-label="<?= $lecturer['name'] ?>" data-title="Lecturer"
+                                            data-url="<?= site_url('master/lecturer/delete/' . $lecturer['id']) ?>">
+                                            <i class="mdi mdi-trash-can-outline mr-2"></i> Delete
+                                        </a>
                                     <?php endif; ?>
                                 </div>
                             </div>
