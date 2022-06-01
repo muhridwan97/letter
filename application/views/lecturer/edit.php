@@ -58,6 +58,26 @@
                 <?= form_error('user') ?>
             </div>
             <div class="form-group">
+                <label>Photo Profil</label>
+                <input type="file" id="avatar" name="avatar" class="file-upload-default" data-max-size="3000000">
+                <div class="input-group col-xs-12">
+                    <input type="text" class="form-control file-upload-info" value="<?= $lecturer['avatar'] ?>" disabled placeholder="Upload photo">
+                    <span class="input-group-append">
+                        <button class="file-upload-browse btn btn-success btn-simple-upload" type="button">
+                            Upload
+                        </button>
+                    </span>
+                </div>
+                <?= form_error('avatar') ?>
+            </div>
+            
+            <div class="form-group">
+                <label for="profile">Bio Profile</label>
+                <textarea class="form-control" id="profile" name="profile"
+                          placeholder="Enter lecturer profile"><?= set_value('profile', $lecturer['profile']) ?></textarea>
+                <?= form_error('profile') ?>
+            </div>
+            <div class="form-group">
                 <label for="description">Description</label>
                 <textarea class="form-control" id="description" name="description" maxlength="500"
                           placeholder="Enter lecturer description"><?= set_value('description', $lecturer['description']) ?></textarea>
@@ -72,3 +92,12 @@
 </form>
 
 <?php $this->load->view('partials/modals/_alert') ?>
+<script src="https://cdn.ckeditor.com/4.16.0/standard-all/ckeditor.js"></script>
+
+<script>
+        CKEDITOR.replace( 'profile', {
+            extraPlugins : 'emoji,colorbutton,justify',
+            // removeButtons : 'Underline,Subscript,Superscript,Styles,Table,Symbol,SpecialChar',
+            // removePlugins : 'link,image,blockquote,format,horizontalrule,about,list',
+        } );
+</script>

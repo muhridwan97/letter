@@ -83,14 +83,28 @@ class Lecturer extends App_Controller
             $status = $this->input->post('status');
             $position = $this->input->post('position');
             $user = $this->input->post('user');
+            $profile = $this->input->post('profile');
             $description = $this->input->post('description');
+
+            $avatar = "";
+            if (!empty($_FILES['avatar']['name'])) {
+                $options = ['destination' => 'lecturer/' . date('Y/m')];
+                if ($this->uploader->uploadTo('avatar', $options)) {
+                    $uploadedData = $this->uploader->getUploadedData();
+                    $avatar = $uploadedData['uploaded_path'];
+                } else {
+                    flash('danger', $this->uploader->getDisplayErrors(), '_back', 'master/lecturer/create');
+                }
+            }
 
             $save = $this->lecturer->create([
                 'no_lecturer' => $lecturerNo,
                 'id_user' => if_empty($user, null),
                 'name' => $name,
                 'position' => $position,
+                'avatar' => if_empty($avatar,null),
                 'description' => $description,
+                'profile' => $profile,
                 'status' => $status,
             ]);
 
@@ -132,6 +146,18 @@ class Lecturer extends App_Controller
             $position = $this->input->post('position');
             $user = $this->input->post('user');
             $description = $this->input->post('description');
+            $profile = $this->input->post('profile');
+
+            $avatar = "";
+            if (!empty($_FILES['avatar']['name'])) {
+                $options = ['destination' => 'lecturer/' . date('Y/m')];
+                if ($this->uploader->uploadTo('avatar', $options)) {
+                    $uploadedData = $this->uploader->getUploadedData();
+                    $avatar = $uploadedData['uploaded_path'];
+                } else {
+                    flash('danger', $this->uploader->getDisplayErrors(), '_back', 'master/lecturer/edit');
+                }
+            }
 
             $lecturer = $this->lecturer->getById($id);
 
@@ -140,7 +166,9 @@ class Lecturer extends App_Controller
                 'name' => $name,
                 'no_lecturer' => $lecturerNo,
                 'position' => $position,
+                'avatar' => if_empty($avatar,$lecturer['avatar']),
                 'description' => $description,
+                'profile' => $profile,
                 'status' => $status,
             ], $id);
 

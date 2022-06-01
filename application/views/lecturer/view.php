@@ -86,6 +86,18 @@
             </div>
         </div>
     </div>
+    <div class="card mb-3">
+        <div class="card-body">
+        <h5 class="card-title">Profile Lecturer</h5>
+        <div class="col-md-12 text-center mb-3">
+            <img src="<?= base_url().'uploads/'.$lecturer['avatar'] ?>" alt="avatar" class="flex-shrink-0 rounded-circle" style="height: 150px; width: 150px">
+        </div>
+        <br>
+            <p class="form-control-plaintext">
+                <?= if_empty($lecturer['profile'], '-') ?>
+            </p>
+        </div>
+    </div>
 
     <div class="card grid-margin">
         <div class="card-body d-flex justify-content-between">
