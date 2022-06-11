@@ -90,11 +90,6 @@ $segment3 = $this->uri->segment(3);
 							<li class="nav-item<?= $segment1 == 'master' && $segment2 == 'lecturer' ? ' active' : '' ?>">
 								<a class="nav-link" href="<?= site_url('master/lecturer') ?>">
 									<i class="mdi mdi-badge-account-horizontal-outline mr-2"></i>Lecturer
-									<?php if($this->config->item('sso_enable')): ?>
-										<span class="badge badge-info badge-pill ml-auto">
-											HR
-										</span>
-									<?php endif; ?>
 								</a>
 							</li>
 						<?php endif; ?>
@@ -102,11 +97,6 @@ $segment3 = $this->uri->segment(3);
 							<li class="nav-item<?= $segment1 == 'master' && $segment2 == 'student' ? ' active' : '' ?>">
 								<a class="nav-link" href="<?= site_url('master/student') ?>">
 									<i class="mdi mdi-office-building-outline mr-2"></i>Student
-									<?php if($this->config->item('sso_enable')): ?>
-										<span class="badge badge-info badge-pill ml-auto">
-											HR
-										</span>
-									<?php endif; ?>
 								</a>
 							</li>
 						<?php endif; ?>
