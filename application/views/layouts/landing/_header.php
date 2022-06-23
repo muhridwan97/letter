@@ -4,7 +4,7 @@
 	
 	<ul class="navbar-nav align-items-center ml-auto mt-2 mt-lg-0">
 	<?php if(!UserModel::isLoggedIn()): ?>
-		<a href="<?= site_url('auth/login') ?>" class="btn btn-lg p-0 btn-link text-white">
+		<a href="<?= site_url('dashboard') ?>" class="btn btn-lg p-0 btn-link text-white">
         	<span class="">Login</span>
     	</a>
 	<?php else: ?>
