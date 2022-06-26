@@ -127,6 +127,7 @@ class Lecturer extends App_Controller
 
         $lecturer = $this->lecturer->getById($id);
         $users = $this->user->getUnattachedUsers($lecturer['id_user']);
+        // print_debug($this->db->last_query());
 
         $this->render('lecturer/edit', compact('users', 'lecturer'));
     }

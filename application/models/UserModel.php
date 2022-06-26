@@ -244,7 +244,11 @@ class UserModel extends App_Model
 	public function getUnattachedUsers($exceptId = null)
 	{
 		$users = $this->getBaseQuery()
-			->where('prv_users.username!=', 'admin');
+			->join('ref_lecturers', 'ref_lecturers.id_user = prv_users.id', 'left')
+			->join('ref_students', 'ref_students.id_user = prv_users.id', 'left')
+			->where('prv_users.username!=', 'admin')
+            ->where('ref_students.id_user', null)
+            ->where('ref_lecturers.id_user', null);
 
 		if (!empty($exceptId)) {
 			$users->or_where($this->table . '.id', $exceptId);
