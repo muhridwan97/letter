@@ -1,7 +1,7 @@
 
 <div class="row justify-content-center">
 <form action="<?= site_url('guest/research-permit/save/' . '?redirect=' . get_url_param('redirect')) ?>" method="POST" enctype="multipart/form-data" id="form-research-permit">
-    <?= _csrf() ?>
+    
 	<div class="card mb-3">
         <div class="card-body">
             <h5 class="card-title">Surat Izin Penelitian</h5>
