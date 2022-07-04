@@ -464,7 +464,12 @@ $config['csrf_regenerate'] = FALSE;
 $config['csrf_exclude_uris'] = array('notification/ajax_list_notification',
  'guest/research-permit/save', 
  'guest/assignment-letter/save', 
- 'guest/application-letter/save');
+ 'guest/application-letter/save',
+ 'guest/appointment-lecturer/save',
+ 'guest/college-permit/save/',
+ 'guest/course-elimination/save',
+ 'guest/interview-permit/save',
+ 'guest/recommendation-letter/save/');
 
 /*
 |--------------------------------------------------------------------------
